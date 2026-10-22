@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAPE Admissions</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="shape_db.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--ink:#0B111F;--ink2:#1A2540;--ink3:#334D70;--ink4:#5E7A96;--ink5:#8AA8C2;--surf:#FFFFFF;--s2:#F2F7FB;--s3:#E4EFF8;--s4:#CDE0EF;--s5:#AEC8DC;--rose:#A31060;--rose-l:#FCEEF6;--rose-m:#F5A8D8;--indigo:#2B3BA6;--indigo-l:#EBECFB;--indigo-m:#B0B8F2;--green:#0B6B4A;--green-l:#E6F4EF;--amber:#8A5000;--amber-l:#FEF5E6;--r2:7px;--r3:11px;--r4:15px;--sh1:0 1px 4px rgba(11,17,31,.07);--sh2:0 5px 18px rgba(11,17,31,.1);}
+html,body{height:100%;background:var(--s2);}
+body{font-family:'Sora',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
+.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
+.sidebar{width:224px;flex-shrink:0;background:var(--ink2);overflow-y:auto;display:flex;flex-direction:column;}
+.main{flex:1;overflow-y:auto;}
+.topbar{height:48px;background:var(--ink2);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;}
+.tb-badge{width:30px;height:30px;border-radius:var(--r2);background:linear-gradient(135deg,var(--rose),#D4429C);display:grid;place-items:center;font-size:14px;font-weight:800;color:#fff;}
+.tb-ttl{font-size:13.5px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.tb-chip{font-size:10.5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);padding:3px 10px;border-radius:3px;margin-left:auto;}
+.sb-sec{padding:18px 14px 5px;font-size:8.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:var(--r2);cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ni.active{background:var(--rose);color:#fff;font-weight:600;}
+.ni .ic{font-size:14px;width:18px;flex-shrink:0;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);}
+.ni.active .nb{background:rgba(255,255,255,.2);color:#fff;}
+.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+.page{padding:22px 26px 40px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.ph-ttl{font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.45px;}
+.ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
+.ph-r{display:flex;gap:8px;flex-shrink:0;}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kc{background:var(--surf);border:1px solid var(--s4);border-radius:var(--r3);padding:16px 18px;box-shadow:var(--sh1);}
+.kl{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:8px;}
+.kv{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;}
+.kn{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+.card{background:var(--surf);border:1px solid var(--s4);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1);margin-bottom:14px;}
+.card:last-child{margin-bottom:0;}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--s4);background:var(--s2);}
+.ct{font-size:13.5px;font-weight:700;color:var(--ink);}
+.cb{padding:14px 18px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1.5px solid var(--s4);background:var(--s2);}
+td{padding:11px 14px;border-bottom:1px solid var(--s4);color:var(--ink3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.fw{font-weight:700;color:var(--ink);}
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.bg-g{background:var(--green-l);color:var(--green);}
+.bg-i{background:var(--indigo-l);color:var(--indigo);}
+.bg-r{background:var(--rose-l);color:var(--rose);}
+.bg-o{background:var(--amber-l);color:var(--amber);}
+.bg-s{background:var(--s3);color:var(--ink4);}
+.btn{padding:7px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--rose);color:#fff;}
+.bp:hover{background:#8E0D52;}
+.bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
+.bo:hover{background:var(--s2);}
+.bsm{padding:5px 10px;font-size:11.5px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.flow-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:3px;background:var(--indigo-l);color:var(--indigo);}
+.ov{position:fixed;inset:0;background:rgba(11,17,31,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
+.ov.open{display:flex;}
+.modal{background:var(--surf);border-radius:var(--r4);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
+.mh{padding:18px 22px 14px;border-bottom:1px solid var(--s4);display:flex;justify-content:space-between;align-items:flex-start;}
+.mh h3{font-size:15px;font-weight:700;color:var(--ink);}
+.mh-sub{font-size:11.5px;color:var(--ink4);margin-top:2px;}
+.mc{padding:18px 22px;}
+.mf{padding:12px 22px;border-top:1px solid var(--s4);background:var(--s2);display:flex;gap:8px;justify-content:flex-end;border-radius:0 0 var(--r4) var(--r4);}
+.cx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--ink4);}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:var(--r2);font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s;}
+.fc:focus{border-color:var(--rose);box-shadow:0 0 0 3px var(--rose-l);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.ss{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--s4);}
+.ss:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.ss-t{font-size:10px;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.view{display:none;}.view.active{display:block;}
+#tw{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+.toast{padding:10px 16px;border-radius:var(--r2);font-size:13px;font-weight:600;color:#fff;box-shadow:var(--sh2);pointer-events:all;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="tb-badge">A</div>
+  <span class="tb-ttl">SHAPE Admissions — Student Development</span>
+  <div style="display:flex;gap:6px;margin-left:auto;">
+    <a href="shape_hr.html" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:3px 9px;border:1px solid rgba(255,255,255,.1);border-radius:3px;">HR →</a>
+    <a href="shape_finance.html" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:3px 9px;border:1px solid rgba(255,255,255,.1);border-radius:3px;">Finance →</a>
+    <a href="shape_transport.html" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:3px 9px;border:1px solid rgba(255,255,255,.1);border-radius:3px;">Transport →</a>
+    <a href="shape_hostel.html" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:3px 9px;border:1px solid rgba(255,255,255,.1);border-radius:3px;">Hostel →</a>
+  </div>
+
+<div style="position:relative;margin-left:8px;" id="portal-switcher">
+  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
+    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+    &#9783; All Portals &#9660;
+  </button>
+  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
+    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
+    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
+    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
+    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
+    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
+    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
+    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
+    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
+    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
+  </div>
+</div>
+<style>
+#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
+#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+</style>
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var sw=document.getElementById('portal-switcher');
+    var m=document.getElementById('ps-menu');
+    if(sw&&m&&!sw.contains(e.target))m.style.display='none';
+  });
+})();
+</script>
+</div>
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-sec">Students</div>
+  <div class="ni active" data-v="students"><span class="ic">👤</span>All Students<span class="nb" id="nb_stu">0</span></div>
+  <div class="ni" data-v="profiles"><span class="ic">📝</span>Dev Profiles</div>
+  <div class="nb-sec" style="display:none;">Notifications</div>
+  <div class="sb-sec">Flow Tracking</div>
+  <div class="ni" data-v="boarding"><span class="ic">🏠</span>Boarding Students</div>
+  <div class="ni" data-v="transport"><span class="ic">🚌</span>Bus Allocation</div>
+  <div class="sb-ft">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--rose);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">MZ</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#fff;">Muhd Zahal</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.28);">Admissions Lead</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="main"><div class="page">
+
+<!-- STUDENTS -->
+<div id="view-students" class="view active">
+  <div class="ph">
+    <div><div class="ph-ttl">All Students</div><div class="ph-sub">Enrolled students · Arete Model School AY 2026–27</div></div>
+    <div class="ph-r">
+      <button class="btn bo bsm" onclick="exportStudents()">⬇ Export CSV</button>
+      <button class="btn bp" onclick="openNewStudent()">+ Enrol Student</button>
+    </div>
+  </div>
+  <div class="kpi" id="stu_stats"></div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Student Register</div>
+      <input id="stu_search" type="text" placeholder="🔍 Search name, class…" class="fc" style="width:200px;padding:5px 9px;font-size:12px;" oninput="renderStudents()">
+    </div>
+    <table><thead><tr><th>Name</th><th>Class</th><th>Bus Route</th><th>Boarding</th><th>Learning Style</th><th>Special Needs</th><th>Status</th><th></th></tr></thead>
+    <tbody id="stu_table"></tbody></table>
+  </div>
+</div>
+
+<!-- DEV PROFILES -->
+<div id="view-profiles" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Development Profiles</div><div class="ph-sub">Full baseline profile — shared with teachers, used across all portals</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openNewStudent()">+ Add Profile</button></div>
+  </div>
+  <div id="profiles_grid"></div>
+</div>
+
+<!-- BOARDING -->
+<div id="view-boarding" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Boarding Students</div><div class="ph-sub">Students enrolled for boarding → automatically appear in Hostel Management</div></div>
+  </div>
+  <div style="background:var(--indigo-l);border:1px solid var(--indigo-m);border-radius:var(--r3);padding:12px 16px;margin-bottom:16px;font-size:12.5px;color:var(--indigo);">
+    🔗 <strong>Connected to Hostel:</strong> Students marked as boarders here automatically appear in shape_hostel.html under Inmates. Hostel fees are auto-added to their account in Finance.
+  </div>
+  <div class="card"><div class="ch"><div class="ct">Boarding Students</div></div>
+    <table><thead><tr><th>Name</th><th>Class</th><th>Admitted</th><th>Room (in Hostel)</th><th>Hostel Fee/mo</th><th>Status</th></tr></thead>
+    <tbody id="boarding_table"></tbody></table>
+  </div>
+</div>
+
+<!-- TRANSPORT -->
+<div id="view-transport" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Bus Allocation</div><div class="ph-sub">Route assignment per student → flows to Transport &amp; Finance portals</div></div>
+  </div>
+  <div style="background:var(--indigo-l);border:1px solid var(--indigo-m);border-radius:var(--r3);padding:12px 16px;margin-bottom:16px;font-size:12.5px;color:var(--indigo);">
+    🔗 <strong>Connected to Transport:</strong> Bus route assigned here feeds into shape_transport.html stop tracking and early departure SMS. Transport fee auto-billed in Finance.
+  </div>
+  <div id="transport_routes"></div>
+</div>
+
+</div></div></div>
+
+<!-- Enrol / Profile Modal -->
+<div class="ov" id="ovStudent">
+  <div class="modal">
+    <div class="mh"><div><h3 id="stu_modal_ttl">Enrol New Student</h3><div class="mh-sub">Profile is shared immediately with Finance, Transport and Hostel</div></div><button class="cx" onclick="closeModal('ovStudent')">×</button></div>
+    <div class="mc">
+      <div class="ss"><div class="ss-t">Basic Information</div>
+        <div class="fr"><div class="fg"><label class="fl">Full Name <span style="color:var(--rose);">*</span></label><input class="fc" id="s_name" placeholder="Student's full name"></div><div class="fg"><label class="fl">Date of Birth</label><input type="date" class="fc" id="s_dob"></div></div>
+        <div class="fr3"><div class="fg"><label class="fl">Class</label><select class="fc" id="s_cls"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option></select></div><div class="fg"><label class="fl">Section</label><select class="fc" id="s_sec"><option>A</option><option>B</option><option>C</option></select></div><div class="fg"><label class="fl">Admission Date</label><input type="date" class="fc" id="s_adm"></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Parent Name</label><input class="fc" id="s_pname" placeholder="Parent / Guardian"></div><div class="fg"><label class="fl">Parent Phone</label><input class="fc" id="s_pphone" placeholder="+91 9447…"></div></div>
+      </div>
+      <div class="ss"><div class="ss-t">Services — determines fees &amp; routes</div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Bus Route</label><select class="fc" id="s_route"><option value="">None — own transport</option></select></div>
+          <div class="fg"><label class="fl">Boarding / Hostel</label><select class="fc" id="s_board"><option value="0">No — day scholar</option><option value="1">Yes — boarding student</option></select></div>
+        </div>
+        <div style="background:var(--s2);border-radius:var(--r2);padding:10px 12px;font-size:12px;color:var(--ink3);margin-top:4px;" id="fee_preview">Fee preview will appear here</div>
+      </div>
+      <div class="ss"><div class="ss-t">Development Profile</div>
+        <div class="fr"><div class="fg"><label class="fl">Learning Style</label><select class="fc" id="s_style"><option>Visual</option><option>Auditory</option><option>Kinaesthetic</option><option>Reading/Writing</option><option>Mixed</option></select></div><div class="fg"><label class="fl">Diet</label><select class="fc" id="s_diet"><option>Vegetarian</option><option>Non-Vegetarian</option><option>Vegan</option></select></div></div>
+        <div class="fg"><label class="fl">Hobbies &amp; Interests</label><input class="fc" id="s_hobbies" placeholder="e.g. Chess, Drawing, Cricket"></div>
+        <div class="fg"><label class="fl">Health / Special Needs</label><input class="fc" id="s_health" placeholder="Any conditions, medication, special requirements"></div>
+        <div class="fg"><label class="fl">Behavioural Notes</label><input class="fc" id="s_behav" placeholder="e.g. Social, confident / Reserved, focused"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeModal('ovStudent')">Cancel</button><button class="btn bp" onclick="saveStudent()">Enrol &amp; Connect to All Portals</button></div>
+  </div>
+</div>
+
+<!-- Student Detail Modal -->
+<div class="ov" id="ovDetail">
+  <div class="modal" style="max-width:700px;">
+    <div class="mh"><div><h3 id="det_name">Student</h3><div class="mh-sub" id="det_sub"></div></div><button class="cx" onclick="closeModal('ovDetail')">×</button></div>
+    <div class="mc" id="det_body"></div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeModal('ovDetail')">Close</button>
+      <button class="btn bp" id="det_share" onclick="shareProfile()">Share with Teacher</button>
+    </div>
+  </div>
+</div>
+
+<div id="tw"></div>
+<script>
+'use strict';
+var db = SHAPE_DB.load();
+var $ = id => document.getElementById(id);
+var $$ = s => document.querySelectorAll(s);
+var _editing = null;
+
+function toast(msg,t){
+  var d=document.createElement('div');d.className='toast';
+  d.style.background=t==='s'?'#0B6B4A':t==='e'?'#A31060':'#2B3BA6';
+  d.textContent=msg;$('tw').appendChild(d);
+  setTimeout(()=>d.remove(),3500);
+}
+function closeModal(id){$(id).classList.remove('open');}
+
+function switchView(v){
+  $$('.view').forEach(x=>x.classList.remove('active'));
+  $$('.ni').forEach(x=>x.classList.remove('active'));
+  $('view-'+v).classList.add('active');
+  $$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));
+  renderView(v);
+}
+$$('.ni[data-v]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+
+// Populate route dropdown
+function populateRouteDropdown(targetId){
+  var sel=$(targetId||'s_route');
+  if(!sel)return;
+  while(sel.options.length>1)sel.remove(1);
+  // Add "No bus" option
+  if(!sel.options[0]||sel.options[0].value!==''){
+    var none=document.createElement('option');
+    none.value='';none.textContent='— No bus route —';
+    sel.insertBefore(none,sel.options[0]);
+  }
+  (db.routes||[]).forEach(function(r){
+    var o=document.createElement('option');
+    o.value=r.id;o.textContent=r.name+' ('+r.driver+')';
+    sel.appendChild(o);
+  });
+}
+
+// Fee preview
+$('s_route').addEventListener('change',updateFeePreview);
+$('s_board').addEventListener('change',updateFeePreview);
+function updateFeePreview(){
+  var hasRoute=$('s_route').value!=='';
+  var boarding=$('s_board').value==='1';
+  var term=24500,activity=1800;
+  var transport=hasRoute?2800:0;
+  var hostel=boarding?3500:0;
+  var total=term+activity+transport+hostel;
+  $('fee_preview').innerHTML='<strong>Fee breakdown:</strong> Term ₹'+term.toLocaleString('en-IN')
+    +(transport?' + Transport ₹'+transport.toLocaleString('en-IN'):'')
+    +(hostel?' + Hostel/Mess ₹'+hostel.toLocaleString('en-IN'):'')
+    +' + Activity ₹'+activity.toLocaleString('en-IN')
+    +' = <strong>₹'+total.toLocaleString('en-IN')+'/term</strong>';
+}
+
+function openNewStudent(){
+  _editing=null;
+  $('stu_modal_ttl').textContent='Enrol New Student';
+  ['s_name','s_dob','s_adm','s_pname','s_pphone','s_hobbies','s_health','s_behav'].forEach(id=>{var el=$(id);if(el)el.value='';});
+  populateRouteDropdown();
+  updateFeePreview();
+  $('ovStudent').classList.add('open');
+}
+
+function saveStudent(){
+  var name=($('s_name')||{}).value.trim();
+  if(!name){toast('Enter the student name','e');return;}
+  var id = _editing || SHAPE_DB.genId('S');
+  var routeId=($('s_route')||{}).value||'';
+  var boarding=($('s_board')||{}).value==='1';
+  var transport=routeId?2800:0;
+  var hostel=boarding?3500:0;
+  var stu={
+    id:id,name:name,
+    dob:($('s_dob')||{}).value||'',
+    cls:($('s_cls')||{}).value||'Grade 6',
+    section:($('s_sec')||{}).value||'A',
+    adm:($('s_adm')||{}).value||new Date().toISOString().slice(0,10),
+    parentName:($('s_pname')||{}).value||'',
+    parentPhone:($('s_pphone')||{}).value||'',
+    busRoute:routeId, boarding:boarding,
+    learningStyle:($('s_style')||{}).value||'Visual',
+    diet:($('s_diet')||{}).value||'Vegetarian',
+    hobbies:($('s_hobbies')||{}).value||'',
+    health:($('s_health')||{}).value||'None',
+    needs:($('s_health')||{}).value||'None',
+    behav:($('s_behav')||{}).value||'',
+    expPref:'General classroom',
+    langs:'Malayalam, English',siblings:0,
+    parentOcc:'',travel:routeId?'Bus':'Own transport',
+    fees:{term:24500,transport:transport,hostel:hostel,activity:1800},
+    status:'Active'
+  };
+  if(_editing){
+    var idx=db.students.findIndex(s=>s.id===_editing);
+    if(idx>-1)db.students[idx]=stu;
+  } else {
+    db.students.push(stu);
+  }
+  // Auto-create annual fee billing record in Finance
+  if(!_editing){
+    var totalFee=stu.fees.term+stu.fees.transport+stu.fees.hostel+stu.fees.activity;
+    var billId='BILL-'+id.slice(-4);
+    db.payments.push({
+      id:billId,studentId:id,category:'Term Fee',
+      amount:0,due:totalFee,
+      date:stu.adm,mode:'Pending',ref:'Auto-billed on enrolment',
+      status:'Pending'
+    });
+  }
+  SHAPE_DB.audit(db,'Student enrolled',name+' · '+stu.cls);
+  SHAPE_DB.save(db);
+  closeModal('ovStudent');
+  var flowMsg='Profile saved';
+  if(routeId) flowMsg+=' · Added to '+SHAPE_DB.getRouteName(db,routeId);
+  if(boarding) flowMsg+=' · Hostel bed reserved';
+  flowMsg+=' · Fee record created in Finance';
+  toast(flowMsg,'s');
+  renderView('students');
+}
+
+function exportStudents(){
+  var csv='ID,Name,Class,Section,Bus Route,Boarding,Learning Style,Diet,Parent,Phone\n';
+  csv+=db.students.map(s=>[s.id,s.name,s.cls,s.section,
+    SHAPE_DB.getRouteName(db,s.busRoute)||'—',
+    s.boarding?'Yes':'No',s.learningStyle,s.diet,s.parentName,s.parentPhone
+  ].map(v=>'"'+v+'"').join(',')).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='students_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  toast('Exported '+db.students.length+' students','s');
+}
+
+function openDetail(id){
+  var s=SHAPE_DB.getStudent(db,id);
+  if(!s)return;
+  $('det_name').textContent=s.name;
+  $('det_sub').textContent=s.cls+' '+s.section+' · Admitted '+s.adm;
+  $('det_share').dataset.id=id;
+  var route=s.busRoute?SHAPE_DB.getRoute(db,s.busRoute):null;
+  var pyms=SHAPE_DB.getStudentPayments(db,id);
+  var bks=db.books.filter(b=>b.issuedTo===id);
+  $('det_body').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;">
+      ${[['Learning Style',s.learningStyle],['Diet',s.diet],['Travel',s.travel||'Bus'],
+         ['Health',s.health||'None'],['Special Needs',s.needs||'None'],['Parent',s.parentName+' '+s.parentPhone]
+        ].map(([l,v])=>`<div style="background:var(--s2);padding:10px;border-radius:var(--r2);"><div style="font-size:10px;color:var(--ink5);font-weight:700;text-transform:uppercase;margin-bottom:3px;">${l}</div><div style="font-size:13px;font-weight:600;color:var(--ink2);">${v}</div></div>`).join('')}
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Connected Services</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="border:1.5px solid ${s.busRoute?'var(--indigo-m)':'var(--s4)'};border-radius:var(--r2);padding:12px;">
+        <div style="font-size:11px;color:var(--ink5);margin-bottom:4px;">🚌 Transport</div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--ink2);">${route?route.name:'Not enrolled'}</div>
+        ${route?`<div style="font-size:11px;color:var(--ink4);">${route.driver} · ${route.phone}</div>`:''}
+      </div>
+      <div style="border:1.5px solid ${s.boarding?'var(--indigo-m)':'var(--s4)'};border-radius:var(--r2);padding:12px;">
+        <div style="font-size:11px;color:var(--ink5);margin-bottom:4px;">🏠 Hostel</div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--ink2);">${s.boarding?'Boarding student':'Day scholar'}</div>
+      </div>
+      <div style="border:1.5px solid var(--s4);border-radius:var(--r2);padding:12px;">
+        <div style="font-size:11px;color:var(--ink5);margin-bottom:4px;">📚 Library</div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--ink2);">${bks.length} book${bks.length!==1?'s':''} issued</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Recent Fee Payments</div>
+    ${pyms.length?`<table style="font-size:12.5px;"><thead><tr><th>Category</th><th>Amount</th><th>Date</th><th>Mode</th></tr></thead><tbody>${pyms.slice(0,3).map(p=>`<tr><td>${p.category}</td><td style="font-weight:600;color:var(--green);">₹${p.amount.toLocaleString('en-IN')}</td><td>${p.date}</td><td>${p.mode}</td></tr>`).join('')}</tbody></table>`:'<div style="font-size:12.5px;color:var(--ink4);">No payments recorded yet.</div>'}`;
+  $('ovDetail').classList.add('open');
+}
+
+function shareProfile(){
+  var id=($('det_share')||{}).dataset.id;
+  var s=id?SHAPE_DB.getStudent(db,id):null;
+  if(s) toast('Profile for '+s.name+' shared with class teacher · They will be notified','s');
+  closeModal('ovDetail');
+}
+
+function renderView(v){
+  if(v==='students') renderStudents();
+  else if(v==='profiles') renderProfiles();
+  else if(v==='boarding') renderBoarding();
+  else if(v==='transport') renderTransportView();
+}
+
+function renderStudents(){
+  var q=(($('stu_search')||{}).value||'').toLowerCase();
+  var list=db.students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.cls.toLowerCase().includes(q));
+  var active=list.filter(s=>s.status==='Active');
+  var boarders=list.filter(s=>s.boarding);
+  var bus=list.filter(s=>s.busRoute);
+
+  $('stu_stats').innerHTML=[
+    ['Total Enrolled',db.students.length,'All classes'],
+    ['Boarding Students',boarders.length,'In hostel'],
+    ['On Bus Routes',bus.length,'Across '+db.routes.length+' routes'],
+    ['Special Needs',db.students.filter(s=>s.needs&&s.needs!=='None').length,'Support plans active']
+  ].map(([l,v,n])=>`<div class="kc"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kn">${n}</div></div>`).join('');
+
+  $('nb_stu').textContent=db.students.length;
+
+  var rows=list.map(s=>{
+    var route=s.busRoute?SHAPE_DB.getRoute(db,s.busRoute):null;
+    return `<tr>
+      <td><div class="fw">${s.name}</div><div style="font-size:11px;color:var(--ink5);">${s.parentName} · ${s.parentPhone}</div></td>
+      <td>${s.cls} ${s.section}</td>
+      <td>${route?`<span class="badge bg-i" style="font-size:10px;">${route.name.split('—')[0].trim()}</span>`:'<span style="color:var(--ink5);font-size:12px;">Own transport</span>'}</td>
+      <td>${s.boarding?'<span class="badge bg-g">Boarding</span>':'<span class="badge bg-s">Day</span>'}</td>
+      <td><span class="badge bg-i">${s.learningStyle}</span></td>
+      <td>${s.needs&&s.needs!=='None'?`<span class="badge bg-o" style="font-size:10px;">${s.needs.substring(0,18)}…</span>`:'<span style="color:var(--ink5);font-size:12px;">—</span>'}</td>
+      <td><span class="badge bg-g">${s.status}</span></td>
+      <td><button class="btn bo bsm" onclick="openDetail('${s.id}')">View</button></td>
+    </tr>`;
+  }).join('');
+  $('stu_table').innerHTML=rows||'<tr><td colspan="8" style="text-align:center;color:var(--ink5);padding:32px;">No students found</td></tr>';
+}
+
+function renderProfiles(){
+  var colors=['#A31060','#2B3BA6','#0B6B4A','#896B00','#0B5A6B','#6B2BA3'];
+  if(!db.students.length){
+    $('profiles_grid').innerHTML='<div style="text-align:center;padding:48px;color:var(--ink5);">No students enrolled yet. Enrol students from the All Students tab or the Principal Dashboard.</div>';
+    return;
+  }
+  var cards=db.students.map((s,i)=>{
+    var milestones=s.milestones||[];
+    var customFields=s.customFields||[];
+    var mHtml=milestones.length?milestones.map(m=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:10px;background:var(--tl-l);color:var(--tl);padding:2px 7px;border-radius:3px;font-weight:600;">${m.date||''}</span><span style="font-size:12px;color:var(--ink2);">${m.text}</span></div>`).join(''):'<div style="font-size:12px;color:var(--ink5);">No milestones yet</div>';
+    var cfHtml=customFields.map(f=>`<div style="background:var(--s2);padding:9px 11px;border-radius:var(--r2);"><div style="font-size:10px;font-weight:700;color:var(--ink5);margin-bottom:3px;">${f.label}</div><div style="font-size:12.5px;color:var(--ink2);">${f.value||'—'}</div></div>`).join('');
+    return `<div class="card" style="margin-bottom:14px;">
+      <div class="ch">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:${colors[i%colors.length]};color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${s.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+          <div>
+            <div class="ct">${s.name}</div>
+            <div style="font-size:12px;color:var(--ink4);">${s.cls} ${s.section||''} · Roll ${s.roll||'—'} · Admitted ${s.adm||'—'}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+          <span class="badge bg-i">${s.learningStyle||'—'}</span>
+          <span class="badge bg-s">${s.diet||'—'}</span>
+          ${s.boarding?'<span class="badge bg-g">Boarding</span>':''}
+          ${s.needs&&s.needs!=='None'?'<span class="badge bg-o">SEN</span>':''}
+          <button class="btn bp bsm" onclick="openDevProfile('${s.id}')">✎ Edit Profile</button>
+        </div>
+      </div>
+      <div class="cb">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+          ${[
+            ['Hobbies & Interests', s.hobbies||'—'],
+            ['Languages', s.langs||'Malayalam, English'],
+            ['Preferred Learning', s.expPref||'—'],
+            ['Health Notes', s.health||'None'],
+            ['Behavioural Notes', s.behav||'—'],
+            ['Parent / Guardian', s.parentName||'—']
+          ].map(([l,v])=>`<div style="background:var(--s2);padding:9px 11px;border-radius:var(--r2);"><div style="font-size:10px;font-weight:700;color:var(--ink5);margin-bottom:3px;">${l}</div><div style="font-size:12.5px;color:var(--ink2);">${v}</div></div>`).join('')}
+          ${cfHtml}
+        </div>
+        ${milestones.length||s.notes?`<div style="border-top:1px solid var(--s4);padding-top:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--ink5);margin-bottom:8px;text-transform:uppercase;letter-spacing:.6px;">Progress Milestones</div>
+          ${mHtml}
+          ${s.notes?`<div style="margin-top:8px;font-size:12px;color:var(--ink4);font-style:italic;">${s.notes}</div>`:''}
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  $('profiles_grid').innerHTML=cards;
+}
+
+function openDevProfile(stuId){
+  var s=db.students.find(x=>x.id===stuId);
+  if(!s){toast('Student not found','e');return;}
+  window._dpStuId=stuId;
+  // --- Basic info (read-only display, no re-entry needed) ---
+  var ni=$('dp_name_info');
+  if(ni) ni.innerHTML='<strong>'+s.name+'</strong> &nbsp;·&nbsp; '+s.cls+' '+(s.section||'')+' &nbsp;·&nbsp; Roll '+(s.roll||'—')+' &nbsp;·&nbsp; Admitted '+(s.adm||'—');
+  // --- Dev fields ---
+  var set=function(id,val){var el=$(id);if(el)el.value=val||'';};
+  set('dp_hobbies',   s.hobbies);
+  set('dp_langs',     s.langs||'Malayalam, English');
+  set('dp_exppref',   s.expPref);
+  set('dp_health',    s.health);
+  set('dp_behav',     s.behav);
+  set('dp_needs',     s.needs);
+  set('dp_notes',     s.notes);
+  // Transport & boarding (editable from here too)
+  populateRouteDropdown('dp_route');
+  var dr=$('dp_route'); if(dr) dr.value=s.busRoute||'';
+  var db2=$('dp_board'); if(db2) db2.value=s.boarding?'1':'0';
+  // Milestones
+  renderMilestonesList(s.milestones||[]);
+  // Custom fields
+  renderCustomFields(s.customFields||[]);
+  $('ovDevProfile').classList.add('open');
+}
+
+function renderMilestonesList(milestones){
+  var c=$('dp_milestones_list');
+  if(!c)return;
+  c.innerHTML=milestones.length?milestones.map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--s4);">
+      <input type="date" value="${m.date||''}" style="border:1px solid var(--s4);border-radius:5px;padding:4px 7px;font-size:12px;font-family:inherit;width:130px;" onchange="updateMilestone(${i},'date',this.value)">
+      <input type="text" value="${m.text||''}" placeholder="What happened / was achieved..." style="flex:1;border:1px solid var(--s4);border-radius:5px;padding:5px 8px;font-size:12.5px;font-family:inherit;" onchange="updateMilestone(${i},'text',this.value)">
+      <button onclick="removeMilestone(${i})" style="background:none;border:none;color:var(--ink5);font-size:16px;cursor:pointer;padding:0 4px;">×</button>
+    </div>`).join(''):'<div style="font-size:12.5px;color:var(--ink5);padding:8px 0;">No milestones yet. Add the first one below.</div>';
+}
+
+function renderCustomFields(fields){
+  var c=$('dp_custom_fields');
+  if(!c)return;
+  c.innerHTML=fields.map((f,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <input type="text" value="${f.label||''}" placeholder="Field name (e.g. Sport, Instrument)" style="width:160px;border:1px solid var(--s4);border-radius:5px;padding:5px 8px;font-size:12px;font-family:inherit;" onchange="updateCustomField(${i},'label',this.value)">
+      <input type="text" value="${f.value||''}" placeholder="Value" style="flex:1;border:1px solid var(--s4);border-radius:5px;padding:5px 8px;font-size:12.5px;font-family:inherit;" onchange="updateCustomField(${i},'value',this.value)">
+      <button onclick="removeCustomField(${i})" style="background:none;border:none;color:var(--ink5);font-size:16px;cursor:pointer;padding:0 4px;">×</button>
+    </div>`).join('');
+}
+
+function updateMilestone(i,key,val){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s||!s.milestones)return;
+  s.milestones[i][key]=val;
+}
+function removeMilestone(i){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s||!s.milestones)return;
+  s.milestones.splice(i,1);
+  renderMilestonesList(s.milestones);
+}
+function addMilestone(){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s)return;
+  if(!s.milestones)s.milestones=[];
+  s.milestones.push({date:new Date().toISOString().slice(0,10),text:''});
+  renderMilestonesList(s.milestones);
+}
+function updateCustomField(i,key,val){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s||!s.customFields)return;
+  s.customFields[i][key]=val;
+}
+function removeCustomField(i){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s||!s.customFields)return;
+  s.customFields.splice(i,1);
+  renderCustomFields(s.customFields);
+}
+function addCustomField(){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s)return;
+  if(!s.customFields)s.customFields=[];
+  s.customFields.push({label:'',value:''});
+  renderCustomFields(s.customFields);
+}
+function saveDevProfile(){
+  var s=db.students.find(x=>x.id===window._dpStuId);
+  if(!s){toast('Student not found','e');return;}
+  var g=function(id){var el=$(id);return el?el.value.trim():'';};
+  s.hobbies  = g('dp_hobbies');
+  s.langs    = g('dp_langs');
+  s.expPref  = g('dp_exppref');
+  s.health   = g('dp_health');
+  s.behav    = g('dp_behav');
+  s.needs    = g('dp_needs');
+  s.notes    = g('dp_notes');
+  s.busRoute = g('dp_route');
+  s.boarding = g('dp_board')==='1';
+  // Recalculate fees if transport/boarding changed
+  s.fees = s.fees||{};
+  s.fees.transport = s.busRoute ? 2800 : 0;
+  s.fees.hostel    = s.boarding ? 3500 : 0;
+  SHAPE_DB.audit(db,'Dev profile updated',s.name);
+  SHAPE_DB.save(db);
+  $('ovDevProfile').classList.remove('open');
+  toast(s.name+' — profile updated','s');
+  renderProfiles();
+}
+
+function renderBoarding(){
+  var boarders=db.students.filter(s=>s.boarding);
+  var rows=boarders.map(s=>`<tr>
+    <td class="fw">${s.name}</td><td>${s.cls} ${s.section}</td>
+    <td>${s.adm}</td>
+    <td style="font-size:12px;color:var(--ink4);">See shape_hostel.html</td>
+    <td style="color:var(--green);font-weight:600;">₹${(3500).toLocaleString('en-IN')}/mo</td>
+    <td><span class="badge bg-g">Active</span></td>
+  </tr>`).join('');
+  $('boarding_table').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:var(--ink5);padding:24px;">No boarding students</td></tr>';
+}
+
+function renderTransportView(){
+  var html='';
+  db.routes.forEach(function(r){
+    var students=SHAPE_DB.getBusStudents(db,r.id);
+    var rows=students.map(s=>`<tr><td class="fw">${s.name}</td><td>${s.cls} ${s.section}</td><td>${s.parentName}</td><td>${s.parentPhone}</td></tr>`).join('');
+    html+=`<div class="card" style="margin-bottom:14px;">
+      <div class="ch"><div class="ct">${r.name}</div><span class="badge bg-i">${students.length} students</span></div>
+      <table><thead><tr><th>Student</th><th>Class</th><th>Parent</th><th>Phone</th></tr></thead><tbody>${rows||'<tr><td colspan="4" style="color:var(--ink5);padding:12px;">No students assigned</td></tr>'}</tbody></table>
+    </div>`;
+  });
+  $('transport_routes').innerHTML=html;
+}
+
+// Init
+populateRouteDropdown();
+renderStudents();
+</script>
+
+<div class="ov" id="ovDevProfile">
+  <div class="modal lg">
+    <div class="mh">
+      <div>
+        <h3>Development Profile</h3>
+        <div id="dp_name_info" class="mh-sub" style="font-size:13px;font-weight:600;color:var(--tl);"></div>
+      </div>
+      <button class="cx" onclick="document.getElementById('ovDevProfile').classList.remove('open')">&#10005;</button>
+    </div>
+    <div class="mc">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink5);margin-bottom:10px;">Core Profile</div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Hobbies &amp; Interests</label>
+          <input type="text" id="dp_hobbies" class="fc" placeholder="e.g. Football, Drawing, Reading">
+        </div>
+        <div class="fg">
+          <label class="fl">Languages Known</label>
+          <input type="text" id="dp_langs" class="fc" placeholder="e.g. Malayalam, English, Arabic">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Preferred Learning Style</label>
+          <select id="dp_exppref" class="fc">
+            <option value="">— Select —</option>
+            <option>Visual (diagrams, charts)</option>
+            <option>Auditory (listening, discussion)</option>
+            <option>Reading / Writing</option>
+            <option>Hands-on / Kinesthetic</option>
+            <option>General classroom</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Special Educational Needs</label>
+          <input type="text" id="dp_needs" class="fc" placeholder="e.g. Dyslexia, ADHD, None">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Health &amp; Medical Notes</label>
+          <input type="text" id="dp_health" class="fc" placeholder="e.g. Asthma, Nut allergy, None">
+        </div>
+        <div class="fg">
+          <label class="fl">Behavioural Notes</label>
+          <input type="text" id="dp_behav" class="fc" placeholder="e.g. Very attentive, Needs encouragement">
+        </div>
+      </div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink5);margin:16px 0 10px;">Transport &amp; Boarding</div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Bus Route</label>
+          <select id="dp_route" class="fc"></select>
+        </div>
+        <div class="fg">
+          <label class="fl">Boarding / Hostel</label>
+          <select id="dp_board" class="fc">
+            <option value="0">Day Scholar</option>
+            <option value="1">Boarder (Hostel)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink5);">Custom Fields <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink5);font-size:11px;">— add any field relevant to this student</span></div>
+        <button class="btn bo bsm" onclick="addCustomField()">+ Add Field</button>
+      </div>
+      <div id="dp_custom_fields"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 6px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink5);">Progress Milestones</div>
+          <div style="font-size:11.5px;color:var(--ink5);margin-top:1px;">Key achievements, concerns, or moments as the student progresses through school</div>
+        </div>
+        <button class="btn bo bsm" onclick="addMilestone()">+ Add Milestone</button>
+      </div>
+      <div id="dp_milestones_list" style="margin-bottom:10px;"></div>
+      <div class="fg" style="margin-top:12px;">
+        <label class="fl">General Notes</label>
+        <textarea id="dp_notes" class="fc" rows="3" style="resize:vertical;" placeholder="Any other notes about this student visible to teachers and admin..."></textarea>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovDevProfile').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveDevProfile()">Save Profile</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

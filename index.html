@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHAPE — Arete Model School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#F5F8FA;color:#0D1117;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* TOP BAR */
+.topbar{background:#0A2540;padding:0 32px;height:56px;display:flex;align-items:center;gap:12px;}
+.tb-badge{width:32px;height:32px;border-radius:8px;background:#0B7B6B;color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center;}
+.tb-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.tb-school{font-size:12px;color:rgba(255,255,255,.35);margin-left:auto;}
+
+/* HERO STRIP */
+.hero{background:linear-gradient(135deg,#0A2540 0%,#0B3B30 100%);padding:40px 32px 44px;}
+.hero-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px;}
+.hero-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.45);line-height:1.6;}
+
+/* GRID */
+.grid-wrap{max-width:960px;margin:0 auto;padding:36px 24px 60px;}
+.section-label{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#9BAEC1;margin-bottom:16px;padding-left:2px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;}
+
+/* PORTAL CARD */
+.card{background:#fff;border:1px solid #DCE4EC;border-radius:14px;padding:22px 20px 18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0;transition:all .18s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
+.card:hover{box-shadow:0 8px 32px rgba(13,17,23,.12);transform:translateY(-3px);border-color:#8ECDB8;}
+.card-icon{font-size:26px;margin-bottom:12px;line-height:1;}
+.card-title{font-size:15px;font-weight:700;color:#0D1117;margin-bottom:4px;}
+.card-desc{font-size:12.5px;color:#6B7E94;line-height:1.55;flex:1;}
+.card-arrow{font-size:12px;color:#9BAEC1;margin-top:14px;font-weight:600;transition:color .15s;}
+.card:hover .card-arrow{color:#0B7B6B;}
+
+/* Accent colors per portal */
+.c-teal::before{background:#0B7B6B;}
+.c-blue::before{background:#1A5FB4;}
+.c-purple::before{background:#5B21B6;}
+.c-amber::before{background:#C05A00;}
+.c-navy::before{background:#0A2540;}
+.c-green::before{background:#166534;}
+.c-red::before{background:#B91C1C;}
+.c-indigo::before{background:#3730A3;}
+
+/* PRINCIPAL CARD — full width */
+.card-full{grid-column:1 / -1;flex-direction:row;align-items:center;gap:20px;padding:24px 28px;background:linear-gradient(135deg,#0A2540,#0B3B30);}
+.card-full .card-title{color:#fff;font-size:17px;}
+.card-full .card-desc{color:rgba(255,255,255,.5);}
+.card-full .card-icon{font-size:32px;margin-bottom:0;flex-shrink:0;}
+.card-full .card-arrow{color:rgba(255,255,255,.4);margin-top:0;}
+.card-full:hover{border-color:rgba(255,255,255,.15);}
+.card-full:hover .card-arrow{color:#8ECDB8;}
+.card-full::before{display:none;}
+.card-full-body{flex:1;}
+
+/* FOOTER */
+footer{border-top:1px solid #DCE4EC;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;background:#fff;}
+.footer-l{font-size:12px;color:#9BAEC1;}
+.footer-r{font-size:11px;color:#B0BEC8;}
+
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr 1fr;}
+  .topbar{padding:0 16px;}
+  .hero{padding:28px 16px 32px;}
+  .grid-wrap{padding:24px 16px 40px;}
+  .card-full{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:400px){
+  .grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-badge">S</div>
+  <span class="tb-title">SHAPE</span>
+  <span class="tb-school">Arete Model School · Nadapuram</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">School Holistic Administration &amp; Performance Environment</div>
+  <div class="hero-title">Welcome to SHAPE</div>
+  <div class="hero-sub">Select a portal below to get started. Each section manages a specific area of the school — all connected to one shared database.</div>
+</div>
+
+<div class="grid-wrap">
+
+  <div class="section-label">Administration</div>
+  <div class="grid">
+
+    <!-- Principal Dashboard — full width -->
+    <a class="card card-full" href="shape_sms_v5.html">
+      <div class="card-icon">🏛</div>
+      <div class="card-full-body">
+        <div class="card-title">Principal Dashboard</div>
+        <div class="card-desc">All 12 school modules in one place — students, staff, fees, attendance, payroll, communication, reports and more.</div>
+      </div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+    <a class="card c-teal" href="shape_admissions.html">
+      <div class="card-icon">🎓</div>
+      <div class="card-title">Admissions</div>
+      <div class="card-desc">Student register, development profiles, boarding and bus allocation.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+    <a class="card c-amber" href="shape_finance.html">
+      <div class="card-icon">₹</div>
+      <div class="card-title">Finance &amp; Payroll</div>
+      <div class="card-desc">Fee collection, salary management, budget tracking and payment receipts.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+    <a class="card c-purple" href="shape_hr.html">
+      <div class="card-icon">👥</div>
+      <div class="card-title">HR &amp; Staff</div>
+      <div class="card-desc">Recruitment pipeline, interviews, training, attendance, growth tracker and documents.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+  </div>
+
+  <div class="section-label">Campus &amp; Operations</div>
+  <div class="grid">
+
+    <a class="card c-blue" href="shape_hostel.html">
+      <div class="card-icon">🏠</div>
+      <div class="card-title">Hostel</div>
+      <div class="card-desc">Room allocation, inmate records, mess planning, outings and incident log.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+    <a class="card c-amber" href="shape_transport.html">
+      <div class="card-icon">🚌</div>
+      <div class="card-title">Transport</div>
+      <div class="card-desc">Bus routes, early departure SMS, stop tracking, maintenance and fuel log.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+    <a class="card c-green" href="shape_campus.html">
+      <div class="card-icon">🏫</div>
+      <div class="card-title">Campus</div>
+      <div class="card-desc">Complaints, events, inventory, library, visitor log and finance summary.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+  </div>
+
+  <div class="section-label">Public</div>
+  <div class="grid">
+
+    <a class="card c-indigo" href="shape_careers.html">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Careers Page</div>
+      <div class="card-desc">Public job application portal. Candidates apply here — submissions go straight to HR.</div>
+      <div class="card-arrow">Open →</div>
+    </a>
+
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-l">SHAPE · Arete Model School, Nadapuram · Built by Shaheen Digital Academy</div>
+  <div class="footer-r">Mohammed Zahal · R&amp;D Team</div>
+</footer>
+
+</body>
+</html>

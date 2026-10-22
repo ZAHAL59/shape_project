@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAPE Transport</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+  <script src="shape_db.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--ink:#06101F;--ink2:#1B2D4A;--ink3:#385273;--ink4:#5E7A99;--ink5:#8FA8C2;--surf:#FFF;--s2:#F2F7FC;--s3:#E4EEF8;--s4:#CCDAEC;--s5:#AABDD4;--acc:#C4470A;--acc-l:#FEF0E6;--green:#0A6B45;--green-l:#E8F5EF;--red:#B81515;--red-l:#FEF0F0;--amber:#9A5000;--amber-l:#FEF5E6;--r2:6px;--r3:10px;--r4:14px;--sh1:0 1px 3px rgba(6,16,31,.07);--sh2:0 4px 14px rgba(6,16,31,.09);}
+html,body{height:100%;background:var(--s2);}
+body{font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
+.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
+.sidebar{width:220px;flex-shrink:0;background:#0B2F5E;overflow-y:auto;display:flex;flex-direction:column;}
+.main{flex:1;overflow-y:auto;}
+.topbar{height:48px;background:#0B2F5E;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;}
+.tb-badge{width:30px;height:30px;border-radius:6px;background:var(--acc);display:grid;place-items:center;font-size:17px;}
+.tb-ttl{font-size:13.5px;font-weight:700;color:#fff;}
+.tb-links{margin-left:auto;display:flex;gap:5px;}
+.tb-link{font-size:10.5px;color:rgba(255,255,255,.3);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:3px;}
+.tb-link:hover{color:rgba(255,255,255,.7);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#2ECC71;box-shadow:0 0 6px #2ECC71;margin-right:4px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.sb-sec{padding:18px 14px 5px;font-size:8.5px;font-weight:700;color:rgba(255,255,255,.18);letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ni.active{background:var(--acc);color:#fff;font-weight:600;}
+.ni .ic{font-size:14px;width:18px;flex-shrink:0;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.45);}
+.ni.active .nb{background:rgba(255,255,255,.2);color:#fff;}
+.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+.page{padding:22px 26px 40px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.ph-ttl{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
+.ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
+.ph-r{display:flex;gap:8px;flex-shrink:0;}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kc{background:var(--surf);border:1px solid var(--s4);border-radius:10px;padding:15px 17px;box-shadow:var(--sh1);border-left:3px solid var(--acc);}
+.kl{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:7px;}
+.kv{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;font-family:'JetBrains Mono',monospace;}
+.kn{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+.card{background:var(--surf);border:1px solid var(--s4);border-radius:10px;overflow:hidden;box-shadow:var(--sh1);margin-bottom:14px;}
+.card:last-child{margin-bottom:0;}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--s4);background:var(--s2);flex-wrap:wrap;gap:8px;}
+.ct{font-size:13.5px;font-weight:700;color:var(--ink);}
+.cb{padding:14px 18px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1.5px solid var(--s4);background:var(--s2);}
+td{padding:11px 14px;border-bottom:1px solid var(--s4);color:var(--ink3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.fw{font-weight:700;color:var(--ink);}
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.bg-g{background:var(--green-l);color:var(--green);}
+.bg-r{background:var(--red-l);color:var(--red);}
+.bg-o{background:var(--amber-l);color:var(--amber);}
+.bg-a{background:var(--acc-l);color:var(--acc);}
+.bg-s{background:var(--s3);color:var(--ink4);}
+.btn{padding:7px 14px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--acc);color:#fff;}
+.bp:hover{background:#A83A08;transform:translateY(-1px);}
+.bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
+.bo:hover{background:var(--s2);}
+.bsm{padding:5px 10px;font-size:11.5px;}
+.flow-note{background:#EBF1FB;border:1px solid #B0B8F2;border-radius:6px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:#1249A6;}
+.sms-banner{background:var(--acc-l);border:1.5px solid #F9B07A;border-radius:8px;padding:13px 16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;}
+.stop-row{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--s4);transition:background .1s;}
+.stop-row:last-child{border-bottom:none;}
+.stop-row:hover{background:var(--s2);}
+.stop-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.ov{position:fixed;inset:0;background:rgba(6,16,31,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
+.ov.open{display:flex;}
+.modal{background:var(--surf);border-radius:14px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
+.mh{padding:18px 22px 14px;border-bottom:1px solid var(--s4);display:flex;justify-content:space-between;align-items:flex-start;}
+.mh h3{font-size:15px;font-weight:700;color:var(--ink);}
+.mh-sub{font-size:11.5px;color:var(--ink4);margin-top:2px;}
+.mc{padding:18px 22px;}
+.mf{padding:12px 22px;border-top:1px solid var(--s4);background:var(--s2);display:flex;gap:8px;justify-content:flex-end;border-radius:0 0 14px 14px;}
+.cx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--ink4);}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:6px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s;}
+.fc:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-l);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.view{display:none;}.view.active{display:block;}
+#tw{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+.toast{padding:10px 16px;border-radius:6px;font-size:13px;font-weight:600;color:#fff;box-shadow:var(--sh2);pointer-events:all;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="tb-badge">🚌</div>
+  <span class="tb-ttl">SHAPE Transport — Route &amp; Safety Management</span>
+  <div class="live-dot" style="margin-left:auto;"></div>
+  <span style="font-size:11px;color:rgba(255,255,255,.4);margin-right:8px;">Live</span>
+  <div class="tb-links">
+    <a href="shape_admissions.html" class="tb-link">← Admissions</a>
+    <a href="shape_finance.html" class="tb-link">Finance</a>
+  </div>
+
+<div style="position:relative;margin-left:8px;" id="portal-switcher">
+  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
+    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+    &#9783; All Portals &#9660;
+  </button>
+  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
+    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
+    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
+    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
+    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
+    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
+    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
+    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
+    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
+    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
+  </div>
+</div>
+<style>
+#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
+#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+</style>
+
+</div>
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-sec">Safety</div>
+  <div class="ni active" data-v="departure"><span class="ic">🚪</span>Early Departure<span class="nb" id="nb_dep">0</span></div>
+  <div class="sb-sec">Routes</div>
+  <div class="ni" data-v="routes"><span class="ic">🗺</span>Routes &amp; Drivers</div>
+  <div class="ni" data-v="stops"><span class="ic">📍</span>Stop Tracking</div>
+  <div class="ni" data-v="manifest"><span class="ic">📋</span>Daily Manifest</div>
+  <div class="sb-sec">Maintenance</div>
+  <div class="ni" data-v="maintenance"><span class="ic">🔧</span>Maintenance Log</div>
+  <div class="ni" data-v="docs"><span class="ic">📄</span>Vehicle Docs</div>
+  <div class="ni" data-v="fuel"><span class="ic">⛽</span>Fuel Log</div>
+  <div class="sb-ft">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">MZ</div>
+      <div><div style="font-size:12px;font-weight:600;color:#fff;">Muhd Zahal</div><div style="font-size:10px;color:rgba(255,255,255,.28);">Transport Coordinator</div></div>
+    </div>
+  </div>
+</aside>
+<div class="main"><div class="page">
+
+<div id="view-departure" class="view active">
+  <div class="ph">
+    <div><div class="ph-ttl">Early Student Departure</div><div class="ph-sub">Log early departures · SMS sent instantly to bus driver</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openDep()">+ Log Early Departure</button></div>
+  </div>
+  <div class="sms-banner">
+    <div style="font-size:20px;">📱</div>
+    <div><div style="font-weight:700;color:var(--acc);margin-bottom:3px;">Automatic SMS to Driver</div>
+    <div style="font-size:12.5px;color:var(--acc);opacity:.8;">When you log a departure, the driver receives an SMS: "[Name] ([Class]) has LEFT SCHOOL EARLY at [Time]. NO need to wait for them. — Arete Model School"</div></div>
+  </div>
+  <div class="kpi" id="dep_kpi"></div>
+  <div class="card"><div class="ch"><div class="ct">Departure Log</div></div>
+  <table><thead><tr><th>Student</th><th>Class</th><th>Bus Route</th><th>Driver</th><th>Driver Phone</th><th>Reason</th><th>Time</th><th>SMS</th><th>Date</th></tr></thead>
+  <tbody id="dep_table"></tbody></table></div>
+</div>
+
+<div id="view-routes" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Routes &amp; Drivers</div><div class="ph-sub">Student counts pulled from Admissions · live</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openAddRoute()">+ Add Route</button></div>
+  </div>
+  <div class="flow-note">🔗 <strong>Source: Admissions.</strong> Student count per route is calculated from bus assignments in shape_admissions.html. Transport fee is auto-billed in Finance.</div>
+  <div id="route_cards"></div>
+</div>
+
+<div id="view-stops" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Stop Tracking</div><div class="ph-sub">Morning boarding verification · auto-refreshes</div></div>
+    <div class="ph-r"><button class="btn bo bsm" id="refresh_btn" onclick="refreshStops()">↻ Refresh</button></div>
+  </div>
+  <div class="kpi" id="stop_kpi"></div>
+  <div id="stop_cards"></div>
+</div>
+
+<div id="view-manifest" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Daily Manifest</div><div class="ph-sub">All students on buses today · per route</div></div>
+    <div class="ph-r"><button class="btn bo bsm" onclick="printManifest()">🖨 Print Manifest</button></div>
+  </div>
+  <div class="flow-note">🔗 Student list pulled from shape_admissions.html. Parent phone numbers included for driver reference.</div>
+  <div id="manifest_body"></div>
+</div>
+
+<div id="view-maintenance" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Maintenance Log</div><div class="ph-sub">Service records, tyres and repairs</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openMaint()">+ Log Entry</button></div>
+  </div>
+  <div class="card"><div class="ch"><div class="ct">Maintenance History</div></div>
+  <table><thead><tr><th>Vehicle</th><th>Type</th><th>Description</th><th>Date</th><th>Cost</th><th>Next Due</th></tr></thead>
+  <tbody id="maint_table"></tbody></table></div>
+</div>
+<div id="view-docs" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Vehicle Documents</div><div class="ph-sub">Track insurance, fitness, permit and tax renewals for all buses</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="document.getElementById('ovDoc').classList.add('open')">+ Add Document</button></div>
+  </div>
+  <div class="stats" id="doc-kpi" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;"></div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Vehicle</th><th>Route</th><th>Document</th><th>Number</th><th>Issued</th><th>Expires</th><th>Days Left</th><th>Status</th></tr></thead>
+      <tbody id="doc-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="view-fuel" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Fuel Log &amp; Vehicle Expenses</div><div class="ph-sub">Track fuel consumption, mileage and running costs per vehicle</div></div>
+    <div class="ph-r">
+      <button class="btn bp" onclick="document.getElementById('ovFuel').classList.add('open')">+ Log Fuel</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;" id="fuel-kpi"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">&#9981; Fuel Consumption Register</div>
+      <select id="fuel-veh-filter" class="fc" style="width:160px;font-size:12px;padding:5px 9px;" onchange="renderFuel()">
+        <option value="">All Vehicles</option>
+        <option>KL 11 AK 1234</option><option>KL 11 BK 5678</option>
+        <option>KL 11 CK 9012</option><option>KL 11 DK 3456</option>
+      </select>
+    </div>
+    <table>
+      <thead><tr><th>Date</th><th>Vehicle</th><th>Driver</th><th>Litres</th><th>Rate/L</th><th>Amount</th><th>KM Reading</th><th>Mileage</th><th>Station</th></tr></thead>
+      <tbody id="fuel-body"></tbody>
+    </table>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div class="card" style="margin:0;">
+      <div class="ch"><div class="ct">Monthly Cost Summary</div></div>
+      <div id="fuel-monthly" style="padding:14px 18px;"></div>
+    </div>
+    <div class="card" style="margin:0;">
+      <div class="ch"><div class="ct">&#128205; GPS Tracker Status</div><span class="badge bg-o">Integration Pending</span></div>
+      <div style="padding:18px;">
+        <div class="flow-note" style="margin:0;">
+          <strong>&#9432; GPS Integration:</strong> Connect live vehicle tracking via GPS API. Currently showing last known positions. Contact IT to activate real-time tracking module.
+        </div>
+        <div style="margin-top:14px;">
+          <div id="gps-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div></div></div>
+
+<!-- Early Departure Modal -->
+<div class="ov" id="ovDep">
+  <div class="modal">
+    <div class="mh"><div><h3>Log Early Departure</h3><div class="mh-sub">Driver will be notified to skip this student's stop today</div></div><button class="cx" onclick="closeOv('ovDep')">×</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Student <span style="color:var(--red);">*</span></label><select class="fc" id="dp_stu" onchange="updateDriverInfo()"></select></div>
+      <div style="background:var(--s2);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--ink3);margin-bottom:12px;" id="dp_driver_info">Select a student to see driver details</div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Departure Time</label><input type="time" class="fc" id="dp_time" value="14:30"></div>
+        <div class="fg"><label class="fl">Reason</label><select class="fc" id="dp_reason"><option>Medical appointment</option><option>Family emergency</option><option>School event (early)</option><option>Other</option></select></div>
+      </div>
+      <div style="background:var(--acc-l);border:1px solid #F9B07A;border-radius:6px;padding:11px;font-size:12.5px;color:var(--acc);" id="sms_preview">
+        📱 SMS preview will appear when you select a student
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovDep')">Cancel</button><button class="btn bp" onclick="logDeparture()">Log &amp; Send SMS</button></div>
+  </div>
+</div>
+
+<!-- Add Route Modal -->
+<div class="ov" id="ovRoute">
+  <div class="modal">
+    <div class="mh"><div><h3>Add New Route</h3><div class="mh-sub">Students assigned to this route in Admissions will appear here automatically</div></div><button class="cx" onclick="closeOv('ovRoute')">×</button></div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Route Name</label><input class="fc" id="rt_name" placeholder="e.g. Route 5 — Malabar Road"></div>
+        <div class="fg"><label class="fl">Vehicle Number</label><input class="fc" id="rt_veh" placeholder="KL 11 XX 0000"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Vehicle Type</label><select class="fc" id="rt_type"><option>Bus (52 seats)</option><option>Van (15 seats)</option><option>Mini Bus (25 seats)</option></select></div>
+        <div class="fg"><label class="fl">Driver Name</label><input class="fc" id="rt_driver" placeholder="Full name"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Driver Phone</label><input class="fc" id="rt_phone" placeholder="+91 9447…"></div>
+        <div class="fg"><label class="fl">Departure Time</label><input type="time" class="fc" id="rt_dept" value="07:10"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovRoute')">Cancel</button><button class="btn bp" onclick="addRoute()">Add Route</button></div>
+  </div>
+</div>
+
+<!-- Maintenance Modal -->
+<div class="ov" id="ovMaint">
+  <div class="modal">
+    <div class="mh"><div><h3>Log Maintenance</h3><div class="mh-sub">Record service, repair or inspection</div></div><button class="cx" onclick="closeOv('ovMaint')">×</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Vehicle</label><select class="fc" id="mt_veh"></select></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Type</label><select class="fc" id="mt_type"><option>Routine Service</option><option>Tyre Replacement</option><option>Breakdown Repair</option><option>AC Service</option><option>Inspection</option></select></div>
+        <div class="fg"><label class="fl">Cost (₹)</label><input type="number" class="fc" id="mt_cost"></div>
+      </div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fc" id="mt_desc" rows="2"></textarea></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Date</label><input type="date" class="fc" id="mt_date"></div>
+        <div class="fg"><label class="fl">Next Due</label><input type="date" class="fc" id="mt_next"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovMaint')">Cancel</button><button class="btn bp" onclick="saveFuel()">Save Entry</button></div></div></div>
+
+<script>
+var VDOCS=[
+  {vehicle:'KL 11 AK 1234',route:'Route 1 - KL Bus',type:'Insurance',num:'INS-2026-0001',issued:'2026-01-01',expiry:'2027-01-01'},
+  {vehicle:'KL 11 AK 1234',route:'Route 1 - KL Bus',type:'Fitness Certificate',num:'FC-KL-2026-001',issued:'2026-04-01',expiry:'2027-04-01'},
+  {vehicle:'KL 11 BK 5678',route:'Route 2 - Koyilandy',type:'Insurance',num:'INS-2026-0002',issued:'2026-02-15',expiry:'2026-11-15'},
+  {vehicle:'KL 11 BK 5678',route:'Route 2 - Koyilandy',type:'Permit',num:'PRM-KL-5678',issued:'2025-06-01',expiry:'2026-12-01'},
+  {vehicle:'KL 11 CK 9012',route:'Route 3 - Vatakara',type:'Insurance',num:'INS-2026-0003',issued:'2026-03-01',expiry:'2027-03-01'},
+  {vehicle:'KL 11 CK 9012',route:'Route 3 - Vatakara',type:'Pollution Certificate',num:'PUC-2026-1234',issued:'2026-09-01',expiry:'2026-12-01'},
+  {vehicle:'KL 11 DK 3456',route:'Route 4 - Peringathur',type:'Insurance',num:'INS-2026-0004',issued:'2026-01-15',expiry:'2026-12-15'},
+  {vehicle:'KL 11 DK 3456',route:'Route 4 - Peringathur',type:'Road Tax',num:'RT-KL-2026-3456',issued:'2026-04-01',expiry:'2027-03-31'},
+];
+
+function renderDocs(){
+  var today=new Date();
+  var expired=VDOCS.filter(function(d){return new Date(d.expiry)<today;}).length;
+  var expiring30=VDOCS.filter(function(d){var diff=(new Date(d.expiry)-today)/86400000;return diff>=0&&diff<=30;}).length;
+  var ok=VDOCS.filter(function(d){return (new Date(d.expiry)-today)/86400000>30;}).length;
+  var kpi=document.getElementById('doc-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Documents',v:VDOCS.length,n:db.routes.length+' vehicles'},
+    {l:'Valid',v:ok,n:'More than 30 days',c:'var(--teal)'},
+    {l:'Expiring Soon',v:expiring30,n:'Within 30 days',c:'var(--amber)'},
+    {l:'Expired',v:expired,n:'Immediate renewal needed',c:'var(--red)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';font-size:20px;':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var body=document.getElementById('doc-body');
+  if(!body)return;
+  body.innerHTML=VDOCS.map(function(d){
+    var diff=Math.round((new Date(d.expiry)-today)/86400000);
+    var sc2=diff<0?'var(--red)':diff<=30?'var(--amber)':'var(--teal)';
+    var badge=diff<0?'Expired':diff<=30?'Expiring Soon':'Valid';
+    var daysLeft=diff<0?'Expired '+Math.abs(diff)+'d ago':diff+' days';
+    return '<tr><td class="fw" style="font-family:monospace;font-size:12px;">'+d.vehicle+'</td>'
+      +'<td style="font-size:12px;color:var(--ink4);">'+d.route+'</td>'
+      +'<td>'+d.type+'</td>'
+      +'<td style="font-family:monospace;font-size:11px;">'+d.num+'</td>'
+      +'<td>'+d.issued+'</td>'
+      +'<td style="font-weight:600;">'+d.expiry+'</td>'
+      +'<td style="font-family:monospace;color:'+sc2+';font-weight:700;">'+daysLeft+'</td>'
+      +'<td><span class="badge" style="background:'+sc2+'18;color:'+sc2+';">'+badge+'</span></td></tr>';
+  }).join('');
+}
+
+function saveDoc(){
+  var vehicle=(document.getElementById('doc_vehicle')||{}).value||'';
+  var expiry=(document.getElementById('doc_expiry')||{}).value||'';
+  if(!vehicle||!expiry){toast('Enter vehicle and expiry date','e');return;}
+  VDOCS.unshift({
+    vehicle:vehicle,route:'—',
+    type:(document.getElementById('doc_type')||{}).value||'Insurance',
+    num:(document.getElementById('doc_num')||{}).value||'—',
+    issued:(document.getElementById('doc_issued')||{}).value||'—',
+    expiry:expiry
+  });
+  document.getElementById('ovDoc').classList.remove('open');
+  toast('Document saved for '+vehicle,'s');
+  renderDocs();
+}
+
+'use strict';
+var db=SHAPE_DB.load();
+var $=id=>document.getElementById(id), $$=s=>document.querySelectorAll(s);
+function toast(m,t){var d=document.createElement('div');d.className='toast';d.style.background=t==='s'?'var(--green)':t==='e'?'var(--red)':'var(--acc)';d.textContent=m;$('tw').appendChild(d);setTimeout(()=>d.remove(),3500);}
+function closeOv(id){$(id).classList.remove('open');}
+function switchView(v){$$('.view').forEach(x=>x.classList.remove('active'));$$('.ni').forEach(x=>x.classList.remove('active'));$('view-'+v).classList.add('active');$$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));renderView(v);}
+$$('.ni[data-v]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+
+function getBusStudents(routeId){return db.students.filter(s=>s.busRoute===routeId&&s.status==='Active');}
+
+// Early departure modal
+function openDep(){
+  var sel=$('dp_stu');
+  var busStudents=db.students.filter(s=>s.busRoute);
+  sel.innerHTML=busStudents.map(s=>`<option value="${s.id}">${s.name} — ${s.cls} ${s.section}</option>`).join('');
+  if(!sel.options.length){toast('No students have bus routes assigned. Assign routes in shape_admissions.html','e');return;}
+  updateDriverInfo();
+  $('ovDep').classList.add('open');
+}
+
+function updateDriverInfo(){
+  var stuId=($('dp_stu')||{}).value;
+  var stu=SHAPE_DB.getStudent(db,stuId);
+  if(!stu){return;}
+  var route=SHAPE_DB.getRoute(db,stu.busRoute);
+  if(route){
+    var driverName=route.driver||'Driver';
+    $('dp_driver_info').innerHTML='<strong>Driver:</strong> '+driverName+' · '+route.phone+' · '+route.name;
+    var time=($('dp_time')||{}).value||'14:30';
+    $('sms_preview').innerHTML='📱 <strong>SMS to driver '+driverName+'</strong>:<br>'+'"'+stu.name+' ('+stu.cls+') has LEFT SCHOOL EARLY at <strong>'+time+'</strong>. NO need to wait for them. — Arete Model School"';
+  }
+}
+($('dp_stu')&&$('dp_stu').addEventListener('change',updateDriverInfo));
+($('dp_time')&&$('dp_time').addEventListener('change',updateDriverInfo));
+
+function logDeparture(){
+  var stuId=($('dp_stu')||{}).value;
+  var stu=SHAPE_DB.getStudent(db,stuId);
+  if(!stu){toast('Select a student','e');return;}
+  var time=($('dp_time')||{}).value||'14:30';
+  var reason=($('dp_reason')||{}).value||'Other';
+  db.departures.unshift({id:SHAPE_DB.genId('DEP'),studentId:stuId,reason:reason,time:time,date:new Date().toISOString().slice(0,10),smsSent:true});
+  SHAPE_DB.audit(db,'Early departure logged',stu.name+' at '+time+' · '+reason);
+  SHAPE_DB.save(db);
+  closeOv('ovDep');
+  var route=SHAPE_DB.getRoute(db,stu.busRoute);
+  toast('✅ Early departure logged · SMS sent to '+(route?route.driver:'driver')+' — driver notified','s');
+  renderDepartures();
+}
+
+function addRoute(){
+  var name=($('rt_name')||{}).value.trim();
+  var driver=($('rt_driver')||{}).value.trim();
+  if(!name||!driver){toast('Route name and driver required','e');return;}
+  var id=SHAPE_DB.genId('R');
+  db.routes.push({id:id,name:name,vehicle:($('rt_veh')||{}).value||'TBC',type:($('rt_type')||{}).value,driver:driver,phone:($('rt_phone')||{}).value||'—',dept:($('rt_dept')||{}).value||'07:10',arr:'08:00',status:'Active'});
+  SHAPE_DB.save(db);
+  closeOv('ovRoute');
+  toast('Route added — '+name+' · Students can now be assigned in Admissions','s');
+  renderRoutes();
+}
+
+function openAddRoute(){$('ovRoute').classList.add('open');}
+
+function openMaint(){
+  var sel=$('mt_veh');
+  sel.innerHTML=db.routes.map(r=>`<option>${r.vehicle} (${r.name})</option>`).join('');
+  $('mt_date').value=new Date().toISOString().slice(0,10);
+  $('ovMaint').classList.add('open');
+}
+
+function saveMaint(){
+  var desc=($('mt_desc')||{}).value.trim();
+  if(!desc){toast('Enter a description','e');return;}
+  var cost=parseInt(($('mt_cost')||{}).value||0);
+  if(!db.maintenanceLog) db.maintenanceLog=[];
+  db.maintenanceLog.unshift({vehicle:($('mt_veh')||{}).value,type:($('mt_type')||{}).value,desc:desc,date:($('mt_date')||{}).value,cost:cost,next:($('mt_next')||{}).value||'—',status:'Done'});
+  SHAPE_DB.save(db);
+  closeOv('ovMaint');
+  toast('Maintenance entry saved','s');
+  renderMaint();
+}
+
+function refreshStops(){
+  var btn=$('refresh_btn');
+  if(btn){btn.textContent='Refreshing…';btn.disabled=true;}
+  setTimeout(()=>{
+    if(btn){btn.textContent='↻ Refresh';btn.disabled=false;}
+    toast('Stop data refreshed · '+new Date().toLocaleTimeString('en-IN'),'s');
+    renderStops();
+  },1200);
+}
+
+function printManifest(){
+  window.print();
+}
+
+function renderView(v){
+  if(v==='fuel') renderFuel();
+  if(v==='docs') renderDocs();
+  if(v==='departure') renderDepartures();
+  else if(v==='routes') renderRoutes();
+  else if(v==='stops') renderStops();
+  else if(v==='manifest') renderManifest();
+  else if(v==='maintenance') renderMaint();
+}
+
+function renderDepartures(){
+  var today=new Date().toISOString().slice(0,10);
+  var todayDeps=db.departures.filter(d=>d.date===today);
+  $('nb_dep').textContent=todayDeps.length;
+  $('dep_kpi').innerHTML=[
+    ['Today',todayDeps.length,'Early departures'],
+    ['This Week',db.departures.filter(d=>{var dd=new Date(d.date);var now=new Date();return (now-dd)<7*86400000;}).length,'Departures'],
+    ['SMS Delivery','100%','All notified'],
+    ['Most Common','Medical','This month']
+  ].map(([l,v,n])=>`<div class="kc"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kn">${n}</div></div>`).join('');
+
+  var rows=db.departures.map(d=>{
+    var s=SHAPE_DB.getStudent(db,d.studentId)||{name:'—',cls:'—',section:''};
+    var route=s.busRoute?SHAPE_DB.getRoute(db,s.busRoute):null;
+    return `<tr>
+      <td class="fw">${s.name}</td><td>${s.cls} ${s.section}</td>
+      <td style="font-size:12px;">${route?route.name:'—'}</td>
+      <td>${route?route.driver:'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${route?route.phone:'—'}</td>
+      <td>${d.reason}</td>
+      <td style="font-weight:700;">${d.time}</td>
+      <td><span class="badge bg-g">📱 Sent</span></td>
+      <td>${d.date}</td>
+    </tr>`;
+  }).join('');
+  $('dep_table').innerHTML=rows||'<tr><td colspan="9" style="text-align:center;color:var(--ink5);padding:32px;">No departures logged today</td></tr>';
+}
+
+function renderRoutes(){
+  var html=db.routes.map(r=>{
+    var students=getBusStudents(r.id);
+    return `<div class="card" style="margin-bottom:12px;">
+      <div class="ch"><div><div class="ct">${r.name}</div><div style="font-size:11.5px;color:var(--ink4);margin-top:2px;">${r.vehicle} · ${r.type}</div></div><span class="badge bg-g">${r.status}</span></div>
+      <div class="cb" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;align-items:center;">
+        <div><div style="font-size:10.5px;color:var(--ink5);margin-bottom:3px;">Driver</div><div class="fw">${r.driver}</div><div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--ink5);">${r.phone}</div></div>
+        <div><div style="font-size:10.5px;color:var(--ink5);margin-bottom:3px;">Students</div><div class="kv" style="font-size:22px;">${students.length}</div></div>
+        <div><div style="font-size:10.5px;color:var(--ink5);margin-bottom:3px;">Departure</div><div class="fw" style="font-size:15px;">${r.dept}</div></div>
+        <div><div style="font-size:10.5px;color:var(--ink5);margin-bottom:3px;">Arrives School</div><div style="font-size:15px;font-weight:700;color:var(--green);">${r.arr}</div></div>
+        <div><button class="btn bo bsm" onclick="switchView('manifest')">View Manifest →</button></div>
+      </div>
+    </div>`;
+  }).join('');
+  $('route_cards').innerHTML=html||'<div class="card"><div class="cb" style="text-align:center;color:var(--ink5);padding:32px;">No routes yet</div></div>';
+}
+
+function renderStops(){
+  var total=db.students.filter(s=>s.busRoute).length;
+  var issues=0;
+  $('stop_kpi').innerHTML=[
+    ['Students on Buses',total,'Across '+db.routes.length+' routes'],
+    ['Stops Monitored',db.routes.length*4,'Estimated'],
+    ['Confirmed Boarded',total-issues,'This morning'],
+    ['Discrepancies',issues,'Requires attention']
+  ].map(([l,v,n])=>`<div class="kc"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kn">${n}</div></div>`).join('');
+
+  var html=db.routes.map(r=>{
+    var students=getBusStudents(r.id);
+    var stopRows=students.map(s=>`
+      <div class="stop-row">
+        <div class="stop-dot" style="background:var(--green);"></div>
+        <div style="flex:1;"><div class="fw" style="font-size:13px;">${s.name}</div><div style="font-size:11.5px;color:var(--ink4);">${s.cls} ${s.section} · Parent: ${s.parentPhone}</div></div>
+        <span class="badge bg-g">✓ Boarded</span>
+      </div>`).join('');
+    return `<div class="card" style="margin-bottom:14px;">
+      <div class="ch"><div class="ct">${r.name}</div><span class="badge bg-g">✓ All clear</span></div>
+      ${stopRows||'<div style="padding:16px 18px;color:var(--ink5);font-size:13px;">No students assigned to this route yet</div>'}
+    </div>`;
+  }).join('');
+  $('stop_cards').innerHTML=html;
+}
+
+function renderManifest(){
+  var html=db.routes.map(r=>{
+    var students=getBusStudents(r.id);
+    var rows=students.map((s,i)=>`<tr><td>${i+1}</td><td>${s.name}</td><td>${s.cls} ${s.section}</td><td>${s.parentName}</td><td style="font-family:monospace;">${s.parentPhone}</td></tr>`).join('');
+    return `<div class="card" style="margin-bottom:14px;">
+      <div class="ch"><div class="ct">${r.name}</div><div style="font-size:12px;color:var(--ink4);">Driver: ${r.driver} · ${r.phone} · Dept: ${r.dept}</div></div>
+      <table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Parent</th><th>Parent Phone</th></tr></thead><tbody>${rows||'<tr><td colspan="5" style="color:var(--ink5);">No students</td></tr>'}</tbody></table>
+    </div>`;
+  }).join('');
+  $('manifest_body').innerHTML=html;
+}
+
+function renderMaint(){
+  var log=(db.maintenanceLog||[]).concat([
+    {vehicle:'KL 11 AB 1234',type:'Routine Service',desc:'Oil change, brake check',date:'2026-10-05',cost:4200,next:'2027-01-05',status:'Done'},
+    {vehicle:'KL 11 GH 3456',type:'Tyre Replacement',desc:'2 rear tyres replaced',date:'2026-09-28',cost:12800,next:'2027-09-28',status:'Done'},
+  ]);
+  var rows=log.map(m=>`<tr>
+    <td class="fw">${m.vehicle}</td>
+    <td><span class="badge bg-s">${m.type}</span></td>
+    <td style="font-size:12.5px;">${m.desc}</td>
+    <td>${m.date}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-weight:700;">${m.cost?'₹'+m.cost.toLocaleString('en-IN'):'—'}</td>
+    <td>${m.next||'—'}</td>
+  </tr>`).join('');
+  $('maint_table').innerHTML=rows;
+}
+
+renderDepartures();
+
+var FUEL_LOG=[
+  {date:'2026-10-14',vehicle:'KL 11 AK 1234',driver:'Rajan M.',litres:45,rate:96,amount:4320,km:24560,mileage:8.2,station:'Indian Oil, Nadapuram'},
+  {date:'2026-10-14',vehicle:'KL 11 BK 5678',driver:'Suresh P.',litres:50,rate:96,amount:4800,km:18230,mileage:7.8,station:'HP Petrol, Koyilandy'},
+  {date:'2026-10-12',vehicle:'KL 11 CK 9012',driver:'Anil K.',litres:42,rate:96,amount:4032,km:31450,mileage:8.5,station:'Indian Oil, Vatakara'},
+  {date:'2026-10-10',vehicle:'KL 11 AK 1234',driver:'Rajan M.',litres:48,rate:95,amount:4560,km:24180,mileage:8.1,station:'Indian Oil, Nadapuram'},
+  {date:'2026-10-08',vehicle:'KL 11 DK 3456',driver:'Binu T.',litres:38,rate:95,amount:3610,km:12780,mileage:9.2,station:'BPCL, Peringathur'},
+];
+
+function saveFuel(){
+  var veh=(document.getElementById('fl_veh')||{}).value||'';
+  var litres=parseFloat((document.getElementById('fl_litres')||{}).value||0);
+  var rate=parseFloat((document.getElementById('fl_rate')||{}).value||0);
+  if(!veh||!litres||!rate){toast('Fill all required fields','e');return;}
+  var km=parseInt((document.getElementById('fl_km')||{}).value||0);
+  var lastEntry=FUEL_LOG.filter(function(f){return f.vehicle===veh;}).sort(function(a,b){return b.km-a.km;})[0];
+  var mileage=lastEntry&&km>lastEntry.km?Math.round((km-lastEntry.km)/litres*10)/10:0;
+  FUEL_LOG.unshift({
+    date:(document.getElementById('fl_date')||{}).value||new Date().toISOString().slice(0,10),
+    vehicle:veh,
+    driver:(document.getElementById('fl_driver')||{}).value||'—',
+    litres:litres,rate:rate,amount:Math.round(litres*rate),
+    km:km,mileage:mileage,
+    station:(document.getElementById('fl_station')||{}).value||'—'
+  });
+  document.getElementById('ovFuel').classList.remove('open');
+  toast('Fuel entry saved — \u20b9'+Math.round(litres*rate).toLocaleString('en-IN'),'s');
+  renderFuel();
+}
+
+function renderFuel(){
+  var vFilter=(document.getElementById('fuel-veh-filter')||{}).value||'';
+  var list=vFilter?FUEL_LOG.filter(function(f){return f.vehicle===vFilter;}):FUEL_LOG;
+  var totalAmt=list.reduce(function(a,f){return a+f.amount;},0);
+  var totalLit=list.reduce(function(a,f){return a+f.litres;},0);
+  var avgMileage=list.filter(function(f){return f.mileage>0;});
+  var avgM=avgMileage.length?Math.round(avgMileage.reduce(function(a,f){return a+f.mileage;},0)/avgMileage.length*10)/10:0;
+  var kpi=document.getElementById('fuel-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Fuel Cost',v:'\u20b9'+totalAmt.toLocaleString('en-IN'),n:'This period'},
+    {l:'Total Litres',v:totalLit+'L',n:'Across all vehicles'},
+    {l:'Avg Mileage',v:avgM+' km/L',n:'Fleet average'},
+    {l:'Cost/KM',v:'\u20b9'+(avgM>0?Math.round(96/avgM*10)/10:'—'),n:'Approx per km'},
+  ].map(function(s){return '<div style="background:#fff;border:1px solid var(--bdr);border-radius:10px;padding:15px 17px;">'
+    +'<div style="font-size:10.5px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">'+s.l+'</div>'
+    +'<div style="font-size:22px;font-weight:800;color:var(--ink);">'+s.v+'</div>'
+    +'<div style="font-size:11.5px;color:var(--ink4);margin-top:3px;">'+s.n+'</div></div>';}).join('');
+  var body=document.getElementById('fuel-body');
+  if(body)body.innerHTML=list.map(function(f){
+    return '<tr><td>'+f.date+'</td>'
+      +'<td style="font-family:monospace;font-size:12px;">'+f.vehicle+'</td>'
+      +'<td>'+f.driver+'</td>'
+      +'<td style="font-weight:700;">'+f.litres+'L</td>'
+      +'<td>\u20b9'+f.rate+'</td>'
+      +'<td style="font-weight:700;color:var(--acc);">\u20b9'+f.amount.toLocaleString('en-IN')+'</td>'
+      +'<td style="font-family:monospace;">'+f.km+'</td>'
+      +'<td style="color:'+(f.mileage>=8?'var(--green)':'var(--red)')+';">'+f.mileage+' km/L</td>'
+      +'<td style="font-size:12px;color:var(--ink4);">'+f.station+'</td></tr>';
+  }).join('')||'<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--ink4);">No fuel entries</td></tr>';
+  
+  // GPS placeholder
+  var gps=document.getElementById('gps-list');
+  if(gps)gps.innerHTML=['KL 11 AK 1234','KL 11 BK 5678','KL 11 CK 9012','KL 11 DK 3456'].map(function(v,i){
+    var statuses=['En Route','At School','En Route','Parked'];
+    var times=['7:42 AM','8:15 AM','7:58 AM','—'];
+    var col=statuses[i]==='En Route'?'var(--acc)':statuses[i]==='At School'?'var(--green)':'var(--ink4)';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bdr);">'
+      +'<div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0;"></div>'
+      +'<div style="flex:1;font-size:13px;font-family:monospace;">'+v+'</div>'
+      +'<div style="font-size:12px;color:'+col+';font-weight:600;">'+statuses[i]+'</div>'
+      +'<div style="font-size:11px;color:var(--ink4);">'+times[i]+'</div>'
+      +'</div>';
+  }).join('');
+  
+  // Monthly summary
+  var monthly=document.getElementById('fuel-monthly');
+  if(monthly){
+    var now=new Date();
+    var thisMonth=FUEL_LOG.filter(function(f){return new Date(f.date).getMonth()===now.getMonth();});
+    var mTotal=thisMonth.reduce(function(a,f){return a+f.amount;},0);
+    var mLit=thisMonth.reduce(function(a,f){return a+f.litres;},0);
+    monthly.innerHTML='<div style="font-size:28px;font-weight:800;color:var(--acc);">\u20b9'+mTotal.toLocaleString('en-IN')+'</div>'
+      +'<div style="font-size:12px;color:var(--ink4);margin-bottom:16px;">Total fuel cost this month &middot; '+mLit+'L consumed</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+      +['KL 11 AK 1234','KL 11 BK 5678','KL 11 CK 9012','KL 11 DK 3456'].map(function(v){
+        var vAmt=thisMonth.filter(function(f){return f.vehicle===v;}).reduce(function(a,f){return a+f.amount;},0);
+        return '<div style="background:var(--s2);border-radius:7px;padding:9px 12px;">'
+          +'<div style="font-size:11.5px;font-weight:700;color:var(--ink2);font-family:monospace;">'+v.slice(-8)+'</div>'
+          +'<div style="font-size:16px;font-weight:800;color:var(--ink);">\u20b9'+vAmt.toLocaleString('en-IN')+'</div>'
+          +'</div>';
+      }).join('')+'</div>';
+  }
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAPE HR — Staff Development Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0D1117;--ink2:#1C2430;--ink3:#3D4F63;--ink4:#6B7E94;--ink5:#9BAEC1;--ink6:#C8D5E0;
+  --surf:#FFFFFF;--s2:#F5F8FA;--s3:#EBF0F5;--s4:#DCE4EC;--s5:#C0CDD8;
+  --tl:#0B7B6B;--tl-l:#E6F5EF;--tl-m:#8ECDB8;
+  --bl:#1A5FB4;--bl-l:#EBF1FB;--bl-m:#8AB4E8;
+  --am:#C05A00;--am-l:#FEF5E6;--am-m:#F0B060;
+  --rd:#B91C1C;--rd-l:#FEF2F2;--rd-m:#F08080;
+  --pu:#5B21B6;--pu-l:#F5F3FF;--pu-m:#A78BFA;
+  --gr:#166534;--gr-l:#F0FDF4;
+  --acc:#0B7B6B;--acc-l:#E6F5EF;
+  --warn:#C05A00;--dan:#B91C1C;
+  --pri:#0B7B6B;--pri-l:#E6F5EF;
+  --ink-m:#6B7E94;
+  --r2:6px;--r3:10px;--r4:14px;
+  --sh1:0 1px 3px rgba(13,17,23,.08);--sh2:0 4px 18px rgba(13,17,23,.12);
+}
+html,body{height:100%;background:var(--s2);}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;margin:0;}
+.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
+.sidebar{width:236px;flex-shrink:0;background:#0A2540;overflow-y:auto;display:flex;flex-direction:column;}
+.main{flex:1;overflow-y:auto;background:var(--s2);}
+.topbar{height:48px;background:#0A2540;display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;font-family:'DM Sans',sans-serif;}
+.tb-badge,.tb-logo{width:30px;height:30px;border-radius:7px;background:var(--tl);color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center;}
+.tb-ttl{font-size:13.5px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.tb-links{margin-left:auto;display:flex;gap:5px;}
+.tb-link{font-size:10.5px;color:rgba(255,255,255,.35);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.12);border-radius:3px;}
+.tb-link:hover{color:rgba(255,255,255,.7);}
+.sb-sec{padding:16px 14px 4px;font-size:8px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ni.active{background:var(--tl);color:#fff;font-weight:600;}
+.ni .ic{font-size:14px;width:18px;flex-shrink:0;text-align:center;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);}
+.ni.active .nb{background:rgba(255,255,255,.2);color:#fff;}
+.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+.page{padding:22px 26px 40px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.ph-ttl{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
+.ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
+.ph-r{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+.card{background:var(--surf);border:1px solid var(--s4);border-radius:10px;overflow:hidden;box-shadow:var(--sh1);margin-bottom:14px;}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--s4);background:var(--s2);flex-wrap:wrap;gap:8px;}
+.ct{font-size:13.5px;font-weight:700;color:var(--ink);}
+.cb{padding:14px 18px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.kc{background:var(--surf);border:1px solid var(--s4);border-radius:10px;padding:15px 17px;box-shadow:var(--sh1);border-left:3px solid var(--tl);}
+.kl{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px;}
+.kv{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;}
+.kn{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1.5px solid var(--s4);background:var(--s2);}
+td{padding:11px 14px;border-bottom:1px solid var(--s4);color:var(--ink3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.fw{font-weight:700;color:var(--ink);}
+.fw6{font-weight:600;}
+.tf{color:var(--ink4);}
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.bg-g{background:var(--tl-l);color:var(--tl);}
+.bg-b{background:var(--bl-l);color:var(--bl);}
+.bg-r{background:var(--rd-l);color:var(--rd);}
+.bg-o{background:var(--am-l);color:var(--am);}
+.bg-s{background:var(--s3);color:var(--ink4);}
+.bg-p{background:var(--pu-l);color:var(--pu);}
+.btn{padding:7px 14px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--tl);color:#fff;}
+.bp:hover{background:#0A6B5D;transform:translateY(-1px);}
+.bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
+.bo:hover{background:var(--s2);}
+.bsm{padding:5px 10px;font-size:11.5px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:6px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s;}
+.fc:focus{border-color:var(--tl);box-shadow:0 0 0 3px var(--tl-l);}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.req{color:var(--rd);}
+.view{display:none;}.view.active{display:block;}
+.ov{position:fixed;inset:0;background:rgba(13,17,23,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
+.ov.open{display:flex;}
+.modal{background:var(--surf);border-radius:14px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
+.modal.md{max-width:700px;}
+.modal.lg{max-width:860px;}
+.mh{padding:18px 22px 14px;border-bottom:1px solid var(--s4);display:flex;justify-content:space-between;align-items:flex-start;}
+.mh h3{font-size:15px;font-weight:700;color:var(--ink);}
+.mh-sub{font-size:11.5px;color:var(--ink4);margin-top:2px;}
+.mc{padding:18px 22px;}
+.mf{padding:12px 22px;border-top:1px solid var(--s4);background:var(--s2);display:flex;gap:8px;justify-content:flex-end;border-radius:0 0 14px 14px;}
+.cx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--ink4);}
+/* Pipeline */
+.pip-strip{display:flex;flex-direction:row;align-items:center;gap:0;background:var(--s2);border:1px solid var(--s4);border-radius:8px;padding:14px 18px;margin-bottom:18px;overflow-x:auto;}
+.pip-step{display:inline-flex;flex-direction:column;align-items:center;padding:0 16px;font-size:11.5px;color:var(--ink4);flex-shrink:0;}
+.pip-n{display:block;font-size:22px;font-weight:800;color:var(--tl);font-family:'DM Mono',monospace;}
+/* CV cards */
+.cv-card{background:var(--surf);border:1px solid var(--s4);border-radius:8px;padding:14px 16px;margin-bottom:10px;}
+.cv-card.shortlisted{border-left:3px solid var(--tl);}
+.cv-card.rejected{opacity:.6;}
+/* Score rows */
+.score-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--s4);}
+.score-crit{flex:1;font-size:13.5px;color:var(--ink2);}
+.score-max{font-size:12px;color:var(--ink5);min-width:30px;text-align:right;}
+/* Attendance */
+.att-item{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--s4);}
+.att-item.yes{background:var(--tl-l);}
+.att-item.no{background:var(--rd-l);}
+.att-item:last-child{border-bottom:none;}
+.att-name{font-size:13px;font-weight:600;color:var(--ink);}
+.att-sub{font-size:11.5px;color:var(--ink4);margin-top:1px;}
+.att-toggle{padding:6px 12px;border-radius:5px;font-size:11.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;}
+/* Checklist */
+.cl-it{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--s4);background:var(--surf);}
+.cl-drag{color:var(--ink5);font-size:14px;cursor:grab;}
+.cl-crit{flex:1;font-size:13px;color:var(--ink2);}
+.cl-del{background:none;border:none;color:var(--ink5);font-size:16px;cursor:pointer;padding:0 4px;}
+.cl-del:hover{color:var(--rd);}
+/* Staff attendance buttons */
+.satt-btn{transition:all .1s;}
+/* An */
+.an{display:flex;align-items:center;gap:10px;}
+.av{width:34px;height:34px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.av.bl{background:var(--bl);}
+.av.gr{background:var(--tl);}
+.av.or{background:var(--am);}
+.av.pu{background:var(--pu);}
+.av.te{background:#0891B2;}
+/* IB stats */
+.sc{background:var(--surf);border:1px solid var(--s4);border-radius:10px;padding:14px 16px;box-shadow:var(--sh1);}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.sc-lbl{font-size:10.5px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px;}
+.sc-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.sc-val{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;}
+.sc-sub{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+.ib-g{background:var(--tl-l);color:var(--tl);}
+.ib-b{background:var(--bl-l);color:var(--bl);}
+.ib-o{background:var(--am-l);color:var(--am);}
+.ib-r{background:var(--rd-l);color:var(--rd);}
+/* Toast */
+#tw{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+.toast{padding:10px 16px;border-radius:6px;font-size:13px;font-weight:600;color:#fff;box-shadow:var(--sh2);pointer-events:all;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
+
+</head>
+<body>
+<div class="topbar">
+  <div class="tb-logo">HR</div>
+  <span class="tb-ttl">SHAPE HR — Staff Development Platform</span>
+  <div class="tb-links">
+    <a href="shape_admissions.html" class="tb-link">← Admissions</a>
+    <a href="shape_finance.html" class="tb-link">Finance / Payroll</a>
+    <a href="shape_campus.html" class="tb-link">Campus</a>
+  </div>
+<button onclick="if(confirm('Reset all data to defaults?')){localStorage.clear();location.reload();}" style="font-size:10px;color:rgba(255,255,255,.3);background:none;border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:2px 8px;cursor:pointer;margin-left:6px;">↺ Reset</button>
+
+<div style="position:relative;margin-left:8px;" id="portal-switcher">
+  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
+    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+    &#9783; All Portals &#9660;
+  </button>
+  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
+    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
+    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
+    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
+    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
+    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
+    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
+    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
+    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
+    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
+  </div>
+</div>
+<style>
+#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
+#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+</style>
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var sw=document.getElementById('portal-switcher');
+    var m=document.getElementById('ps-menu');
+    if(sw&&m&&!sw.contains(e.target))m.style.display='none';
+  });
+})();
+</script>
+</div>
+
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-sec">Recruitment Pipeline</div>
+  <div class="ni active" data-v="vacancies"><span class="ic">📋</span>Vacancies<span class="nb" id="nb_vac">0</span></div>
+  <div class="ni" data-v="cvs"><span class="ic">📥</span>Applications Inbox<span class="nb" id="nb_cvs">0</span></div>
+  <div class="ni" data-v="interviews"><span class="ic">🎙</span>Interviews<span class="nb" id="nb_int">0</span></div>
+  <div class="sb-sec">Staff Development</div>
+  <div class="ni" data-v="training"><span class="ic">🎓</span>Training Sessions<span class="nb" id="nb_tr">0</span></div>
+  <div class="ni" data-v="growth"><span class="ic">📈</span>Growth Tracker</div>
+  <div class="ni" data-v="staffatt"><span class="ic">&#10003;</span>Staff Attendance</div>
+  <div class="ni" data-v="documents"><span class="ic">&#128196;</span>Staff Documents</div>
+  <div class="sb-ft">
+    <div class="sb-user">
+      <div class="sb-av">MZ</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#fff;">Muhd Zahal</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.28);">HR Administrator</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="main"><div class="page">
+
+<!-- ══ VACANCIES ══ -->
+<div id="view-vacancies" class="view active">
+  <div class="ph">
+    <div><div class="ph-ttl">Vacancies</div><div class="ph-sub">Post a vacancy → CVs are filed against it → shortlist → interview → hire</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openVacancy(null)">+ Post Vacancy</button></div>
+  </div>
+  <!-- Pipeline summary -->
+  <div id="pipeline_strip" style="display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;background:var(--s2);border:1px solid var(--s4);border-radius:8px;padding:14px 20px;margin-bottom:18px;overflow-x:auto;gap:0;"></div>
+  <div id="vac_cards"></div>
+</div>
+
+<!-- ══ CV SHORTLISTING ══ -->
+<div id="view-cvs" class="view">
+  <div class="ph">
+    <div>
+      <div class="ph-ttl">Applications Inbox</div>
+      <div class="ph-sub">Candidates apply via the public careers page · applications arrive here automatically</div>
+    </div>
+    <div class="ph-r">
+      <select class="fc" id="cv_vac_filter" style="width:200px;padding:6px 9px;font-size:12.5px;" onchange="renderCVs()">
+        <option value="">All Vacancies</option>
+      </select>
+      <select class="fc" id="cv_status_filter" style="width:150px;padding:6px 9px;font-size:12.5px;" onchange="renderCVs()">
+        <option value="">All Status</option>
+        <option value="Pending Review">Pending Review</option>
+        <option value="Shortlisted">Shortlisted</option>
+        <option value="Needs Review">Needs Review</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+      <a href="shape_careers.html" target="_blank" class="btn bo bsm">🔗 View Careers Page</a>
+    </div>
+  </div>
+  <!-- Flow banner -->
+  <div style="background:linear-gradient(135deg,#EBF1FB,#E6F5EF);border:1.5px solid #90B8E8;border-radius:var(--r3);padding:13px 18px;margin-bottom:18px;display:flex;gap:14px;align-items:center;">
+    <div style="font-size:22px;">📥</div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#1249A6;">Applications arrive here from the public Careers Page</div>
+      <div style="font-size:12.5px;color:#1249A6;opacity:.8;margin-top:2px;">
+        Candidates visit <strong>shape_careers.html</strong>, see your posted vacancies, fill in their details and upload their CV.
+        Each submission lands here with an auto-score. HR reviews, shortlists or rejects, then proceeds to interview.
+      </div>
+    </div>
+    <a href="shape_careers.html" target="_blank" class="btn bp bsm" style="flex-shrink:0;">Open Careers Page →</a>
+  </div>
+  <div id="cv_body"></div>
+</div>
+
+<!-- ══ INTERVIEWS ══ -->
+<div id="view-interviews" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Interviews</div><div class="ph-sub">Live scoring checklist during interview · customisable criteria</div></div>
+    <div class="ph-r">
+      <button class="btn bo bsm" onclick="openChecklistEditor()">⚙ Edit Checklist</button>
+      <button class="btn bp" onclick="openInterviewPicker()">▶ Start Interview</button>
+    </div>
+  </div>
+  <div id="int_body"></div>
+</div>
+
+<!-- ══ TRAINING ══ -->
+<div id="view-training" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Training Sessions</div><div class="ph-sub">Schedule sessions · mark attendance · track per staff</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openTrainingModal(null)">+ Schedule Session</button></div>
+  </div>
+  <div id="tr_body"></div>
+</div>
+
+<!-- ══ GROWTH TRACKER ══ -->
+
+<div id="view-staffatt" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Staff Attendance</div><div class="ph-sub">Daily marking, calendar history and monthly analytics</div></div>
+    <div class="ph-r">
+      <input type="date" id="satt_date" class="fc" style="width:150px;font-size:12.5px;padding:6px 10px;" onchange="renderStaffAtt2()">
+      <button class="btn bo" onclick="switchSattTab('calendar')">&#128197; Calendar</button>
+      <button class="btn bo" onclick="switchSattTab('analytics')">&#128202; Analytics</button>
+      <button class="btn bp" onclick="saveStaffAtt()">&#128190; Save</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;" id="satt-kpi"></div>
+
+  <!-- TAB: Mark Attendance -->
+  <div id="satt-tab-mark">
+    <div class="card">
+      <div class="ch"><div class="ct">Mark Attendance</div><div style="font-size:12px;color:var(--ink4);">P = Present &nbsp; L = Late &nbsp; A = Absent</div></div>
+      <div id="satt-body" style="padding:0 8px 8px;"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Calendar History -->
+  <div id="satt-tab-calendar" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="card" style="margin:0;">
+        <div class="ch">
+          <div class="ct">Monthly Calendar</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="btn bo bsm" onclick="changeSattMonth(-1)">&#8592;</button>
+            <span id="satt-cal-label" style="font-size:13px;font-weight:700;min-width:120px;text-align:center;"></span>
+            <button class="btn bo bsm" onclick="changeSattMonth(1)">&#8594;</button>
+          </div>
+        </div>
+        <div id="satt-calendar" style="padding:16px;"></div>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="ch">
+          <div class="ct">Staff Attendance Record</div>
+          <select id="satt-cal-staff" class="fc" style="width:180px;font-size:12px;padding:5px 9px;" onchange="renderSattCalendar()">
+            <option value="">All Staff</option>
+          </select>
+        </div>
+        <div id="satt-cal-detail" style="padding:14px 18px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Analytics -->
+  <div id="satt-tab-analytics" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+      <div class="card" style="margin:0;">
+        <div class="ch"><div class="ct">&#128202; Attendance Rate by Staff</div></div>
+        <div id="satt-rate-chart" style="padding:14px 18px;"></div>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="ch"><div class="ct">&#128197; Monthly Trend</div></div>
+        <div id="satt-trend-chart" style="padding:14px 18px;"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Department Summary</div></div>
+      <table>
+        <thead><tr><th>Staff</th><th>Department</th><th>Present</th><th>Late</th><th>Absent</th><th>Total Days</th><th>Attendance %</th><th>Rating</th></tr></thead>
+        <tbody id="satt-summary-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="view-growth" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Educator Growth Tracker</div><div class="ph-sub">Performance, training count, concerns and corrective actions per staff</div></div>
+  </div>
+  <div id="gr_body"></div>
+</div>
+
+
+
+<div id="view-documents" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Staff Document Store</div><div class="ph-sub">Track contracts, certificates, identity proofs and compliance documents for all staff</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="openStaffDoc()">+ Add Document</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;" id="doc-staff-kpi"></div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Document Register</div>
+      <div style="display:flex;gap:8px;">
+        <select id="sdoc-staff-filter" class="fc" style="width:160px;font-size:12px;padding:5px 9px;" onchange="renderStaffDocs()">
+          <option value="">All Staff</option>
+        </select>
+        <select id="sdoc-type-filter" class="fc" style="width:140px;font-size:12px;padding:5px 9px;" onchange="renderStaffDocs()">
+          <option value="">All Types</option>
+          <option>Appointment Letter</option><option>Contract</option>
+          <option>Aadhaar</option><option>PAN Card</option>
+          <option>Degree Certificate</option><option>Experience Letter</option>
+          <option>Police Clearance</option><option>Medical Fitness</option>
+        </select>
+        <select id="sdoc-status-filter" class="fc" style="width:120px;font-size:12px;padding:5px 9px;" onchange="renderStaffDocs()">
+          <option value="">All Status</option>
+          <option>Verified</option><option>Pending</option><option>Expiring</option><option>Expired</option>
+        </select>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Staff</th><th>Document Type</th><th>Doc Number</th><th>Issued</th><th>Expires</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="sdoc-body"></tbody>
+    </table>
+  </div>
+</div>
+
+</div></div></div>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- Post / Edit Vacancy -->
+
+<div class="ov" id="ovVacancy">
+  <div class="modal md">
+    <div class="mh"><div><h3 id="vac_modal_ttl">Post New Vacancy</h3><div class="mh-sub">Once posted, CVs can be filed against this vacancy</div></div><button class="cx" onclick="closeOv('ovVacancy')">×</button></div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Subject / Role <span class="req">*</span></label><input class="fc" id="vac_subj" placeholder="e.g. Mathematics"></div>
+        <div class="fg"><label class="fl">Department</label><select class="fc" id="vac_dept"><option>Primary</option><option>Secondary</option><option>Senior Secondary</option><option>Administration</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Minimum Qualification <span class="req">*</span></label><input class="fc" id="vac_qual" placeholder="e.g. M.Sc Maths + B.Ed"></div>
+        <div class="fg"><label class="fl">Experience Required</label><select class="fc" id="vac_exp"><option>Fresher</option><option>1+ years</option><option>2+ years</option><option>3+ years</option><option>5+ years</option></select></div>
+      </div>
+      <div class="fg"><label class="fl">Key Skills / Requirements</label><input class="fc" id="vac_skills" placeholder="e.g. Malayalam medium, digital tools, CBSE curriculum"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">No. of Positions</label><input type="number" class="fc" id="vac_count" value="1" min="1"></div>
+        <div class="fg"><label class="fl">Application Deadline</label><input type="date" class="fc" id="vac_deadline"></div>
+      </div>
+      <div class="fg"><label class="fl">Priority</label><select class="fc" id="vac_priority"><option value="Normal">Normal</option><option value="Urgent">Urgent</option></select></div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovVacancy')">Cancel</button><button class="btn bp" id="vac_save_btn" onclick="saveVacancy()">Post Vacancy</button></div>
+  </div>
+</div>
+
+
+<!-- Interview — live scoring -->
+<div class="ov" id="ovInterview">
+  <div class="modal xl">
+    <div class="mh">
+      <div><h3 id="int_modal_ttl">Interview</h3><div class="mh-sub">Score each criterion live during the interview · Total calculates automatically</div></div>
+      <button class="cx" onclick="closeOv('ovInterview')">×</button>
+    </div>
+    <div class="mc">
+      <!-- Candidate info -->
+      <div style="background:var(--s2);border-radius:var(--r3);padding:14px 16px;margin-bottom:16px;display:flex;gap:20px;align-items:center;" id="int_cand_strip">
+        <div>
+          <div style="font-size:10px;color:var(--ink5);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Candidate</div>
+          <div style="font-size:16px;font-weight:800;color:var(--ink);" id="int_cand_name">—</div>
+          <div style="font-size:12px;color:var(--ink4);" id="int_cand_meta">—</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:10px;color:var(--ink5);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Live Score</div>
+          <div style="font-size:32px;font-weight:800;font-family:'DM Mono',monospace;color:var(--tl);" id="int_live_score">0</div>
+          <div style="font-size:11px;color:var(--ink5);" id="int_live_max">/ 100</div>
+        </div>
+      </div>
+      <div class="g2">
+        <!-- Left: scoring -->
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Scoring Criteria</div>
+          <div id="int_score_rows"></div>
+          <!-- Live score bar -->
+          <div style="margin-top:12px;padding:12px;background:var(--s2);border-radius:var(--r2);">
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;margin-bottom:6px;"><span>Total</span><span id="int_score_display" style="font-family:'DM Mono',monospace;">0 / 100</span></div>
+            <div style="height:10px;background:var(--s4);border-radius:5px;overflow:hidden;"><div id="int_score_bar" style="height:100%;width:0%;background:var(--tl);border-radius:5px;transition:width .3s;"></div></div>
+          </div>
+        </div>
+        <!-- Right: remarks + decision -->
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Panel Information</div>
+          <div class="fg"><label class="fl">Interview Date</label><input type="date" class="fc" id="int_date"></div>
+          <div class="fg"><label class="fl">Panel Members</label><input class="fc" id="int_panel" placeholder="e.g. Principal, HOD Maths"></div>
+          <div class="fg"><label class="fl">Observations &amp; Remarks</label><textarea class="fc" id="int_remarks" rows="4" placeholder="Key observations, strengths, areas of concern…"></textarea></div>
+          <div class="fg"><label class="fl">Panel Decision</label>
+            <select class="fc" id="int_decision">
+              <option value="Recommended">✓ Recommended — Proceed to Offer</option>
+              <option value="Hold">⏸ Hold — Review Again</option>
+              <option value="Rejected">✗ Not Recommended</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovInterview')">Cancel</button><button class="btn bp" onclick="saveInterview()">Save Interview Record</button></div>
+  </div>
+</div>
+
+<!-- Checklist Editor -->
+<div class="ov" id="ovChecklist">
+  <div class="modal md">
+    <div class="mh"><div><h3>Interview Checklist Editor</h3><div class="mh-sub">Add, remove or reweight scoring criteria · changes apply to all future interviews</div></div><button class="cx" onclick="closeOv('ovChecklist')">×</button></div>
+    <div class="mc">
+      <div id="cl_items_list"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <input class="fc" id="cl_new_crit" placeholder="New criterion name…" style="flex:1;">
+        <input type="number" class="fc" id="cl_new_max" placeholder="Max" style="width:72px;" value="25">
+        <button class="btn bp bsm" onclick="addChecklistItem()">+ Add</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--ink4);margin-top:8px;" id="cl_total_note"></div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovChecklist')">Cancel</button><button class="btn bp" onclick="saveChecklist()">Save Checklist</button></div>
+  </div>
+</div>
+
+<!-- Training modal -->
+<div class="ov" id="ovTraining">
+  <div class="modal lg">
+    <div class="mh">
+      <div>
+        <h3 id="tr_modal_ttl">Schedule Training Session</h3>
+        <div class="mh-sub" id="tr_modal_sub">Plan the session — assign staff who should attend — invite links generated automatically</div>
+      </div>
+      <button class="cx" onclick="closeOv('ovTraining')">×</button>
+    </div>
+    <div class="mc">
+
+      <!-- Step indicator -->
+      <div style="display:flex;gap:0;margin-bottom:18px;border:1px solid var(--s4);border-radius:var(--r3);overflow:hidden;" id="tr_step_bar">
+        <div style="flex:1;padding:8px 12px;font-size:12px;font-weight:600;background:var(--tl);color:#fff;text-align:center;" id="tr_step1_tab">1 · Session Details</div>
+        <div style="flex:1;padding:8px 12px;font-size:12px;font-weight:600;background:var(--s3);color:var(--ink4);text-align:center;" id="tr_step2_tab">2 · Assign &amp; Invite Staff</div>
+      </div>
+
+      <!-- STEP 1: Schedule -->
+      <div id="tr_step1">
+        <div class="fg"><label class="fl">Session Title <span class="req">*</span></label>
+          <input class="fc" id="tr_title" placeholder="e.g. NEP 2020 — Competency Based Education"></div>
+        <div class="fr3">
+          <div class="fg"><label class="fl">Date <span class="req">*</span></label>
+            <input type="date" class="fc" id="tr_date" onchange="updateSessionMode()"></div>
+          <div class="fg"><label class="fl">Start Time</label>
+            <input type="time" class="fc" id="tr_time" value="10:00"></div>
+          <div class="fg"><label class="fl">Duration</label>
+            <select class="fc" id="tr_dur">
+              <option>1 hour</option><option>2 hours</option>
+              <option>Half day (3 hrs)</option><option>Full day</option><option>Multi-day</option>
+            </select></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Mode</label>
+            <select class="fc" id="tr_mode" onchange="toggleVenueZoom()">
+              <option value="physical">In-person</option>
+              <option value="online">Online (Zoom / Meet)</option>
+              <option value="hybrid">Hybrid</option>
+            </select></div>
+          <div class="fg" id="tr_venue_wrap"><label class="fl">Venue</label>
+            <input class="fc" id="tr_venue" placeholder="e.g. Staff Room, Main Hall"></div>
+        </div>
+        <!-- Online meeting section -->
+        <div id="tr_zoom_wrap" style="display:none;">
+          <div class="fr">
+            <div class="fg"><label class="fl">Meeting Platform</label>
+              <select class="fc" id="tr_platform">
+                <option value="zoom">Zoom</option>
+                <option value="meet">Google Meet</option>
+                <option value="teams">Microsoft Teams</option>
+                <option value="other">Other</option>
+              </select></div>
+            <div class="fg"><label class="fl">Meeting Link <span class="req">*</span></label>
+              <input class="fc" id="tr_link" placeholder="https://zoom.us/j/…"></div>
+          </div>
+          <div class="fr">
+            <div class="fg"><label class="fl">Meeting ID</label>
+              <input class="fc" id="tr_meeting_id" placeholder="e.g. 892 1234 5678"></div>
+            <div class="fg"><label class="fl">Passcode</label>
+              <input class="fc" id="tr_passcode" placeholder="e.g. Arete2026"></div>
+          </div>
+          <div style="background:var(--bl-l);border:1px solid var(--bl-m);border-radius:var(--r2);padding:10px 13px;font-size:12.5px;color:var(--bl);margin-bottom:12px;">
+            📧 Each invited staff member will receive an email/notification with the meeting link, ID and passcode automatically when you schedule.
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Conductor / Trainer</label>
+          <input class="fc" id="tr_trainer" placeholder="Name and organisation / department"></div>
+        <div class="fg"><label class="fl">Topics to be Covered <span style="font-weight:400;color:var(--ink5);">(one per line)</span></label>
+          <textarea class="fc" id="tr_topics" rows="3" placeholder="CBE Framework&#10;Portfolio-based Learning&#10;Outcome Mapping"></textarea></div>
+        <div class="fg"><label class="fl">Pre-reading / Resources <span style="font-weight:400;color:var(--ink5);">(optional)</span></label>
+          <input class="fc" id="tr_prereading" placeholder="Link to material or document name staff should review before the session"></div>
+      </div>
+
+      <!-- STEP 2: Assign Staff -->
+      <div id="tr_step2" style="display:none;">
+        <div style="background:var(--tl-l);border:1px solid var(--tl-m);border-radius:var(--r2);padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:var(--tl);">
+          ✓ <strong>Scheduling:</strong> Once saved, each selected staff member will receive an invite with the session details and meeting link (if online). Attendance will be marked separately after the session.
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;">Select Staff to Invite</div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn bo bsm" onclick="selectAllStaff()">Select All</button>
+            <button class="btn bo bsm" onclick="clearAllStaff()">Clear All</button>
+          </div>
+        </div>
+        <div id="tr_invite_list"></div>
+        <div style="margin-top:12px;padding:11px 14px;background:var(--s2);border-radius:var(--r2);font-size:12.5px;color:var(--ink3);" id="tr_invite_summary">
+          0 staff selected
+        </div>
+      </div>
+
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeOv('ovTraining')">Cancel</button>
+      <button class="btn bo" id="tr_back_btn" style="display:none;" onclick="trGoStep(1)">← Back</button>
+      <button class="btn bp" id="tr_next_btn" onclick="trGoStep(2)">Next: Assign Staff →</button>
+      <button class="btn bp" id="tr_save_btn" style="display:none;" onclick="saveTraining()">📅 Schedule &amp; Send Invites</button>
+    </div>
+  </div>
+</div>
+
+<!-- Attendance Marking Modal (separate, opened from training card) -->
+<div class="ov" id="ovAttendance">
+  <div class="modal md">
+    <div class="mh">
+      <div><h3 id="att_modal_ttl">Mark Attendance</h3><div class="mh-sub" id="att_modal_sub">Mark who attended this session — updates each staff member's growth record</div></div>
+      <button class="cx" onclick="closeOv('ovAttendance')">×</button>
+    </div>
+    <div class="mc">
+      <div id="att_session_info" style="background:var(--s2);border-radius:var(--r2);padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--ink2);"></div>
+      <div id="att_list"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeOv('ovAttendance')">Cancel</button>
+      <button class="btn bp" onclick="saveAttendance()">Save Attendance</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- CV Detail -->
+<div class="ov" id="ovCVDetail">
+  <div class="modal md">
+    <div class="mh"><div><h3 id="cvd_name">Candidate</h3><div class="mh-sub" id="cvd_meta">Post · Qualification</div></div><button class="cx" onclick="closeOv('ovCVDetail')">×</button></div>
+    <div class="mc" id="cvd_body"></div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeOv('ovCVDetail')">Close</button>
+      <button class="btn bd bsm" id="cvd_reject_btn" onclick="rejectCV()">✗ Reject</button>
+      <button class="btn bg-p" style="background:var(--pu);color:#fff;" bsm onclick="scheduleInterviewFromCV()">→ Schedule Interview</button>
+    </div>
+  </div>
+</div>
+
+<div id="tw"></div>
+
+
+<!-- Interview Picker Modal -->
+<div class="ov" id="ovIntPicker">
+  <div class="modal md">
+    <div class="mh">
+      <div>
+        <h3>Start Interview</h3>
+        <div class="mh-sub">Select the shortlisted candidate sitting in front of you</div>
+      </div>
+      <button class="cx" onclick="closeOv('ovIntPicker')">×</button>
+    </div>
+    <div class="mc">
+      <div class="fg">
+        <label class="fl">Filter by Post</label>
+        <select class="fc" id="ip_vac" onchange="populateIPCandidates()">
+          <option value="">All Posts</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Who is sitting in front of you? <span class="req">*</span></label>
+        <select class="fc" id="ip_cand" onchange="showIPPreview()" size="1">
+          <option value="">— Select candidate —</option>
+        </select>
+      </div>
+      <!-- Candidate preview -->
+      <div id="ip_preview" style="display:none;background:var(--s2);border-radius:var(--r2);padding:14px;margin-bottom:14px;">
+        <div id="ip_preview_body"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeOv('ovIntPicker')">Cancel</button>
+      <button class="btn bp" onclick="startInterviewFromPicker()">&#9654; Start Interview</button>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ovHire">
+  <div class="modal">
+    <div class="mh">
+      <div>
+        <h3>Confirm Hire</h3>
+        <div class="mh-sub">Create a staff record and generate an offer letter</div>
+      </div>
+      <button class="cx" onclick="closeOv('ovHire')">&#10005;</button>
+    </div>
+    <div class="mc">
+      <div style="padding:10px 14px;background:var(--tl-l);border-radius:8px;border:1px solid var(--tl-m);margin-bottom:16px;">
+        <div id="hire_cand_name" style="font-size:15px;font-weight:700;color:var(--tl);"></div>
+        <div id="hire_cand_meta" style="font-size:12px;color:var(--ink4);margin-top:3px;"></div>
+        <div id="hire_score_note" style="font-size:11.5px;color:var(--ink3);margin-top:4px;font-style:italic;"></div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Post / Subject <span class="req">*</span></label>
+          <input type="text" id="hire_post" class="fc" placeholder="e.g. Mathematics Teacher">
+        </div>
+        <div class="fg">
+          <label class="fl">Department</label>
+          <input type="text" id="hire_dept" class="fc" placeholder="e.g. Secondary">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Monthly Salary (&#8377;) <span class="req">*</span></label>
+          <input type="number" id="hire_salary" class="fc" placeholder="e.g. 28000">
+        </div>
+        <div class="fg">
+          <label class="fl">Joining Date</label>
+          <input type="date" id="hire_date" class="fc">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Phone</label>
+          <input type="text" id="hire_phone" class="fc" placeholder="+91 ...">
+        </div>
+        <div class="fg">
+          <label class="fl">Email</label>
+          <input type="email" id="hire_email" class="fc" placeholder="email@example.com">
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="closeOv('ovHire')">Cancel</button>
+      <button class="btn bp" onclick="confirmHire()">&#10003; Confirm Hire &amp; Generate Offer Letter</button>
+    </div>
+  </div>
+</div>
+<script src="shape_db.js"></script>
+
+<div class="ov" id="ovStaffDoc">
+  <div class="modal">
+    <div class="mh">
+      <div>
+        <h3>Add Staff Document</h3>
+        <div class="mh-sub">Upload or log a document for a staff member</div>
+      </div>
+      <button class="cx" onclick="document.getElementById('ovStaffDoc').classList.remove('open')">✕</button>
+    </div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Staff Member <span class="req">*</span></label>
+          <select id="sdoc_staff" class="fc"><option value="">— Select Staff —</option></select>
+        </div>
+        <div class="fg">
+          <label class="fl">Document Type <span class="req">*</span></label>
+          <select id="sdoc_type" class="fc">
+            <option value="Appointment Letter">Appointment Letter</option>
+            <option value="Contract">Contract</option>
+            <option value="Aadhaar">Aadhaar</option>
+            <option value="PAN Card">PAN Card</option>
+            <option value="Degree Certificate">Degree Certificate</option>
+            <option value="B.Ed Certificate">B.Ed Certificate</option>
+            <option value="Police Clearance">Police Clearance</option>
+            <option value="Medical Fitness">Medical Fitness</option>
+            <option value="Experience Certificate">Experience Certificate</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Document Number</label>
+          <input type="text" id="sdoc_num" class="fc" placeholder="e.g. AMS/APT/2024/001">
+        </div>
+        <div class="fg">
+          <label class="fl">Issue Date</label>
+          <input type="date" id="sdoc_issued" class="fc">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Expiry Date <span style="color:var(--ink5);font-weight:400;">(leave blank if no expiry)</span></label>
+          <input type="date" id="sdoc_expiry" class="fc">
+        </div>
+        <div class="fg">
+          <label class="fl">Notes</label>
+          <input type="text" id="sdoc_notes" class="fc" placeholder="Optional notes">
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovStaffDoc').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveStaffDoc()">Save Document</button>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+var db = SHAPE_DB.load();
+console.log('[SHAPE HR] DB loaded — staff:'+db.staff.length+' training:'+db.training.length+' interviews:'+db.interviews.length);
+var $ = id => document.getElementById(id);
+var $$ = s => document.querySelectorAll(s);
+
+// ── State ──────────────────────────────────────────────
+var _editVacId = null;
+var _editTrId  = null;
+var _intCandId = null;
+var _cvdCandId = null;
+
+// ── Ensure db has HR tables ────────────────────────────
+if(!db.vacancies)   db.vacancies   = [];
+if(!db.candidates)  db.candidates  = [];
+if(!db.interviews)  db.interviews  = [];
+if(!db.training)    db.training    = [];
+if(!db.checklist)   db.checklist   = [
+  {id:'CL1',crit:'Subject Knowledge & Depth',   max:25},
+  {id:'CL2',crit:'Classroom Management Ability', max:25},
+  {id:'CL3',crit:'Communication & Language',     max:25},
+  {id:'CL4',crit:'Digital & Technology Integration', max:25},
+];
+
+// ── Migrate stale vacancy records ──────────────────────
+db.vacancies.forEach(function(v){
+  if(!v.priority) v.priority = 'Normal';
+  if(!v.dept)     v.dept     = 'Secondary';
+  if(!v.skills)   v.skills   = '';
+  if(!v.deadline) v.deadline = '';
+});
+// Seed some vacancies if empty
+if(!db.vacancies.length){
+  db.vacancies = [
+    {id:'V001',subj:'Mathematics',dept:'Secondary',qual:'M.Sc Maths + B.Ed',exp:'3+ years',skills:'CBSE, digital tools',count:1,deadline:'2026-11-01',priority:'Urgent',posted:'2026-09-01',status:'Active'},
+    {id:'V002',subj:'English',    dept:'Secondary',qual:'MA English + B.Ed', exp:'2+ years',skills:'Creative writing, drama',count:1,deadline:'2026-11-15',priority:'Normal',posted:'2026-09-10',status:'Active'},
+  ];
+}
+if(!db.candidates.length){
+  db.candidates = [
+    {id:'C001',vacId:'V001',name:'Priya Suresh', qual:'M.Sc Maths, B.Ed',exp:'5 yrs',contact:'+91 94470 11201',score:88,status:'Shortlisted',notes:'Strong conceptual clarity. Good demo lesson.',interviewId:null},
+    {id:'C002',vacId:'V001',name:'Anoop Varma',  qual:'M.Sc Maths, B.Ed',exp:'3 yrs',contact:'+91 94470 11202',score:76,status:'Shortlisted',notes:'Adequate. Needs classroom presence work.',interviewId:null},
+    {id:'C003',vacId:'V001',name:'Sijo Thomas',  qual:'B.Sc Maths',       exp:'1 yr', contact:'+91 94470 11203',score:48,status:'Rejected',  notes:'Under-qualified for secondary level.',interviewId:null},
+    {id:'C004',vacId:'V002',name:'Reshma K.',    qual:'MA English, B.Ed', exp:'6 yrs',contact:'+91 94470 11204',score:91,status:'Recommended',notes:'Exceptional communication. Highly recommended.',interviewId:'I001'},
+    {id:'C005',vacId:'V002',name:'Arjun Nair',   qual:'BA English, B.Ed', exp:'2 yrs',contact:'+91 94470 11205',score:68,status:'Shortlisted',notes:'Good potential. Further interview needed.',interviewId:null},
+  ];
+}
+if(!db.interviews.length){
+  db.interviews = [
+    {id:'I001',candId:'C004',vacId:'V002',date:'2026-09-28',panel:'Principal, HOD English',
+     scores:{CL1:24,CL2:22,CL3:23,CL4:19},remarks:'Highly articulate. Exceptional demo lesson. Recommended without reservations.',decision:'Recommended'},
+  ];
+}
+if(!db.training.length){
+  db.training = [
+    {id:'TR001',title:'NEP 2020 — Competency Based Education',date:'2026-08-15',duration:'Full day',venue:'Staff Room',trainer:'Dr. Anitha Raj (NIET)',topics:['CBE Framework','Portfolio-based Learning','Outcome Mapping'],attendance:{T001:'present',T002:'present',T003:'present',T004:'present',T005:'present'},status:'Completed'},
+    {id:'TR002',title:'SHAPE DLSS — Digital Classroom Tools',  date:'2026-09-02',duration:'Half day',venue:'Computer Lab',trainer:'Muhd Zahal',topics:['DLSS Overview','Resource Library','Lesson Planning'],attendance:{T001:'present',T002:'present',T003:'present',T004:'absent',T005:'absent'},status:'Completed'},
+    {id:'TR003',title:'Inclusive Education — Students with Special Needs',date:'2026-10-20',duration:'Full day',venue:'Main Hall',trainer:'Dr. Suma Varma (NIET)',topics:['UDL Principles','Differentiated Instruction','IEP Basics'],attendance:{T001:null,T002:null,T003:null,T004:null,T005:null},status:'Upcoming'},
+  ];
+}
+SHAPE_DB.save(db);
+
+// ── Helpers ────────────────────────────────────────────
+function toast(m,t){var d=document.createElement('div');d.className='toast';d.style.background=t==='s'?'var(--tl)':t==='e'?'var(--rd)':'var(--bl)';d.textContent=m;$('tw').appendChild(d);setTimeout(()=>d.remove(),3500);}
+function closeOv(id){$(id).classList.remove('open');}
+function openOv(id){$(id).classList.add('open');}
+function sColor(s){return s>=85?'var(--tl)':s>=65?'var(--bl)':s>=50?'var(--am)':'var(--rd)';}
+function genId(p){return p+Date.now().toString().slice(-6);}
+function getStaffName(id){var s=SHAPE_DB.getStaff(db,id);return s?s.name:id;}
+function getVacancy(id){return db.vacancies.find(v=>v.id===id);}
+function getCandidate(id){return db.candidates.find(c=>c.id===id);}
+function getCandsByVac(vacId){return db.candidates.filter(c=>c.vacId===vacId);}
+function getInterview(id){return db.interviews.find(i=>i.id===id);}
+function totalScore(scores){return db.checklist.reduce((a,cl)=>a+(scores[cl.id]||0),0);}
+function maxScore(){return db.checklist.reduce((a,cl)=>a+cl.max,0);}
+
+function switchView(v){
+  $$('.view').forEach(x=>x.classList.remove('active'));
+  $$('.ni').forEach(x=>x.classList.remove('active'));
+  $('view-'+v).classList.add('active');
+  $$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));
+  updateBadges();
+  renderView(v);
+}
+$$('.ni[data-v]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+
+function updateBadges(){
+  $('nb_vac').textContent = db.vacancies.filter(v=>v.status==='Active').length;
+  $('nb_cvs').textContent = db.candidates.filter(c=>c.status==='Shortlisted').length;
+  $('nb_int').textContent = db.interviews.length;
+  $('nb_tr').textContent  = db.training.length;
+}
+
+function renderView(v){
+  if(v==='documents') renderStaffDocs();
+  if(v==='staffatt'){var d=document.getElementById('satt_date');if(d&&!d.value)d.value=new Date().toISOString().slice(0,10);renderStaffAtt2();}
+  if(v==='vacancies') renderVacancies();
+  else if(v==='cvs')  renderCVs();
+  else if(v==='interviews') renderInterviews();
+  else if(v==='training')   renderTraining();
+  else if(v==='growth')     renderGrowth();
+}
+
+// ══════════════════════════════════════════════════════
+// VACANCIES
+// ══════════════════════════════════════════════════════
+function renderVacancies(){
+  // Pipeline strip
+  var stages=[
+    ['Vacancies Posted',  db.vacancies.filter(v=>v.status==='Active').length],
+    ['Applications',      (db.applications||[]).length],
+    ['Shortlisted',       db.candidates.filter(c=>c.status==='Shortlisted').length],
+    ['Interviewed',       db.interviews.length],
+    ['Recommended',       db.candidates.filter(c=>c.status==='Recommended').length],
+  ];
+  $('pipeline_strip').innerHTML=stages.map(([l,n])=>`<div style="display:inline-flex;flex-direction:column;align-items:center;padding:0 18px;flex-shrink:0;"><span style="font-size:26px;font-weight:800;color:var(--tl);font-family:'DM Mono',monospace;line-height:1;">${n}</span><span style="font-size:11.5px;color:var(--ink4);margin-top:4px;white-space:nowrap;">${l}</span></div>`).join('<span style="font-size:20px;color:var(--s5);flex-shrink:0;padding:0 4px;">›</span>');
+
+  // Vacancy cards
+  var html = db.vacancies.map(v=>{
+    var cands=getCandsByVac(v.id);
+    var shortlisted=cands.filter(c=>c.status==='Shortlisted').length;
+    var ints=db.interviews.filter(i=>i.vacId===v.id).length;
+    var pri=v.priority||'Normal'; var dept=v.dept||'Teaching';
+    var col = pri==='Urgent'?'var(--am)':'var(--tl)';
+    return `<div class="card" style="border-left:4px solid ${col};margin-bottom:12px;">
+      <div class="ch">
+        <div>
+          <div class="ct">${v.subj} <span class="badge ${v.priority==='Urgent'?'bg-o':'bg-g'}" style="margin-left:6px;font-size:10px;">${v.priority}</span></div>
+          <div style="font-size:12px;color:var(--ink4);margin-top:2px;">${v.dept} · Posted ${v.posted} · Deadline ${v.deadline||'—'}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn bo bsm" onclick="openVacancy('${v.id}')">✎ Edit</button>
+          <button class="btn bo bsm" onclick="switchView('cvs');">📥 Applications →</button>
+        </div>
+      </div>
+      <div class="cb" style="display:grid;grid-template-columns:1fr 2fr;gap:20px;">
+        <div>
+          <div style="font-size:10.5px;color:var(--ink5);margin-bottom:3px;">Requirements</div>
+          <div style="font-size:13px;line-height:1.7;">${v.qual} · ${v.exp}<br><span style="font-size:12px;color:var(--ink4);">${v.skills||'—'}</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;">
+          <div style="text-align:center;"><div style="font-size:22px;font-weight:800;color:var(--ink);">${cands.length}</div><div style="font-size:11px;color:var(--ink5);">CVs Filed</div></div>
+          <div style="text-align:center;"><div style="font-size:22px;font-weight:800;color:var(--tl);">${shortlisted}</div><div style="font-size:11px;color:var(--ink5);">Shortlisted</div></div>
+          <div style="text-align:center;"><div style="font-size:22px;font-weight:800;color:var(--pu);">${ints}</div><div style="font-size:11px;color:var(--ink5);">Interviewed</div></div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <button class="btn bo bsm" onclick="switchView('cvs');setTimeout(()=>{var sel=document.getElementById('cv_vac_filter');if(sel)sel.value='${v.id}';renderCVs();},50);">View CVs →</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:48px;color:var(--ink5);">No vacancies posted yet. Click "+ Post Vacancy" to start.</div>';
+  $('vac_cards').innerHTML=html;
+}
+
+function openVacancy(id){
+  _editVacId = id;
+  if(id){
+    var v=getVacancy(id);
+    if(!v)return;
+    $('vac_modal_ttl').textContent='Edit Vacancy';
+    $('vac_save_btn').textContent='Save Changes';
+    $('vac_subj').value=v.subj;$('vac_dept').value=v.dept;$('vac_qual').value=v.qual;
+    $('vac_exp').value=v.exp;$('vac_skills').value=v.skills||'';
+    $('vac_count').value=v.count;$('vac_deadline').value=v.deadline||'';
+    $('vac_priority').value=v.priority;
+  } else {
+    $('vac_modal_ttl').textContent='Post New Vacancy';
+    $('vac_save_btn').textContent='Post Vacancy';
+    ['vac_subj','vac_qual','vac_skills','vac_deadline'].forEach(id=>{$(id).value='';});
+    $('vac_count').value=1;$('vac_priority').value='Normal';
+  }
+  openOv('ovVacancy');
+}
+
+function saveVacancy(){
+  var subj=($('vac_subj')||{}).value.trim();
+  if(!subj){toast('Enter subject / role','e');return;}
+  var vac={
+    id: _editVacId || genId('V'),
+    subj:subj, dept:$('vac_dept').value, qual:$('vac_qual').value,
+    exp:$('vac_exp').value, skills:$('vac_skills').value,
+    count:parseInt($('vac_count').value||1),
+    deadline:$('vac_deadline').value, priority:$('vac_priority').value,
+    posted: _editVacId ? getVacancy(_editVacId).posted : new Date().toISOString().slice(0,10),
+    status:'Active'
+  };
+  if(_editVacId){
+    var idx=db.vacancies.findIndex(v=>v.id===_editVacId);
+    if(idx>-1)db.vacancies[idx]=vac;
+  } else {
+    db.vacancies.push(vac);
+  }
+  SHAPE_DB.audit(db,'Vacancy '+ (_editVacId?'updated':'posted'), subj);
+  SHAPE_DB.save(db);
+  closeOv('ovVacancy');
+  toast((_editVacId?'Vacancy updated — ':'Vacancy posted — ')+subj+' · CVs can now be filed against it','s');
+  renderVacancies(); updateBadges();
+}
+
+// ══════════════════════════════════════════════════════
+// CVs
+// ══════════════════════════════════════════════════════
+function populateCVVacFilter(){
+  var sel=$('cv_vac_filter');
+  if(!sel)return;
+  var cur=sel.value;
+  sel.innerHTML='<option value="">All Vacancies</option>'+db.vacancies.map(function(v){
+    return '<option value="'+v.id+'">'+v.subj+'</option>';
+  }).join('');
+  if(cur)sel.value=cur;
+}
+
+
+function renderCVs(){
+  populateCVVacFilter();
+  if(!db.applications) db.applications=[];
+  var vacF=($('cv_vac_filter')||{}).value||'';
+  var stF=($('cv_status_filter')||{}).value||'';
+
+  var list=db.applications.filter(function(a){
+    var vacOk=!vacF||a.vacId===vacF;
+    var stOk=!stF||a.hrStatus===stF;
+    return vacOk&&stOk;
+  });
+
+  if(!list.length){
+    $('cv_body').innerHTML='<div style="text-align:center;padding:64px 20px;color:var(--ink5);">'
+      +'<div style="font-size:40px;margin-bottom:14px;">📭</div>'
+      +'<div style="font-size:16px;font-weight:700;color:var(--ink3);margin-bottom:8px;">No applications yet</div>'
+      +'<div style="font-size:13.5px;margin-bottom:20px;">Post a vacancy and share the careers page link with candidates.</div>'
+      +'<a href="shape_careers.html" target="_blank" class="btn bp">Open Careers Page →</a>'
+      +'</div>';
+    return;
+  }
+
+  // Group by vacancy
+  var byVac={};
+  list.forEach(function(a){if(!byVac[a.vacId])byVac[a.vacId]=[];byVac[a.vacId].push(a);});
+
+  var html='';
+  Object.entries(byVac).forEach(function(kv){
+    var vacId=kv[0], apps=kv[1];
+    var v=getVacancy(vacId)||{subj:vacId,qual:'—',exp:'—'};
+    var pending=apps.filter(function(a){return a.hrStatus==='Pending Review';}).length;
+    var shortlisted=apps.filter(function(a){return a.hrStatus==='Shortlisted';}).length;
+    var rejected=apps.filter(function(a){return a.hrStatus==='Rejected';}).length;
+
+    var cards=apps.map(function(a){
+      var col=a.autoScore>=75?'var(--tl)':a.autoScore>=50?'var(--am)':'var(--rd)';
+      var statusCls=a.hrStatus==='Shortlisted'?'bg-g':a.hrStatus==='Rejected'?'bg-r':a.hrStatus==='Needs Review'?'bg-o':'bg-s';
+      return '<div class="cv-card '+(a.hrStatus==='Rejected'?'rejected':a.hrStatus==='Shortlisted'?'shortlisted':'')+'" style="cursor:default;">'
+        +'<div style="display:flex;align-items:center;gap:12px;">'
+        +'<div style="width:46px;height:46px;border-radius:50%;background:'+col+'18;border:2.5px solid '+col+';display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:'+col+';font-family:\'DM Mono\',monospace;flex-shrink:0;">'+a.autoScore+'</div>'
+        +'<div style="flex:1;min-width:0;">'
+        +'<div style="font-size:14px;font-weight:700;color:var(--ink);">'+a.name+'</div>'
+        +'<div style="font-size:12px;color:var(--ink4);margin-top:2px;">'+a.qual+(a.spec?' · '+a.spec:'')+' · '+a.exp+'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink5);margin-top:1px;">📞 '+a.phone+(a.email?' · ✉ '+a.email:'')+'</div>'
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">'
+        +'<span class="badge '+statusCls+'">'+a.hrStatus+'</span>'
+        +'<span style="font-size:10.5px;color:var(--ink5);">'+new Date(a.appliedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+'</span>'
+        +'</div></div>'
+        // CV file + cover note
+        +(a.cvFileName&&a.cvFileName!=='Not uploaded'
+          ?'<div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 10px;background:var(--bl-l);border-radius:var(--r2);font-size:12.5px;color:var(--bl);">📎 '+a.cvFileName+'</div>'
+          :'<div style="margin-top:8px;padding:7px 10px;background:var(--am-l);border-radius:var(--r2);font-size:12px;color:var(--am);">⚠ CV not uploaded — candidate filled form only</div>')
+        +(a.cover?'<div style="margin-top:8px;padding:9px 11px;background:var(--s2);border-radius:var(--r2);font-size:12.5px;color:var(--ink3);font-style:italic;line-height:1.6;">💬 "'+a.cover.substring(0,160)+(a.cover.length>160?'…':'')+'"</div>':'')
+        // Skills
+        +(a.skills?'<div style="margin-top:8px;font-size:12px;color:var(--ink4);">🎯 '+a.skills+'</div>':'')
+        // Employer
+        +(a.employer?'<div style="font-size:12px;color:var(--ink5);margin-top:3px;">🏫 Previously at: '+a.employer+'</div>':'')
+        // Action buttons
+        +'<div style="display:flex;gap:7px;margin-top:12px;padding-top:10px;border-top:1px solid var(--s4);">'
+        +(a.hrStatus==='Pending Review'||a.hrStatus==='Needs Review'
+          ?'<button class="btn bp bsm" onclick="shortlistApp(\''+a.id+'\')">✓ Shortlist</button>'
+           +'<button class="btn bo bsm" onclick="rejectApp(\''+a.id+'\')">✗ Reject</button>'
+          :'')
+        +(a.hrStatus==='Shortlisted'&&!a.inviteSent
+          ?'<button class="btn bo bsm" onclick="sendInviteFromApp(\''+a.id+'\')">📧 Send Interview Invite</button>'
+          :'')
+        +(a.hrStatus==='Shortlisted'&&a.inviteSent
+          ?'<span style="font-size:11.5px;color:var(--tl);font-weight:600;">✓ Invite sent · '+new Date(a.inviteSentAt).toLocaleDateString('en-IN')+'</span>':'')
+        +(a.hrStatus==='Rejected'
+          ?'<button class="btn bo bsm" style="font-size:11px;" onclick="restoreApp(\''+a.id+'\')">↩ Undo Reject</button>':'')
+        +'<span style="margin-left:auto;font-size:11px;color:var(--ink5);">Ref: '+a.id+'</span>'
+        +'</div>'
+        +'</div>';
+    }).join('');
+
+    html+='<div class="card" style="margin-bottom:18px;">'
+      +'<div class="ch">'
+      +'<div><div class="ct">'+v.subj+' Teacher</div>'
+      +'<div style="font-size:12px;color:var(--ink4);margin-top:2px;">Requires: '+v.qual+' · '+v.exp+'</div></div>'
+      +'<div style="display:flex;gap:8px;align-items:center;">'
+      +'<span class="badge bg-s">'+apps.length+' applied</span>'
+      +(pending?'<span class="badge bg-o">'+pending+' pending</span>':'')
+      +(shortlisted?'<span class="badge bg-g">'+shortlisted+' shortlisted</span>':'')
+      +(rejected?'<span class="badge bg-r">'+rejected+' rejected</span>':'')
+      +'</div></div>'
+      +'<div class="cb">'+cards+'</div>'
+      +'</div>';
+  });
+
+  $('cv_body').innerHTML=html;
+}
+
+// ── Application actions ──
+function shortlistApp(appId){
+  if(!db.applications)return;
+  var a=db.applications.find(function(x){return x.id===appId;});
+  if(!a)return;
+  a.hrStatus='Shortlisted';
+  a.shortlistedAt=new Date().toISOString();
+  // Also create a candidate record so they appear in interview flow
+  var existing=db.candidates.find(function(c){return c.appId===appId;});
+  if(!existing){
+    var v=getVacancy(a.vacId)||{subj:'—'};
+    db.candidates.push({
+      id:genId('C'),appId:appId,vacId:a.vacId,
+      name:a.name,qual:a.qual+(a.spec?' · '+a.spec:''),
+      exp:a.exp,contact:a.phone+(a.email?' / '+a.email:''),
+      score:a.autoScore,status:'Shortlisted',
+      notes:a.cover||'',interviewId:null,interviewScheduled:null
+    });
+  }
+  SHAPE_DB.audit(db,'Application shortlisted',a.name+' → '+a.vacId);
+  SHAPE_DB.save(db);
+  toast(a.name+' shortlisted · Added to interview pipeline','s');
+  renderCVs(); updateBadges();
+}
+
+function rejectApp(appId){
+  if(!db.applications)return;
+  var a=db.applications.find(function(x){return x.id===appId;});
+  if(!a)return;
+  a.hrStatus='Rejected';
+  a.rejectedAt=new Date().toISOString();
+  SHAPE_DB.save(db);
+  toast(a.name+' application rejected','s');
+  renderCVs(); updateBadges();
+}
+
+function restoreApp(appId){
+  if(!db.applications)return;
+  var a=db.applications.find(function(x){return x.id===appId;});
+  if(!a)return;
+  a.hrStatus='Pending Review';
+  SHAPE_DB.save(db);
+  toast(a.name+' moved back to Pending Review','s');
+  renderCVs();
+}
+
+function sendInviteFromApp(appId){
+  if(!db.applications)return;
+  var a=db.applications.find(function(x){return x.id===appId;});
+  if(!a)return;
+  var v=getVacancy(a.vacId)||{subj:'—'};
+  a.inviteSent=true;
+  a.inviteSentAt=new Date().toISOString();
+  // Also update candidate record
+  var cand=db.candidates.find(function(c){return c.appId===appId;});
+  if(cand){
+    cand.interviewScheduled={date:'TBD',time:'TBD',notifiedAt:new Date().toISOString(),msgSent:true};
+    cand.status='Interview Scheduled';
+  }
+  if(!db.notifications)db.notifications=[];
+  db.notifications.push({
+    id:genId('N'),type:'interview_invite',
+    to:a.name,contact:a.phone||a.email||'—',
+    subject:'Interview Invitation — '+v.subj+' · Arete Model School',
+    msg:'Dear '+a.name.split(' ')[0]+', you have been shortlisted for '+v.subj+' Teacher at Arete Model School, Nadapuram. Please attend the interview — date and time will be communicated shortly. — HR, Arete Model School',
+    sentAt:new Date().toISOString(),appId:appId
+  });
+  SHAPE_DB.save(db);
+  toast('Interview invitation sent to '+a.name,'s');
+  renderCVs();
+}
+
+// Seed some demo applications if none exist
+function seedDemoApplications(){
+  if(!db.applications) db.applications=[];
+  if(db.applications.length>0) return; // already have some
+  if(!db.vacancies||!db.vacancies.length) return;
+  var vacId=db.vacancies[0].id;
+  db.applications=[
+    {id:'APP-10000001',vacId:vacId,name:'Meera Nair',dob:'1995-04-12',phone:'+91 94470 88001',email:'meera@gmail.com',address:'Kozhikode, Kerala',qual:'M.Sc + B.Ed',spec:'Mathematics',exp:'4 years',employer:'St. Joseph School, Kozhikode',skills:'Digital classroom tools, Malayalam medium, NEP 2020 trained',cover:'I am passionate about making Mathematics accessible and enjoyable for secondary students. I have 4 years of experience in CBSE schools and have completed a NEP 2020 orientation programme.',cvFileName:'Meera_Nair_CV.pdf',score:85,autoScore:85,status:'New',hrStatus:'Pending Review',appliedAt:new Date(Date.now()-2*86400000).toISOString()},
+    {id:'APP-10000002',vacId:vacId,name:'Rajan Pillai',dob:'1990-11-20',phone:'+91 94471 88002',email:'rajan.p@gmail.com',address:'Thrissur, Kerala',qual:'M.Sc + B.Ed',spec:'Mathematics',exp:'7 years',employer:'DPS Thrissur',skills:'IIT Foundation coaching, competitive exam prep, digital tools',cover:'7 years teaching Maths at CBSE schools. Have coached students for IIT Foundation successfully.',cvFileName:'Rajan_Pillai_Resume.pdf',score:90,autoScore:90,status:'New',hrStatus:'Pending Review',appliedAt:new Date(Date.now()-1*86400000).toISOString()},
+    {id:'APP-10000003',vacId:vacId,name:'Divya Thomas',dob:'1998-08-05',phone:'+91 94472 88003',email:'divya.t@gmail.com',address:'Malappuram, Kerala',qual:'B.Ed',spec:'Mathematics',exp:'fresher',employer:'',skills:'Enthusiastic fresher, completed B.Ed with distinction',cover:'Fresh graduate, keen to start my teaching career at a progressive school.',cvFileName:'Not uploaded',score:35,autoScore:35,status:'New',hrStatus:'Pending Review',appliedAt:new Date().toISOString()},
+  ];
+  SHAPE_DB.save(db);
+}
+
+// Remove openAddCV and saveCV (replaced by application flow)
+function openAddCV(){ window.open('shape_careers.html','_blank'); }
+function saveCV(){ /* replaced */ }
+
+
+// openAddCV replaced — candidates apply via shape_careers.html
+
+function openCVDetail(id){
+  _cvdCandId=id;
+  var c=getCandidate(id);if(!c)return;
+  var v=getVacancy(c.vacId)||{subj:'—'};
+  var intR=c.interviewId?getInterview(c.interviewId):null;
+  var col=sColor(c.score);
+  $('cvd_name').textContent=c.name;
+  $('cvd_meta').textContent=v.subj+' · '+c.qual+' · '+c.exp;
+  $('cvd_reject_btn').style.display=c.status==='Rejected'?'none':'';
+  var schBtn=document.getElementById('cvd_sched_btn');
+  if(schBtn){
+    if(c.interviewScheduled){
+      schBtn.textContent='📅 Reschedule Interview';
+      schBtn.style.background='var(--am)';
+    } else {
+      schBtn.textContent='📅 Schedule & Send Invite';
+      schBtn.style.background='var(--pu)';
+    }
+  }
+  var schBlock = '';
+  if(c.interviewScheduled){
+    var sch=c.interviewScheduled;
+    schBlock='<div style="background:var(--bl-l);border:1px solid var(--bl-m);border-radius:var(--r2);padding:11px 13px;margin-bottom:12px;">'
+      +'<div style="font-size:10px;font-weight:700;color:var(--bl);text-transform:uppercase;margin-bottom:5px;">📅 Interview Scheduled</div>'
+      +'<div style="font-size:13px;font-weight:700;color:var(--ink);">'+sch.date+' at '+sch.time+'</div>'
+      +'<div style="font-size:12.5px;color:var(--ink3);">Venue: '+sch.venue+' · Panel: '+(sch.panel||'—')+'</div>'
+      +'<div style="font-size:11.5px;color:var(--bl);margin-top:3px;">✓ Invitation sent to candidate at time of scheduling</div>'
+      +'</div>';
+  }
+  var notesBlock = c.notes
+    ? '<div style="background:var(--s2);border-radius:var(--r2);padding:12px;font-size:13px;color:var(--ink3);margin-bottom:12px;line-height:1.65;">📝 '+c.notes+'</div>'
+    : '';
+  var intBlock = '';
+  if(intR){
+    intBlock='<div style="background:var(--pu-l);border:1px solid var(--pu-m);border-radius:var(--r2);padding:12px;margin-bottom:12px;">'
+      +'<div style="font-size:10px;font-weight:700;color:var(--pu);text-transform:uppercase;margin-bottom:5px;">Interview Record</div>'
+      +'<div style="font-size:13px;font-weight:700;color:var(--ink);">Score: '+totalScore(intR.scores)+'/'+maxScore()+' · '+intR.decision+'</div>'
+      +'<div style="font-size:12.5px;color:var(--ink3);margin-top:3px;">'+intR.remarks+'</div>'
+      +'</div>';
+  }
+  var statusCls = c.status==='Shortlisted'?'bg-g':c.status==='Interview Scheduled'?'bg-b':c.status==='Recommended'?'bg-p':c.status==='Rejected'?'bg-r':'bg-s';
+  $('cvd_body').innerHTML=
+    '<div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--s2);border-radius:var(--r3);margin-bottom:14px;">'
+    +'<div style="width:60px;height:60px;border-radius:50%;background:'+col+'18;border:2px solid '+col+';display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:'+col+';font-family:\'DM Mono\',monospace;">'+c.score+'</div>'
+    +'<div style="flex:1;">'
+    +'<div style="font-size:22px;font-weight:800;color:var(--ink);">'+c.name+'</div>'
+    +'<div style="font-size:13px;color:var(--ink4);">'+v.subj+' · '+c.qual+' · '+c.exp+'</div>'
+    +'<div style="font-size:12px;color:var(--ink5);margin-top:2px;">'+(c.contact||'Contact not recorded')+'</div>'
+    +'</div>'
+    +'<span class="badge '+statusCls+'" style="font-size:13px;padding:5px 14px;">'+c.status+'</span>'
+    +'</div>'
+    +schBlock+notesBlock+intBlock;
+  openOv('ovCVDetail');
+}
+
+function rejectCV(){
+  if(!_cvdCandId)return;
+  var c=getCandidate(_cvdCandId);
+  if(!c)return;
+  c.status='Rejected';
+  SHAPE_DB.save(db);
+  closeOv('ovCVDetail');
+  toast(c.name+' marked as Rejected','s');
+  renderCVs(); updateBadges();
+}
+
+function scheduleInterviewFromCV(){
+  if(!_cvdCandId)return;
+  var c=getCandidate(_cvdCandId);
+  if(!c)return;
+  var v=getVacancy(c.vacId)||{subj:'—'};
+  // Mark candidate as interview scheduled + log notification
+  c.interviewScheduled={date:'TBD',time:'TBD',notifiedAt:new Date().toISOString(),msgSent:true};
+  c.status='Interview Scheduled';
+  if(!db.notifications)db.notifications=[];
+  db.notifications.push({
+    id:genId('N'),type:'interview_invite',
+    to:c.name,contact:c.contact||'—',
+    subject:'Interview Invitation — '+v.subj,
+    msg:'Dear '+c.name.split(' ')[0]+', you have been shortlisted for '+v.subj+' Teacher at Arete Model School, Nadapuram. Please attend the interview at a date and time to be communicated. Bring originals + photocopies of certificates. — HR, Arete Model School',
+    sentAt:new Date().toISOString(),candId:c.id
+  });
+  SHAPE_DB.audit(db,'Interview invitation sent',c.name+' · '+v.subj);
+  SHAPE_DB.save(db);
+  closeOv('ovCVDetail');
+  toast('✓ Invitation sent to '+c.name+' ('+( c.contact||'contact on file')+') · Status → Interview Scheduled','s');
+  renderCVs(); updateBadges();
+}
+
+// ══════════════════════════════════════════════════════
+// INTERVIEWS
+// ══════════════════════════════════════════════════════
+function buildScoreRows(scores){
+  scores = scores || {};
+  return db.checklist.map(cl=>{
+    var cur=scores[cl.id]||0;
+    return `<div class="score-row">
+      <div class="score-crit">${cl.crit}</div>
+      <div class="score-max">/ ${cl.max}</div>
+      <input type="number" class="fc" style="width:70px;padding:5px 8px;font-size:14px;font-family:'DM Mono',monospace;font-weight:700;text-align:center;"
+        min="0" max="${cl.max}" value="${cur}" data-clid="${cl.id}" oninput="updateLiveScore()">
+    </div>`;
+  }).join('');
+}
+
+function updateLiveScore(){
+  var inputs=$$('#int_score_rows input[type=number]');
+  var total=0, max=maxScore();
+  inputs.forEach(inp=>{total+=Math.min(parseInt(inp.value||0),parseInt(inp.max));});
+  var pct=max>0?Math.round(total/max*100):0;
+  var col=sColor(pct);
+  $('int_live_score').textContent=total;
+  $('int_live_score').style.color=col;
+  $('int_live_max').textContent='/ '+max;
+  $('int_score_display').textContent=total+' / '+max;
+  $('int_score_bar').style.width=pct+'%';
+  $('int_score_bar').style.background=col;
+}
+
+function openInterview(candId){
+  _intCandId=candId;
+  var c=candId?getCandidate(candId):null;
+  var existingRec=c&&c.interviewId?getInterview(c.interviewId):null;
+
+  $('int_cand_name').textContent=c?c.name:'—';
+  $('int_cand_meta').textContent=c?(getVacancy(c.vacId)?.subj+' · '+c.qual+' · '+c.exp):'';
+  $('int_modal_ttl').textContent=c?('Interview — '+c.name):'New Interview';
+  $('int_date').value=existingRec?existingRec.date:new Date().toISOString().slice(0,10);
+  var schedPanel=(c&&c.interviewScheduled)?c.interviewScheduled.panel:'Principal, HOD';
+  $('int_panel').value=existingRec?existingRec.panel:schedPanel;
+  $('int_remarks').value=existingRec?existingRec.remarks:'';
+  $('int_decision').value=existingRec?existingRec.decision:'Recommended';
+  $('int_score_rows').innerHTML=buildScoreRows(existingRec?existingRec.scores:{});
+  updateLiveScore();
+  openOv('ovInterview');
+}
+
+function saveInterview(){
+  var scores={};
+  $$('#int_score_rows input[type=number]').forEach(inp=>{scores[inp.dataset.clid]=Math.min(parseInt(inp.value||0),parseInt(inp.max));});
+  var total=totalScore(scores);
+  var remarks=$('int_remarks').value.trim();
+  var decision=$('int_decision').value;
+  var panel=$('int_panel').value;
+  var date=$('int_date').value;
+  if(!remarks){toast('Add interview observations/remarks','e');return;}
+
+  var cand=_intCandId?getCandidate(_intCandId):null;
+  var intId=cand&&cand.interviewId?cand.interviewId:genId('I');
+  var rec={id:intId,candId:_intCandId||null,vacId:cand?cand.vacId:null,date:date,panel:panel,scores:scores,remarks:remarks,decision:decision};
+
+  var idx=db.interviews.findIndex(i=>i.id===intId);
+  if(idx>-1)db.interviews[idx]=rec; else db.interviews.push(rec);
+
+  // Update candidate
+  if(cand){
+    cand.interviewId=intId;
+    cand.status=decision==='Recommended'?'Recommended':decision==='Rejected'?'Rejected':'Interview Done';
+  }
+
+  SHAPE_DB.audit(db,'Interview saved',(cand?cand.name:'—')+' · Score '+total+'/'+maxScore()+' · '+decision);
+  SHAPE_DB.save(db);
+  closeOv('ovInterview');
+  if(decision==='Recommended'){
+    toast('Interview saved · '+total+'/'+maxScore()+' · Recommended ✓ — Use "Hire" button on the interview card to onboard','s');
+  } else {
+    toast('Interview saved · '+total+'/'+maxScore()+' · '+decision,'s');
+  }
+  renderInterviews(); updateBadges();
+}
+
+function renderInterviews(){
+  var el = document.getElementById('int_body');
+  if(!el){ return; }
+  if(!db || !db.interviews || !db.interviews.length){
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:#9BAEC1;">'
+      +'<div style="font-size:32px;margin-bottom:12px;">🎙</div>'
+      +'<div style="font-size:15px;font-weight:700;color:#3D4F63;">No interviews recorded yet</div>'
+      +'<div style="font-size:13px;margin-top:6px;">Shortlist a candidate and use Start Interview.</div>'
+      +'</div>';
+    return;
+  }
+  var out = '';
+  for(var i=0; i<db.interviews.length; i++){
+    var iv = db.interviews[i];
+    var c = iv.candId ? getCandidate(iv.candId) : null;
+    var v = iv.vacId  ? getVacancy(iv.vacId)    : null;
+    var total = 0;
+    var mx = maxScore();
+    for(var k in iv.scores) total += (iv.scores[k]||0);
+    var pct = mx>0 ? Math.round(total/mx*100) : 0;
+    var col = pct>=85?'#0B7B6B':pct>=65?'#1A5FB4':pct>=50?'#C05A00':'#B91C1C';
+    var decCol = iv.decision==='Recommended'?'#0B7B6B':iv.decision==='Rejected'?'#B91C1C':'#C05A00';
+    var decBg  = iv.decision==='Recommended'?'#E6F5EF':iv.decision==='Rejected'?'#FEF2F2':'#FEF5E6';
+    var breakdown = '';
+    for(var j=0; j<db.checklist.length; j++){
+      var cl = db.checklist[j];
+      var got = iv.scores[cl.id]||0;
+      var w = Math.round(got/cl.max*100);
+      breakdown += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">'
+        +'<div style="font-size:12px;color:#3D4F63;flex:1;">'+cl.crit+'</div>'
+        +'<div style="width:80px;height:5px;background:#DCE4EC;border-radius:3px;overflow:hidden;">'
+        +'<div style="width:'+w+'%;height:100%;background:'+col+';border-radius:3px;"></div></div>'
+        +'<span style="font-size:11.5px;font-weight:700;min-width:32px;text-align:right;color:#1C2430;">'+got+'<span style="font-weight:400;color:#9BAEC1;">/'+cl.max+'</span></span>'
+        +'</div>';
+    }
+    var hireBtnId = 'hirebtn_'+iv.id;
+    var offerBtnId = 'offerbtn_'+iv.id;
+    var editBtnId2 = 'editint_'+iv.id;
+    var hireBtn = '';
+    if(c && iv.decision==='Recommended' && !c.hired){
+      hireBtn = '<button id="'+hireBtnId+'" style="padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;border:none;background:#5B21B6;color:#fff;">✓ Hire</button>';
+    } else if(c && c.hired){
+      hireBtn = '<span style="padding:2px 10px;border-radius:20px;font-size:10.5px;font-weight:700;background:#F5F3FF;color:#5B21B6;">✓ Hired</span>'
+               +'<button id="'+offerBtnId+'" style="padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid #DCE4EC;background:#fff;color:#3D4F63;">📄 Offer Letter</button>';
+    }
+    out += '<div style="background:#fff;border:1px solid #DCE4EC;border-radius:10px;margin-bottom:14px;overflow:hidden;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid #DCE4EC;background:#F5F8FA;flex-wrap:wrap;gap:8px;">'
+        +'<div>'
+          +'<div style="font-size:14px;font-weight:700;color:#0D1117;">'+(c?c.name:'&mdash;')+'<span style="font-weight:400;font-size:12px;color:#6B7E94;margin-left:6px;">&middot; '+(v?v.subj:'&mdash;')+'</span></div>'
+          +'<div style="font-size:12px;color:#6B7E94;margin-top:2px;">'+(iv.date||'')+(iv.panel?' &middot; '+iv.panel:'')+'</div>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
+          +'<div style="font-size:26px;font-weight:800;color:'+col+';">'+total+'<span style="font-size:14px;color:#9BAEC1;">/'+mx+'</span></div>'
+          +'<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:'+decBg+';color:'+decCol+';">'+iv.decision+'</span>'
+          +hireBtn
+          +'<button id="'+editBtnId2+'" style="padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid #DCE4EC;background:#fff;color:#3D4F63;">Edit</button>'
+        +'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'
+        +'<div style="padding:14px 18px;border-right:1px solid #EBF0F5;">'
+          +'<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Score Breakdown</div>'
+          +breakdown
+        +'</div>'
+        +'<div style="padding:14px 18px;">'
+          +'<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Remarks</div>'
+          +'<div style="font-size:13px;color:#1C2430;line-height:1.65;background:#F5F8FA;padding:11px;border-radius:6px;">'+(iv.remarks||'No remarks')+'</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
+  }
+  el.innerHTML = out;
+  // Attach button handlers
+  for(var i=0; i<db.interviews.length; i++){
+    (function(iv, c){
+      var hb = document.getElementById('hirebtn_'+iv.id);
+      if(hb && c) hb.onclick = function(){ openHireModal(c.id); };
+      var ob = document.getElementById('offerbtn_'+iv.id);
+      if(ob && c) ob.onclick = function(){ openOfferLetter(c.id); };
+      var eb = document.getElementById('editint_'+iv.id);
+      if(eb) eb.onclick = function(){ openInterview(c ? c.id : null); };
+    })(db.interviews[i], db.interviews[i].candId ? getCandidate(db.interviews[i].candId) : null);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// CHECKLIST EDITOR
+// ══════════════════════════════════════════════════════
+function openChecklistEditor(){
+  renderChecklistEditor();
+  openOv('ovChecklist');
+}
+
+function renderChecklistEditor(){
+  var total=maxScore();
+  $('cl_items_list').innerHTML=db.checklist.map((cl,i)=>`
+    <div class="cl-it" id="clit_${cl.id}">
+      <span class="cl-drag">⠿</span>
+      <span class="cl-crit">${cl.crit}</span>
+      <input type="number" class="fc cl-max" value="${cl.max}" min="1" max="100" style="width:56px;padding:5px 7px;font-size:13px;" data-clid="${cl.id}" oninput="updateClTotal()">
+      <button class="cl-del" onclick="removeChecklistItem('${cl.id}')">×</button>
+    </div>`).join('');
+  updateClTotal();
+}
+
+function updateClTotal(){
+  var total=Array.from($$('.cl-max')).reduce((a,inp)=>a+parseInt(inp.value||0),0);
+  $('cl_total_note').textContent='Total: '+total+(total!==100?' ⚠ Recommended to sum to 100':'');
+}
+
+function addChecklistItem(){
+  var crit=($('cl_new_crit')||{}).value.trim();
+  var max=parseInt(($('cl_new_max')||{}).value||25);
+  if(!crit){toast('Enter criterion name','e');return;}
+  db.checklist.push({id:genId('CL'),crit:crit,max:max});
+  $('cl_new_crit').value='';$('cl_new_max').value=25;
+  renderChecklistEditor();
+}
+
+function removeChecklistItem(id){
+  if(db.checklist.length<=1){toast('Need at least one criterion','e');return;}
+  db.checklist=db.checklist.filter(cl=>cl.id!==id);
+  renderChecklistEditor();
+}
+
+function saveChecklist(){
+  // Read back updated max values
+  $$('.cl-max').forEach(inp=>{
+    var cl=db.checklist.find(c=>c.id===inp.dataset.clid);
+    if(cl)cl.max=parseInt(inp.value||cl.max);
+  });
+  SHAPE_DB.save(db);
+  closeOv('ovChecklist');
+  toast('Interview checklist saved · '+db.checklist.length+' criteria · '+maxScore()+' total marks','s');
+}
+
+// ══════════════════════════════════════════════════════
+// TRAINING
+// ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+// TRAINING — SCHEDULE (planning phase) + ATTENDANCE (after phase)
+// ══════════════════════════════════════════════════════
+
+var _trStep = 1;
+var _markAttTrId = null;
+
+function toggleVenueZoom(){
+  var mode = ($('tr_mode')||{}).value;
+  var isOnline = mode==='online'||mode==='hybrid';
+  var zw = $('tr_zoom_wrap');
+  var vw = $('tr_venue_wrap');
+  if(zw) zw.style.display = isOnline ? '' : 'none';
+  if(vw) vw.style.display = mode==='online' ? 'none' : '';
+}
+
+function updateSessionMode(){
+  // If date is past, warn
+  var d = ($('tr_date')||{}).value;
+  if(d && new Date(d) < new Date()){
+    toast('This date is in the past — please schedule future sessions here. Use "Mark Attendance" on existing sessions to record attendance.','e');
+    $('tr_date').value = '';
+  }
+}
+
+function trGoStep(step){
+  _trStep = step;
+  var s1=$('tr_step1'), s2=$('tr_step2');
+  var nb=$('tr_next_btn'), sb=$('tr_save_btn'), bb=$('tr_back_btn');
+  var t1=$('tr_step1_tab'), t2=$('tr_step2_tab');
+  if(step===2){
+    // Validate step 1
+    var title=($('tr_title')||{}).value.trim();
+    var date=($('tr_date')||{}).value;
+    if(!title){toast('Enter a session title','e');return;}
+    if(!date){toast('Select a date','e');return;}
+    var mode=($('tr_mode')||{}).value;
+    if((mode==='online'||mode==='hybrid')&&!($('tr_link')||{}).value.trim()){
+      toast('Enter the meeting link for online sessions','e');return;
+    }
+    if(s1)s1.style.display='none';
+    if(s2)s2.style.display='';
+    if(nb)nb.style.display='none';
+    if(sb)sb.style.display='';
+    if(bb)bb.style.display='';
+    t1.style.background='var(--s3)';t1.style.color='var(--ink4)';
+    t2.style.background='var(--tl)';t2.style.color='#fff';
+    buildInviteList(_editTrId ? (db.training.find(t=>t.id===_editTrId)||{}).invitees||[] : []);
+  } else {
+    if(s1)s1.style.display='';
+    if(s2)s2.style.display='none';
+    if(nb)nb.style.display='';
+    if(sb)sb.style.display='none';
+    if(bb)bb.style.display='none';
+    t1.style.background='var(--tl)';t1.style.color='#fff';
+    t2.style.background='var(--s3)';t2.style.color='var(--ink4)';
+  }
+}
+
+function buildInviteList(preSelected){
+  preSelected = preSelected||[];
+  var html = db.staff.map(function(s){
+    var sel = preSelected.indexOf(s.id)>-1||!preSelected.length;
+    var tr = db.training.filter(function(t){return (t.invitees||[]).indexOf(s.id)>-1;}).length;
+    return '<div class="att-item '+(sel?'yes':'')+'" id="inv_'+s.id+'" onclick="toggleInvite(\''+s.id+'\')" style="cursor:pointer;">'
+      +'<div><div class="att-name">'+s.name+'</div><div class="att-sub">'+s.subj+' · '+tr+' sessions attended so far</div></div>'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<div style="width:18px;height:18px;border-radius:50%;border:2px solid '+(sel?'var(--tl)':'var(--s5)')+';background:'+(sel?'var(--tl)':'transparent')+';display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;" id="inv_chk_'+s.id+'">'+(sel?'✓':'')+'</div>'
+      +'<span style="font-size:12px;font-weight:600;color:'+(sel?'var(--tl)':'var(--ink5)')+'" id="inv_lbl_'+s.id+'">'+(sel?'Invited':'Not invited')+'</span>'
+      +'</div></div>';
+  }).join('');
+  $('tr_invite_list').innerHTML = html;
+  updateInviteSummary();
+}
+
+function toggleInvite(id){
+  var row=$('inv_'+id);
+  var chk=$('inv_chk_'+id);
+  var lbl=$('inv_lbl_'+id);
+  var on = row.classList.contains('yes');
+  var next = !on;
+  row.classList.toggle('yes', next);
+  if(chk){chk.style.background=next?'var(--tl)':'transparent';chk.style.borderColor=next?'var(--tl)':'var(--s5)';chk.textContent=next?'✓':'';}
+  if(lbl){lbl.textContent=next?'Invited':'Not invited';lbl.style.color=next?'var(--tl)':'var(--ink5)';}
+  updateInviteSummary();
+}
+
+function selectAllStaff(){ db.staff.forEach(function(s){var r=$('inv_'+s.id);if(r&&!r.classList.contains('yes'))toggleInvite(s.id);}); }
+function clearAllStaff(){  db.staff.forEach(function(s){var r=$('inv_'+s.id);if(r&&r.classList.contains('yes'))toggleInvite(s.id);}); }
+
+function updateInviteSummary(){
+  var sel = db.staff.filter(function(s){var r=$('inv_'+s.id);return r&&r.classList.contains('yes');});
+  var el=$('tr_invite_summary');
+  if(!el)return;
+  var mode=($('tr_mode')||{}).value||'physical';
+  var isOnline=mode==='online'||mode==='hybrid';
+  var link=($('tr_link')||{}).value||'';
+  el.innerHTML = '<strong>'+sel.length+' staff invited:</strong> '
+    +sel.map(function(s){return s.name;}).join(', ')
+    +(isOnline&&link?'<br><br>📧 They will each receive: Session title, date/time, and the meeting link <strong>'+link+'</strong>':'')
+    +(mode==='physical'?'<br><br>📍 They will receive: Session title, date/time, and venue <strong>'+($('tr_venue')||{}).value+'</strong>':'');
+}
+
+function openTrainingModal(id){
+  _editTrId = id;
+  _trStep = 1;
+  // Reset to step 1
+  trGoStep(1);
+  if(id){
+    var t=db.training.find(function(x){return x.id===id;});
+    if(!t)return;
+    $('tr_modal_ttl').textContent='Edit Scheduled Session';
+    $('tr_modal_sub').textContent='Update session details · invites will be re-sent on save';
+    $('tr_title').value=t.title;
+    $('tr_date').value=t.date;
+    $('tr_time').value=t.time||'10:00';
+    $('tr_dur').value=t.duration;
+    $('tr_venue').value=t.venue||'';
+    $('tr_trainer').value=t.trainer;
+    $('tr_topics').value=t.topics.join('\n');
+    $('tr_prereading').value=t.prereading||'';
+    $('tr_mode').value=t.mode||'physical';
+    $('tr_platform').value=t.platform||'zoom';
+    $('tr_link').value=t.link||'';
+    $('tr_meeting_id').value=t.meetingId||'';
+    $('tr_passcode').value=t.passcode||'';
+    toggleVenueZoom();
+  } else {
+    $('tr_modal_ttl').textContent='Schedule Training Session';
+    $('tr_modal_sub').textContent='Plan the session — assign staff who should attend — invite links generated automatically';
+    ['tr_title','tr_date','tr_venue','tr_trainer','tr_topics','tr_prereading','tr_link','tr_meeting_id','tr_passcode'].forEach(function(fid){var el=$(fid);if(el)el.value='';});
+    $('tr_time').value='10:00';
+    $('tr_mode').value='physical';
+    toggleVenueZoom();
+  }
+  openOv('ovTraining');
+}
+
+function saveTraining(){
+  var title=($('tr_title')||{}).value.trim();
+  var date=($('tr_date')||{}).value;
+  if(!title||!date){toast('Title and date required','e');return;}
+
+  // Collect invitees
+  var invitees=db.staff.filter(function(s){
+    var r=$('inv_'+s.id);return r&&r.classList.contains('yes');
+  }).map(function(s){return s.id;});
+
+  if(!invitees.length){toast('Select at least one staff member to invite','e');return;}
+
+  var mode=($('tr_mode')||{}).value||'physical';
+  var topics=($('tr_topics').value||'').split('\n').map(function(t){return t.trim();}).filter(Boolean);
+
+  var rec={
+    id: _editTrId||genId('TR'),
+    title:title, date:date, time:$('tr_time').value||'10:00',
+    duration:$('tr_dur').value,
+    mode:mode,
+    venue:$('tr_venue').value||'',
+    link:$('tr_link').value||'',
+    platform:$('tr_platform').value||'',
+    meetingId:$('tr_meeting_id').value||'',
+    passcode:$('tr_passcode').value||'',
+    trainer:$('tr_trainer').value||'',
+    prereading:$('tr_prereading').value||'',
+    topics:topics.length?topics:['TBC'],
+    invitees:invitees,
+    attendance:{},   // empty — filled separately after session
+    status:'Scheduled'
+  };
+
+  if(_editTrId){
+    var idx=db.training.findIndex(function(t){return t.id===_editTrId;});
+    if(idx>-1)db.training[idx]=rec; else db.training.push(rec);
+  } else {
+    db.training.push(rec);
+  }
+
+  SHAPE_DB.audit(db,'Training scheduled', title+' · '+date+' · '+invitees.length+' invited');
+  SHAPE_DB.save(db);
+  closeOv('ovTraining');
+
+  // Simulate sending invites
+  var isOnline=mode==='online'||mode==='hybrid';
+  var invNames=invitees.map(function(id){return SHAPE_DB.getStaffName(db,id);});
+  toast('Session scheduled · Invite sent to: '+invNames.slice(0,3).join(', ')+(invNames.length>3?'…and '+(invNames.length-3)+' more':''),'s');
+  renderTraining(); updateBadges();
+}
+
+// Attendance marking — separate from scheduling
+function openAttendance(trId){
+  _markAttTrId = trId;
+  var t = db.training.find(function(x){return x.id===trId;});
+  if(!t)return;
+  $('att_modal_ttl').textContent = 'Mark Attendance — '+t.title;
+  $('att_modal_sub').textContent = t.date+' · '+t.time+' · '+t.duration+(t.venue?' · '+t.venue:'');
+
+  var isOnline = t.mode==='online'||t.mode==='hybrid';
+  $('att_session_info').innerHTML =
+    '<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;">'+t.title+'</div>'
+    +'<div style="font-size:12.5px;color:var(--ink4);">'+t.date+' at '+t.time+' · '+t.duration+'</div>'
+    +(isOnline?'<div style="font-size:12px;color:var(--bl);margin-top:4px;">🔗 '+t.platform+' · '+t.link+'</div>':'')
+    +(t.trainer?'<div style="font-size:12px;color:var(--ink4);margin-top:2px;">Trainer: '+t.trainer+'</div>':'');
+
+  // Only show invited staff
+  var invited = (t.invitees||db.staff.map(function(s){return s.id;}));
+  var invitedStaff = db.staff.filter(function(s){return invited.indexOf(s.id)>-1;});
+
+  var html = invitedStaff.map(function(s){
+    var att = (t.attendance||{})[s.id]||null;
+    return '<div class="att-item '+(att==='present'?'yes':att==='absent'?'no':'')+'" id="matt_'+s.id+'">'
+      +'<div><div class="att-name">'+s.name+'</div><div class="att-sub">'+s.subj+'</div></div>'
+      +'<div style="display:flex;gap:6px;">'
+      +'<button class="att-toggle '+(att==='present'?'present':'absent')+'" onclick="markAtt(\''+s.id+'\',\'present\')" id="matt_p_'+s.id+'" style="background:'+(att==='present'?'var(--tl)':'var(--s4)')+';color:'+(att==='present'?'#fff':'var(--ink4)')+';">✓ Present</button>'
+      +'<button class="att-toggle '+(att==='absent'?'present':'absent')+'" onclick="markAtt(\''+s.id+'\',\'absent\')" id="matt_a_'+s.id+'" style="background:'+(att==='absent'?'var(--rd)':'var(--s4)')+';color:'+(att==='absent'?'#fff':'var(--ink4)')+';">✗ Absent</button>'
+      +'</div></div>';
+  }).join('');
+  $('att_list').innerHTML = html;
+  openOv('ovAttendance');
+}
+
+function markAtt(staffId, val){
+  var row=$('matt_'+staffId);
+  var pBtn=$('matt_p_'+staffId);
+  var aBtn=$('matt_a_'+staffId);
+  var cur=row.classList.contains('yes')?'present':row.classList.contains('no')?'absent':null;
+  var next=cur===val?null:val;
+  row.classList.toggle('yes',next==='present');
+  row.classList.toggle('no',next==='absent');
+  pBtn.style.background=next==='present'?'var(--tl)':'var(--s4)';pBtn.style.color=next==='present'?'#fff':'var(--ink4)';
+  aBtn.style.background=next==='absent'?'var(--rd)':'var(--s4)';aBtn.style.color=next==='absent'?'#fff':'var(--ink4)';
+}
+
+function saveAttendance(){
+  var t=db.training.find(function(x){return x.id===_markAttTrId;});
+  if(!t){toast('Session not found','e');return;}
+  var att={};
+  var invited=(t.invitees||db.staff.map(function(s){return s.id;}));
+  db.staff.filter(function(s){return invited.indexOf(s.id)>-1;}).forEach(function(s){
+    var row=$('matt_'+s.id);
+    if(!row)return;
+    att[s.id]=row.classList.contains('yes')?'present':row.classList.contains('no')?'absent':null;
+  });
+  t.attendance=att;
+  t.status='Completed';
+  // Update staff training count
+  var alreadyCounted=t._attendanceCounted||false;
+  if(!alreadyCounted){
+    db.staff.forEach(function(s){if(att[s.id]==='present')s.trainings=(s.trainings||0)+1;});
+    t._attendanceCounted=true;
+  }
+  SHAPE_DB.save(db);
+  closeOv('ovAttendance');
+  var pCnt=Object.values(att).filter(function(v){return v==='present';}).length;
+  toast('Attendance saved · '+pCnt+' present · Growth records updated','s');
+  renderTraining();
+}
+
+
+function renderTraining(){
+  var el = document.getElementById('tr_body');
+  if(!el){ return; }
+  if(!db || !db.training || !db.training.length){
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:#9BAEC1;">'
+      +'<div style="font-size:32px;margin-bottom:12px;">🎓</div>'
+      +'<div style="font-size:15px;font-weight:700;color:#3D4F63;">No training sessions yet</div>'
+      +'<div style="font-size:13px;margin-top:6px;">Click + Schedule Session to add one.</div>'
+      +'</div>';
+    return;
+  }
+  var sorted = db.training.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  var out = '';
+  for(var i=0; i<sorted.length; i++){
+    var t = sorted[i];
+    var att = t.attendance || {};
+    var invited = t.invitees || db.staff.map(function(s){ return s.id; });
+    var invStaff = [];
+    for(var j=0; j<db.staff.length; j++){
+      if(invited.indexOf(db.staff[j].id) > -1) invStaff.push(db.staff[j]);
+    }
+    var presentList=[], absentList=[];
+    for(var j=0; j<invStaff.length; j++){
+      if(att[invStaff[j].id]==='present') presentList.push(invStaff[j]);
+      else if(att[invStaff[j].id]==='absent') absentList.push(invStaff[j]);
+    }
+    var pills = '';
+    for(var k=0; k<(t.topics||[]).length; k++){
+      pills += '<span style="display:inline-flex;padding:2px 10px;background:#E6F5EF;color:#0B7B6B;border-radius:20px;font-size:11px;font-weight:600;margin:2px;">'+t.topics[k]+'</span>';
+    }
+    var isDone = t.status==='Completed' || Object.keys(att).length > 0;
+    var attHtml = '';
+    if(isDone){
+      attHtml += presentList.length ? '<div style="font-size:11px;color:#0B7B6B;font-weight:700;margin-bottom:4px;">Present ('+presentList.length+')</div>' : '';
+      for(var j=0; j<presentList.length; j++) attHtml += '<div style="font-size:12.5px;color:#3D4F63;padding:3px 0;">&#10003; '+presentList[j].name+'</div>';
+      attHtml += absentList.length ? '<div style="font-size:11px;color:#B91C1C;font-weight:700;margin-top:6px;margin-bottom:4px;">Absent ('+absentList.length+')</div>' : '';
+      for(var j=0; j<absentList.length; j++) attHtml += '<div style="font-size:12.5px;color:#6B7E94;padding:3px 0;">&#10007; '+absentList[j].name+'</div>';
+      if(!presentList.length && !absentList.length) attHtml = '<div style="font-size:12.5px;color:#9BAEC1;">No attendance marked</div>';
+    } else {
+      attHtml = '<div style="font-size:11px;color:#1A5FB4;font-weight:700;margin-bottom:6px;">Invited ('+invStaff.length+')</div>';
+      for(var j=0; j<invStaff.length; j++) attHtml += '<div style="font-size:12.5px;color:#3D4F63;padding:3px 0;">📧 '+invStaff[j].name+'</div>';
+      attHtml += '<div style="font-size:11px;color:#9BAEC1;margin-top:6px;">Attendance to be marked after session</div>';
+    }
+    var isPast = t.date && new Date(t.date) < new Date();
+    var attBtnId = 'attbtn_'+t.id;
+    var editBtnId = 'editbtn_'+t.id;
+    var statusColor = isDone ? '#0B7B6B' : '#1A5FB4';
+    var statusBg = isDone ? '#E6F5EF' : '#EBF1FB';
+    out += '<div style="background:#fff;border:1px solid #DCE4EC;border-radius:10px;margin-bottom:14px;overflow:hidden;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid #DCE4EC;background:#F5F8FA;flex-wrap:wrap;gap:8px;">'
+        +'<div>'
+          +'<div style="font-size:14px;font-weight:700;color:#0D1117;">'+t.title+'</div>'
+          +'<div style="font-size:12px;color:#6B7E94;margin-top:2px;">'+(t.date||'')+(t.time?' at '+t.time:'')+' &middot; '+(t.duration||'')+' &middot; '+(t.trainer||'')+'</div>'
+        +'</div>'
+        +'<div style="display:flex;gap:6px;align-items:center;">'
+          +'<span style="padding:2px 10px;border-radius:20px;font-size:10.5px;font-weight:700;background:'+statusBg+';color:'+statusColor+'">'+(t.status||'Scheduled')+'</span>'
+          +'<button id="'+editBtnId+'" style="padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid #DCE4EC;background:#fff;color:#3D4F63;">Edit</button>'
+          +(isDone||isPast?'<button id="'+attBtnId+'" style="padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;border:none;background:#0B7B6B;color:#fff;">'+(isDone?'View':'Mark')+' Attendance</button>':'')
+        +'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'
+        +'<div style="padding:14px 18px;border-right:1px solid #EBF0F5;">'
+          +'<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Topics</div>'
+          +(pills||'<span style="color:#9BAEC1;font-size:12.5px;">No topics listed</span>')
+        +'</div>'
+        +'<div style="padding:14px 18px;">'
+          +'<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">'+(isDone?'Attendance':'Invited Staff')+'</div>'
+          +attHtml
+        +'</div>'
+      +'</div>'
+    +'</div>';
+  }
+  el.innerHTML = out;
+  // Attach button handlers after render
+  for(var i=0; i<sorted.length; i++){
+    (function(t){
+      var eb = document.getElementById('editbtn_'+t.id);
+      if(eb) eb.onclick = function(){ openTrainingModal(t.id); };
+      var ab = document.getElementById('attbtn_'+t.id);
+      if(ab) ab.onclick = function(){ openAttendance(t.id); };
+    })(sorted[i]);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// GROWTH TRACKER
+// ══════════════════════════════════════════════════════
+function renderGrowth(){
+  var el = document.getElementById('gr_body');
+  if(!el){ return; }
+  if(!db || !db.staff || !db.staff.length){
+    el.innerHTML = '<p style="padding:32px;color:#6B7E94;">No staff records yet.</p>';
+    return;
+  }
+  var out = '';
+  var colors = ['#0B7B6B','#1A5FB4','#5B21B6','#C05A00','#B91C1C'];
+  for(var i=0; i<db.staff.length; i++){
+    var s = db.staff[i];
+    var col = colors[i % colors.length];
+    var ratings = (s.ratings && s.ratings.length) ? s.ratings : [4.0];
+    var latest = ratings[ratings.length-1];
+    var prev = ratings.length > 1 ? ratings[ratings.length-2] : latest;
+    var trend = latest > prev ? '↑ Improving' : latest < prev ? '↓ Declining' : '→ Stable';
+    var trendCol = latest > prev ? '#0B7B6B' : latest < prev ? '#B91C1C' : '#C05A00';
+    var pct = Math.round(latest / 5 * 100);
+    var scoreCol = pct>=85?'#0B7B6B':pct>=65?'#1A5FB4':pct>=50?'#C05A00':'#B91C1C';
+    var initials = s.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    var myTraining = [];
+    var absCount = 0;
+    for(var t=0; t<db.training.length; t++){
+      var att = db.training[t].attendance || {};
+      if(att[s.id]==='present') myTraining.push(db.training[t]);
+      if(att[s.id]==='absent') absCount++;
+    }
+    var bars = '';
+    for(var r=0; r<ratings.length; r++){
+      var rw = Math.round(ratings[r]/5*100);
+      var rc = rw>=85?'#0B7B6B':rw>=65?'#1A5FB4':'#C05A00';
+      bars += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">'
+        + '<span style="font-size:10px;color:#9BAEC1;font-family:monospace;width:32px;">'+(2022+r)+'</span>'
+        + '<div style="flex:1;height:7px;background:#DCE4EC;border-radius:4px;overflow:hidden;">'
+        + '<div style="width:'+rw+'%;height:100%;background:'+rc+';border-radius:4px;"></div></div>'
+        + '<span style="font-size:11px;font-weight:700;color:#1C2430;min-width:24px;">'+ratings[r]+'</span>'
+        + '</div>';
+    }
+    var trItems = '';
+    for(var k=Math.max(0,myTraining.length-3); k<myTraining.length; k++){
+      trItems += '<div style="font-size:12px;color:#3D4F63;padding:4px 0;border-bottom:1px solid #EBF0F5;">✓ '
+        +myTraining[k].title.substring(0,40)+'&hellip; <span style="color:#9BAEC1;">'+myTraining[k].date+'</span></div>';
+    }
+    if(!trItems) trItems = '<div style="font-size:12px;color:#9BAEC1;">No sessions attended yet</div>';
+    var concernBox = s.concerns
+      ? '<div style="margin-top:10px;padding:9px;background:#FEF5E6;border-radius:6px;font-size:12px;color:#C05A00;">⚡ Concerns flagged</div>'
+      : '<div style="margin-top:10px;padding:9px;background:#E6F5EF;border-radius:6px;font-size:12px;color:#0B7B6B;">✓ No concerns</div>';
+    out += '<div style="background:#fff;border:1px solid #DCE4EC;border-radius:10px;margin-bottom:14px;overflow:hidden;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid #DCE4EC;background:#F5F8FA;">'
+        + '<div style="display:flex;align-items:center;gap:12px;">'
+          + '<div style="width:40px;height:40px;border-radius:50%;background:'+col+'22;border:2px solid '+col+';color:'+col+';font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;">'+initials+'</div>'
+          + '<div>'
+            + '<div style="font-size:14px;font-weight:700;color:#0D1117;">'+s.name+'</div>'
+            + '<div style="font-size:12px;color:#6B7E94;">'+s.subj+' &middot; '+(s.trainings||myTraining.length)+' training sessions</div>'
+          + '</div>'
+        + '</div>'
+        + '<div style="text-align:right;">'
+          + '<div style="font-size:22px;font-weight:800;color:'+scoreCol+';">'+latest+'<span style="font-size:12px;color:#9BAEC1;">/5</span></div>'
+          + '<div style="font-size:11px;font-weight:600;color:'+trendCol+';">'+trend+'</div>'
+        + '</div>'
+      + '</div>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'
+        + '<div style="padding:14px 18px;border-right:1px solid #EBF0F5;">'
+          + '<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Year-on-Year Performance</div>'
+          + bars
+          + (absCount ? '<div style="margin-top:8px;font-size:12px;color:#C05A00;">⚠ '+absCount+' absences</div>' : '')
+        + '</div>'
+        + '<div style="padding:14px 18px;">'
+          + '<div style="font-size:10px;font-weight:700;color:#6B7E94;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Training Attended</div>'
+          + trItems
+          + concernBox
+        + '</div>'
+      + '</div>'
+    + '</div>';
+  }
+  el.innerHTML = out;
+}
+
+
+// ── Interview Picker ──────────────────────────
+function openInterviewPicker(){
+  var el=$('ip_vac');
+  if(!el){toast('Picker not found in DOM','e');return;}
+  // All candidates who can be interviewed (shortlisted or scheduled)
+  var eligible=db.candidates.filter(function(c){
+    return c.status==='Shortlisted'||c.status==='Interview Scheduled'||c.status==='Interview Done';
+  });
+  var vacIds=[...new Set(eligible.map(function(c){return c.vacId;}))];
+  el.innerHTML='<option value="">All Vacancies</option>'
+    +vacIds.map(function(id){
+      var v=getVacancy(id)||{subj:id};
+      return '<option value="'+id+'">'+v.subj+'</option>';
+    }).join('');
+  populateIPCandidates(eligible);
+  $('ip_preview').style.display='none';
+  openOv('ovIntPicker');
+}
+
+function populateIPCandidates(eligible){
+  var vacId=($('ip_vac')||{}).value||'';
+  if(!eligible)eligible=db.candidates.filter(function(c){
+    return c.status==='Shortlisted'||c.status==='Interview Scheduled'||c.status==='Interview Done';
+  });
+  var list=eligible.filter(function(c){return !vacId||c.vacId===vacId;});
+  var sel=$('ip_cand');
+  if(!sel)return;
+  sel.innerHTML='<option value="">— Select candidate sitting in front of you —</option>'
+    +list.map(function(c){
+      var v=getVacancy(c.vacId)||{subj:'—'};
+      var tag=c.interviewId?' [Re-interview]':c.status==='Interview Scheduled'?' [Invited]':'';
+      return '<option value="'+c.id+'">'+c.name+' · '+v.subj+tag+'</option>';
+    }).join('');
+  if(!list.length)sel.innerHTML='<option value="">No shortlisted candidates — go to CV Shortlisting first</option>';
+  $('ip_preview').style.display='none';
+}
+
+function showIPPreview(){
+  var candId=($('ip_cand')||{}).value;
+  var preview=$('ip_preview'), body=$('ip_preview_body');
+  if(!preview||!body)return;
+  if(!candId){preview.style.display='none';return;}
+  var c=getCandidate(candId);
+  if(!c){preview.style.display='none';return;}
+  var v=getVacancy(c.vacId)||{subj:'—'};
+  var col=sColor(c.score);
+  var intRec=c.interviewId?getInterview(c.interviewId):null;
+  preview.style.display='';
+  body.innerHTML=
+    '<div style="display:flex;gap:14px;align-items:center;margin-bottom:12px;">'
+    +'<div style="width:48px;height:48px;border-radius:50%;background:'+col+'18;border:2px solid '+col+';display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:'+col+';font-family:\'DM Mono\',monospace;flex-shrink:0;">'+c.score+'</div>'
+    +'<div>'
+    +'<div style="font-size:16px;font-weight:800;color:var(--ink);">'+c.name+'</div>'
+    +'<div style="font-size:12.5px;color:var(--ink4);">'+v.subj+' · '+c.qual+' · '+c.exp+'</div>'
+    +(c.contact?'<div style="font-size:11.5px;color:var(--ink5);">'+c.contact+'</div>':'')
+    +'</div>'
+    +'<span class="badge '+(c.status==='Interview Scheduled'?'bg-b':'bg-g')+'" style="margin-left:auto;">'+c.status+'</span>'
+    +'</div>'
+    +(intRec
+      ?'<div style="padding:9px 12px;background:var(--am-l);border-radius:var(--r2);font-size:12px;color:var(--am);">⚠ Already interviewed · Score '+totalScore(intRec.scores)+'/'+maxScore()+' · '+intRec.decision+'. Proceeding will allow you to record a new interview.</div>'
+      :'<div style="padding:9px 12px;background:var(--tl-l);border-radius:var(--r2);font-size:12px;color:var(--tl);">✓ Ready — open the interview sheet to begin scoring.</div>');
+}
+
+function startInterviewFromPicker(){
+  var candId=($('ip_cand')||{}).value;
+  if(!candId){toast('Select the candidate sitting in front of you','e');return;}
+  closeOv('ovIntPicker');
+  openInterview(candId);
+}
+
+
+
+// ── Offer Letter Generator ─────────────────────
+function openOfferLetter(candId){
+  var c = getCandidate(candId);
+  if(!c||!c.offerLetter){ toast('Offer letter data not found','e'); return; }
+  var ol = c.offerLetter;
+  var v  = getVacancy(ol.vacId)||{subj:ol.post,qual:'—',exp:'—'};
+
+  // Format date nicely
+  function fmtDate(d){
+    if(!d)return '—';
+    var dt=new Date(d);
+    return dt.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  }
+  function numToWords(n){
+    var ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+      'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+    var tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+    if(n===0)return 'Zero';
+    if(n<20)return ones[n];
+    if(n<100)return tens[Math.floor(n/10)]+(n%10?' '+ones[n%10]:'');
+    if(n<1000)return ones[Math.floor(n/100)]+' Hundred'+(n%100?' '+numToWords(n%100):'');
+    if(n<100000)return numToWords(Math.floor(n/1000))+' Thousand'+(n%1000?' '+numToWords(n%1000):'');
+    if(n<10000000)return numToWords(Math.floor(n/100000))+' Lakh'+(n%100000?' '+numToWords(n%100000):'');
+    return numToWords(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+numToWords(n%10000000):'');
+  }
+  var salWords = numToWords(ol.salary)+' Only';
+  var annual   = ol.salary * 12;
+
+  var letterHTML = `<!DOCTYPE html>
+<\/html>
+<\/head>
+<meta charset="UTF-8">
+<title>Offer Letter — ${ol.name}</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+\u003cstyle>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:#D4C8B8;}
+  body{font-family:'EB Garamond',Georgia,serif;color:#1A1A1A;background:#FFFEF9;
+    width:210mm;min-height:297mm;margin:12mm auto;padding:0;
+    box-shadow:0 4px 40px rgba(0,0,0,.18);position:relative;}
+
+  /* Letterhead */
+  .lh{padding:0;border-bottom:3px solid #0B5940;position:relative;overflow:hidden;}
+  .lh-top{background:linear-gradient(135deg,#0B5940 0%,#0B7B5E 100%);padding:22px 32px 18px;display:flex;align-items:center;gap:22px;}
+  .lh-seal{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.12);
+    border:2.5px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-size:26px;font-weight:800;color:#fff;letter-spacing:-1px;font-family:'Inter',sans-serif;}
+  .lh-name{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1;}
+  .lh-tagline{font-size:11.5px;color:rgba(255,255,255,.7);margin-top:4px;font-family:'Inter',sans-serif;font-style:italic;}
+  .lh-address{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:5px;font-family:'Inter',sans-serif;}
+  .lh-bottom{background:#F7F5F0;padding:9px 32px;display:flex;justify-content:space-between;align-items:center;}
+  .lh-contact{font-size:10px;color:#5A6E65;font-family:'Inter',sans-serif;}
+  .lh-affl{font-size:10px;color:#5A6E65;font-family:'Inter',sans-serif;text-align:right;}
+  .lh-stripe{height:4px;background:linear-gradient(90deg,#0B5940,#4CAF82,#F4C842,#0B5940);}
+
+  /* Doc meta bar */
+  .meta-bar{padding:14px 32px 12px;border-bottom:1px solid #DDD8C8;display:flex;justify-content:space-between;align-items:baseline;}
+  .doc-type{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#8A7A60;}
+  .ref-no{font-family:'Inter',sans-serif;font-size:10px;color:#8A7A60;}
+
+  /* Body */
+  .body{padding:28px 40px 0;}
+  .date-line{font-size:13.5px;color:#3A3A3A;margin-bottom:22px;}
+  .to-block{margin-bottom:20px;}
+  .to-label{font-size:10px;font-weight:700;font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:1.5px;color:#8A7A60;margin-bottom:4px;}
+  .to-name{font-size:16px;font-weight:600;color:#1A1A1A;}
+  .to-detail{font-size:13px;color:#5A5A5A;line-height:1.7;}
+
+  .subject-line{font-size:14px;font-weight:700;margin:20px 0 18px;padding:10px 16px;
+    background:linear-gradient(135deg,#F0F8F4,#E8F5F0);
+    border-left:4px solid #0B5940;border-radius:0 6px 6px 0;font-family:'Inter',sans-serif;}
+  .subject-line span{color:#0B5940;}
+
+  .salutation{font-size:14.5px;margin-bottom:14px;}
+  p.body-text{font-size:14px;line-height:1.85;color:#2A2A2A;margin-bottom:13px;text-align:justify;}
+
+  /* Terms table */
+  .terms-heading{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;
+    letter-spacing:1.5px;color:#0B5940;margin:22px 0 10px;padding-bottom:6px;border-bottom:1.5px solid #0B5940;}
+  .terms-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+  .terms-table tr:nth-child(even) td{background:#F7F5F0;}
+  .terms-table td{padding:9px 14px;font-size:13.5px;border-bottom:1px solid #E8E0D0;vertical-align:top;}
+  .terms-table td:first-child{font-weight:600;color:#1A1A1A;width:42%;font-family:'Inter',sans-serif;font-size:12px;}
+  .terms-table td:last-child{color:#3A3A3A;}
+  .salary-highlight{font-size:15px;font-weight:700;color:#0B5940;}
+  .salary-words{font-size:11.5px;color:#5A6E65;font-style:italic;}
+
+  /* Conditions */
+  .cond-list{padding-left:18px;margin-bottom:16px;}
+  .cond-list li{font-size:13.5px;line-height:1.8;color:#2A2A2A;margin-bottom:2px;}
+
+  /* Signature block */
+  .sig-section{margin-top:28px;padding:22px 40px 32px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .sig-block{text-align:center;}
+  .sig-line{width:160px;border-bottom:1.5px solid #1A1A1A;margin:0 auto 6px;}
+  .sig-name{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;color:#1A1A1A;}
+  .sig-role{font-family:'Inter',sans-serif;font-size:10px;color:#8A7A60;}
+
+  /* Acceptance strip */
+  .accept{margin:0 40px;padding:16px 20px;background:#F7F5F0;border:1px solid #DDD8C8;border-radius:6px;margin-bottom:24px;}
+  .accept-title{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#8A7A60;margin-bottom:10px;}
+  .accept-row{display:flex;gap:32px;align-items:flex-end;}
+  .accept-field{flex:1;}
+  .accept-field-line{border-bottom:1px solid #AAA;height:24px;margin-bottom:4px;}
+  .accept-field-label{font-family:'Inter',sans-serif;font-size:9.5px;color:#AAA;}
+
+  /* Footer */
+  .footer{background:#0B5940;padding:10px 32px;display:flex;justify-content:space-between;align-items:center;margin-top:0;}
+  .footer-text{font-family:'Inter',sans-serif;font-size:9px;color:rgba(255,255,255,.5);}
+  .footer-page{font-family:'Inter',sans-serif;font-size:9px;color:rgba(255,255,255,.4);}
+
+  /* Print */
+  @media print{
+    html{background:none;}
+    body{margin:0;box-shadow:none;width:100%;}
+    .no-print{display:none!important;}
+  }
+<\/style>
+<\/head>
+<\/body>
+
+<!-- Print / Download bar -->
+<div class="no-print" style="position:fixed;top:0;left:0;right:0;background:#1A2236;padding:10px 24px;
+  display:flex;align-items:center;gap:12px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.3);">
+  <div style="font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:#fff;flex:1;">
+    Offer Letter — ${ol.name}
+  </div>
+  <button onclick="window.print()" style="padding:7px 18px;background:#0B5940;color:#fff;border:none;
+    border-radius:5px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">
+    🖨 Print / Save as PDF
+  </button>
+  <button onclick="window.close()" style="padding:7px 14px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);
+    border:1px solid rgba(255,255,255,.15);border-radius:5px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;">
+    Close
+  </button>
+</div>
+<div class="no-print" style="height:42px;"></div>
+
+<!-- LETTERHEAD -->
+<div class="lh">
+  <div class="lh-top">
+    <div class="lh-seal">AMS</div>
+    <div>
+      <div class="lh-name">Arete Model School</div>
+      <div class="lh-tagline">Nurturing Excellence, Building Character</div>
+      <div class="lh-address">Nadapuram, Kozhikode District, Kerala — 673614 &nbsp;|&nbsp; Recognised by Dept. of Education, Kerala</div>
+    </div>
+  </div>
+  <div class="lh-bottom">
+    <div class="lh-contact">
+      📞 +91 496 XXX XXXX &nbsp;|&nbsp; ✉ hr@aretemodel.edu &nbsp;|&nbsp; 🌐 www.aretemodel.edu
+    </div>
+    <div class="lh-affl">CBSE Affiliated · Estd. 2015</div>
+  </div>
+  <div class="lh-stripe"></div>
+</div>
+
+<!-- DOC META -->
+<div class="meta-bar">
+  <div class="doc-type">Appointment Offer Letter — Confidential</div>
+  <div class="ref-no">Ref: ${ol.refNo} &nbsp;|&nbsp; Date: ${fmtDate(ol.issuedDate)}</div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+  <div class="date-line">${fmtDate(ol.issuedDate)}</div>
+
+  <div class="to-block">
+    <div class="to-label">To</div>
+    <div class="to-name">${ol.name}</div>
+    <div class="to-detail">
+      ${ol.phone||''}${ol.phone&&ol.email?' &nbsp;|&nbsp; ':''}${ol.email||''}
+    </div>
+  </div>
+
+  <div class="subject-line">
+    Subject: <span>Offer of Appointment — ${ol.post}, ${ol.dept} Department</span>
+  </div>
+
+  <div class="salutation">Dear ${ol.name.split(' ')[0]},</div>
+
+  <p class="body-text">
+    We are delighted to inform you that following your successful interview with the Selection Panel
+    of Arete Model School, Nadapuram, the Management has approved your appointment to the
+    position of <strong>${ol.post}</strong> in the <strong>${ol.dept} Department</strong>.
+    Your academic credentials, professional experience, and performance during the selection process
+    have been found to be well-suited to the requirements of this position.
+  </p>
+
+  <p class="body-text">
+    We extend a warm welcome to you and look forward to your valuable contribution to the
+    school's academic mission and its community of learners.
+  </p>
+
+  <div class="terms-heading">Terms &amp; Conditions of Appointment</div>
+  <table class="terms-table">
+    <tr><td>Name</td><td>${ol.name}</td></tr>
+    <tr><td>Designation</td><td>${ol.post}</td></tr>
+    <tr><td>Department</td><td>${ol.dept}</td></tr>
+    <tr><td>Date of Joining</td><td><strong>${fmtDate(ol.joinDate)}</strong></td></tr>
+    <tr><td>Nature of Appointment</td><td>Regular / Permanent (subject to probation)</td></tr>
+    <tr><td>Probation Period</td><td>6 months from date of joining</td></tr>
+    <tr>
+      <td>Monthly Gross Salary</td>
+      <td>
+        <span class="salary-highlight">₹${ol.salary.toLocaleString('en-IN')} / month</span><br>
+        <span class="salary-words">(Rupees ${salWords})</span>
+      </td>
+    </tr>
+    <tr><td>Annual CTC</td><td><strong>₹${annual.toLocaleString('en-IN')}</strong> per annum</td></tr>
+    <tr><td>Working Hours</td><td>8:00 AM to 4:00 PM, Monday to Saturday</td></tr>
+    <tr><td>Place of Posting</td><td>Arete Model School, Nadapuram</td></tr>
+  </table>
+
+  <div class="terms-heading">General Conditions</div>
+  <ol class="cond-list">
+    <li>This appointment is subject to verification of original certificates and documents on or before the date of joining.</li>
+    <li>You will be on probation for a period of six (6) months, during which your performance will be evaluated. Confirmation is subject to satisfactory appraisal.</li>
+    <li>During the probation period, either party may terminate the appointment by giving two (2) weeks' written notice.</li>
+    <li>After confirmation, the notice period shall be one (1) month on either side.</li>
+    <li>You will be governed by the service rules, code of conduct, and policies of Arete Model School as amended from time to time.</li>
+    <li>This offer is strictly confidential and should not be disclosed to any third party.</li>
+    <li>This offer lapses if not accepted in writing within seven (7) days from the date of issue.</li>
+  </ol>
+
+  <p class="body-text">
+    Kindly sign and return the duplicate copy of this letter as your acceptance of the above terms
+    and conditions. Please report to the HR Department on <strong>${fmtDate(ol.joinDate)}</strong>
+    at 8:00 AM with your original documents for verification and joining formalities.
+  </p>
+
+  <p class="body-text">
+    We wish you a fulfilling and successful career at Arete Model School. Welcome to the family.
+  </p>
+</div>
+
+<!-- SIGNATURES -->
+<div class="sig-section">
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-name">Principal</div>
+    <div class="sig-role">Arete Model School, Nadapuram</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-name">HR Administrator</div>
+    <div class="sig-role">Arete Model School, Nadapuram</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-name">Management Representative</div>
+    <div class="sig-role">Arete Model School, Nadapuram</div>
+  </div>
+</div>
+
+<!-- ACCEPTANCE STRIP -->
+<div class="accept">
+  <div class="accept-title">Acceptance by Candidate (Return this copy to HR)</div>
+  <div class="accept-row">
+    <div class="accept-field">
+      <div class="accept-field-line"></div>
+      <div class="accept-field-label">Signature of ${ol.name}</div>
+    </div>
+    <div class="accept-field">
+      <div class="accept-field-line"></div>
+      <div class="accept-field-label">Date of Acceptance</div>
+    </div>
+    <div class="accept-field" style="flex:2;">
+      <div class="accept-field-line"></div>
+      <div class="accept-field-label">I accept the offer and agree to join on ${fmtDate(ol.joinDate)}</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">Arete Model School, Nadapuram, Kozhikode · hr@aretemodel.edu · Ref: ${ol.refNo}</div>
+  <div class="footer-page">Page 1 of 1 · Confidential</div>
+</div>
+
+<\/body>
+<\/html>`;
+
+  var w = window.open('','_blank','width=900,height=900,scrollbars=yes');
+  w.document.write(letterHTML);
+  w.document.close();
+}
+
+// ── Hire Flow ─────────────────────────────────
+function openHireModal(candId){
+  var c=getCandidate(candId);
+  if(!c){toast('Candidate not found','e');return;}
+  var v=getVacancy(c.vacId)||{subj:'—',dept:'Secondary'};
+  var intR=c.interviewId?getInterview(c.interviewId):null;
+  var el;
+  el=$('hire_cand_name'); if(el) el.textContent=c.name;
+  el=$('hire_cand_meta'); if(el) el.textContent=v.subj+' · '+c.qual+' · '+c.exp;
+  el=$('hire_post');      if(el) el.value=v.subj;
+  el=$('hire_dept');      if(el) el.value=v.dept||'Secondary';
+  el=$('hire_date');      if(el) el.value=new Date().toISOString().slice(0,10);
+  el=$('hire_salary');    if(el) el.value='';
+  el=$('hire_phone');     if(el) el.value=c.contact||'';
+  el=$('hire_email');     if(el) el.value='';
+  el=$('hire_score_note');if(el) el.textContent=intR?('Interview score: '+totalScore(intR.scores)+'/'+maxScore()+' · '+intR.decision):'';
+  window._hireCandId=candId;
+  openOv('ovHire');
+}
+
+function confirmHire(){
+  var candId=window._hireCandId;
+  var c=getCandidate(candId);
+  if(!c)return;
+  var salary=parseInt(($('hire_salary')||{}).value||0);
+  var post=($('hire_post')||{}).value||'';
+  var dept=($('hire_dept')||{}).value||'';
+  var phone=($('hire_phone')||{}).value||'';
+  var email=($('hire_email')||{}).value||'';
+  var joinDate=($('hire_date')||{}).value||new Date().toISOString().slice(0,10);
+  if(!salary){toast('Enter the offered salary','e');return;}
+  if(!post){toast('Enter the post/subject','e');return;}
+
+  // Create staff record in db.staff (flows to Finance payroll, Campus events, etc.)
+  var staffId=genId('T');
+  var newStaff={
+    id:staffId,
+    name:c.name,
+    subj:post,
+    dept:dept,
+    joined:joinDate,
+    phone:phone,
+    email:email,
+    salary:salary,
+    status:'Active',
+    ratings:[],
+    trainings:0,
+    concerns:0,
+    hiredFrom:'Recruitment · CV '+c.id
+  };
+  db.staff.push(newStaff);
+
+  // Update candidate record
+  c.hired=true;
+  c.hiredAs={staffId:staffId,post:post,salary:salary,joinDate:joinDate};
+  c.status='Hired';
+
+  // Close vacancy if all positions filled
+  var v=getVacancy(c.vacId);
+  if(v){
+    var hiredCount=db.candidates.filter(function(x){return x.vacId===v.id&&x.hired;}).length;
+    if(hiredCount>=v.count)v.status='Filled';
+  }
+
+  // Log notification to candidate
+  if(!db.notifications)db.notifications=[];
+  db.notifications.push({
+    id:genId('N'),type:'offer_letter',
+    to:c.name,contact:c.contact||'—',
+    msg:'Dear '+c.name.split(' ')[0]+', We are pleased to offer you the position of '+post+' at Arete Model School, Nadapuram. Salary: ₹'+salary.toLocaleString('en-IN')+'/month. Joining date: '+joinDate+'. Please confirm your acceptance. — HR, Arete Model School',
+    sentAt:new Date().toISOString(),candId:candId,staffId:staffId
+  });
+
+  // Store full offer letter data on candidate record
+  c.offerLetter = {
+    name: c.name,
+    post: post,
+    dept: dept,
+    salary: salary,
+    joinDate: joinDate,
+    phone: phone,
+    email: email,
+    refNo: 'AMS/HR/OL/'+new Date().getFullYear()+'/'+genId('').slice(-4),
+    issuedDate: new Date().toISOString().slice(0,10),
+    vacId: c.vacId
+  };
+
+  SHAPE_DB.audit(db,'Staff hired',c.name+' as '+post+' · ₹'+salary+'/mo · joins '+joinDate);
+  SHAPE_DB.save(db);
+  closeOv('ovHire');
+  toast('✓ '+c.name+' hired · Staff record created · Offer letter ready','s');
+  renderInterviews(); updateBadges();
+  // Auto-open offer letter after short delay
+  }
+
+
+var STAFF_ATT_LOG = {};
+
+function renderStaffAtt2(){
+  var dateEl=document.getElementById('satt_date');
+  if(!dateEl)return;
+  if(!dateEl.value)dateEl.value=new Date().toISOString().slice(0,10);
+  var date=dateEl.value;
+  var dayAtt=STAFF_ATT_LOG[date]||{};
+  var present=Object.values(dayAtt).filter(function(v){return v==='P';}).length;
+  var absent=Object.values(dayAtt).filter(function(v){return v==='A';}).length;
+  var late=Object.values(dayAtt).filter(function(v){return v==='L';}).length;
+  var total=db.staff.length;
+  var kpi=document.getElementById('satt-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Present',v:present,n:'On time',c:'var(--acc)'},
+    {l:'Late',v:late,n:'After 8:30',c:'var(--warn)'},
+    {l:'Absent',v:absent,n:'Not in today',c:'var(--dan)'},
+    {l:'Not Marked',v:total-present-absent-late,n:'Pending',c:'var(--ink4)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="font-size:24px;font-weight:800;color:'+s.c+';">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var body=document.getElementById('satt-body');
+  if(!body)return;
+  body.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;padding:14px;">'
+    +db.staff.map(function(s){
+      var cur=dayAtt[s.id]||'';
+      var ini=s.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+      var btns=['P','L','A'].map(function(code){
+        var colMap={P:'var(--acc)',L:'var(--warn)',A:'var(--dan)'};
+        var c=colMap[code];
+        var sel=cur===code;
+        return '<button class="satt-btn" data-staff="'+s.id+'" data-code="'+code+'" data-date="'+date+'"'
+          +' style="width:30px;height:30px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer;border:1.5px solid '+c+';background:'+(sel?c:'transparent')+';color:'+(sel?'#fff':c)+';"'
+          +' onclick="markStaffAtt(this)">'+code+'</button>';
+      }).join('');
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--s2);border-radius:var(--r2);">'
+        +'<div style="width:36px;height:36px;border-radius:50%;background:var(--pri-l);color:var(--pri);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+ini+'</div>'
+        +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+s.name+'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink-m);">'+s.subj+'</div></div>'
+        +'<div style="display:flex;gap:4px;">'+btns+'</div></div>';
+    }).join('')
+    +'</div>';
+}
+
+function markStaffAtt(btn){
+  var date=btn.dataset.date, staffId=btn.dataset.staff, code=btn.dataset.code;
+  if(!STAFF_ATT_LOG[date])STAFF_ATT_LOG[date]={};
+  STAFF_ATT_LOG[date][staffId]=code;
+  var colMap={P:'var(--acc)',L:'var(--warn)',A:'var(--dan)'};
+  var wrap=btn.parentElement;
+  if(wrap){wrap.querySelectorAll('.satt-btn').forEach(function(b){
+    var c=colMap[b.dataset.code];
+    b.style.background=b.dataset.code===code?c:'transparent';
+    b.style.color=b.dataset.code===code?'#fff':c;
+  });}
+  renderStaffAtt2();
+}
+
+function saveStaffAtt(){
+  var date=(document.getElementById('satt_date')||{}).value||new Date().toISOString().slice(0,10);
+  var dayAtt=STAFF_ATT_LOG[date]||{};
+  var p=Object.values(dayAtt).filter(function(v){return v==='P';}).length;
+  toast('Attendance saved for '+date+' — '+p+'/'+db.staff.length+' present','s');
+}
+
+var STAFF_DOCS=[
+  {staffId:'STAFF-002',staffName:'Ms. Latha R.',type:'Appointment Letter',num:'AMS/APT/2019/001',issued:'2019-06-01',expiry:'',status:'Verified'},
+  {staffId:'STAFF-002',staffName:'Ms. Latha R.',type:'Aadhaar',num:'XXXX-XXXX-1234',issued:'2018-03-15',expiry:'',status:'Verified'},
+  {staffId:'STAFF-003',staffName:'Ms. Divya K.',type:'Degree Certificate',num:'MGU/BSC/2017/5678',issued:'2017-05-20',expiry:'',status:'Verified'},
+  {staffId:'STAFF-003',staffName:'Ms. Divya K.',type:'Medical Fitness',num:'MED-2026-001',issued:'2026-04-01',expiry:'2027-03-31',status:'Verified'},
+  {staffId:'STAFF-004',staffName:'Mr. Paul T.',type:'Contract',num:'AMS/CON/2018/002',issued:'2018-06-01',expiry:'2028-05-31',status:'Verified'},
+  {staffId:'STAFF-005',staffName:'Mr. Arun P.',type:'Police Clearance',num:'PCR/KL/2021/0045',issued:'2021-07-01',expiry:'2023-06-30',status:'Expired'},
+  {staffId:'STAFF-006',staffName:'Ms. Rani S.',type:'Appointment Letter',num:'AMS/APT/2022/003',issued:'2022-06-01',expiry:'',status:'Verified'},
+  {staffId:'STAFF-006',staffName:'Ms. Rani S.',type:'PAN Card',num:'ABCDE1234F',issued:'2020-01-10',expiry:'',status:'Verified'},
+];
+
+function openStaffDoc(){
+  var sel=document.getElementById('sdoc_staff');
+  if(sel){
+    sel.innerHTML=db.staff.map(function(s){return '<option value="'+s.id+'">'+s.name+'</option>';}).join('');
+  }
+  var di=document.getElementById('sdoc_issued');if(di)di.value=new Date().toISOString().slice(0,10);
+  document.getElementById('ovStaffDoc').classList.add('open');
+}
+
+function saveStaffDoc(){
+  var sel=document.getElementById('sdoc_staff');
+  var staffName=sel&&sel.selectedIndex>=0?sel.options[sel.selectedIndex].text:'';
+  var type=(document.getElementById('sdoc_type')||{}).value||'';
+  if(!staffName||!type){toast('Select staff and document type','e');return;}
+  var expiry=(document.getElementById('sdoc_expiry')||{}).value||'';
+  var status='Verified';
+  if(expiry){
+    var daysLeft=(new Date(expiry)-new Date())/86400000;
+    if(daysLeft<0)status='Expired';
+    else if(daysLeft<30)status='Expiring';
+  }
+  STAFF_DOCS.unshift({
+    staffId:(document.getElementById('sdoc_staff')||{}).value||'',
+    staffName:staffName,type:type,
+    num:(document.getElementById('sdoc_num')||{}).value||'—',
+    issued:(document.getElementById('sdoc_issued')||{}).value||'—',
+    expiry:expiry,
+    notes:(document.getElementById('sdoc_notes')||{}).value||'',
+    status:status
+  });
+  document.getElementById('ovStaffDoc').classList.remove('open');
+  toast('Document saved for '+staffName,'s');
+  renderStaffDocs();
+}
+
+function renderStaffDocs(){
+  var sfilt=(document.getElementById('sdoc-staff-filter')||{}).value||'';
+  var tfilt=(document.getElementById('sdoc-type-filter')||{}).value||'';
+  var stfilt=(document.getElementById('sdoc-status-filter')||{}).value||'';
+  
+  // Populate staff filter
+  var ssel=document.getElementById('sdoc-staff-filter');
+  if(ssel&&ssel.options.length<=1){
+    db.staff.forEach(function(s){var o=document.createElement('option');o.value=s.name;o.textContent=s.name;ssel.appendChild(o);});
+  }
+  
+  var list=STAFF_DOCS.filter(function(d){
+    return (!sfilt||d.staffName===sfilt)&&(!tfilt||d.type===tfilt)&&(!stfilt||d.status===stfilt);
+  });
+  
+  var expired=STAFF_DOCS.filter(function(d){return d.status==='Expired';}).length;
+  var expiring=STAFF_DOCS.filter(function(d){return d.status==='Expiring';}).length;
+  var kpi=document.getElementById('doc-staff-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Documents',v:STAFF_DOCS.length,n:'Across all staff'},
+    {l:'Verified',v:STAFF_DOCS.filter(function(d){return d.status==='Verified';}).length,n:'Up to date',c:'var(--acc)'},
+    {l:'Expiring Soon',v:expiring,n:'Within 30 days',c:'var(--amber)'},
+    {l:'Expired',v:expired,n:'Need renewal',c:'var(--red)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  
+  var body=document.getElementById('sdoc-body');
+  if(!body)return;
+  body.innerHTML=list.map(function(d){
+    var col=d.status==='Verified'?'var(--acc)':d.status==='Expiring'?'var(--amber)':'var(--red)';
+    var badge=d.status==='Verified'?'<span class="badge bg-b">Verified</span>':d.status==='Expiring'?'<span class="badge bg-o">Expiring</span>':'<span class="badge bg-r">'+d.status+'</span>';
+    return '<tr>'
+      +'<td class="fw">'+d.staffName+'</td>'
+      +'<td>'+d.type+'</td>'
+      +'<td style="font-family:monospace;font-size:11.5px;">'+d.num+'</td>'
+      +'<td style="font-size:12px;">'+d.issued+'</td>'
+      +'<td style="font-size:12px;color:'+(d.expiry?col:'var(--ink4)')+';">'+(d.expiry||'No Expiry')+'</td>'
+      +'<td>'+badge+'</td>'
+      +'<td><button class="btn bo bsm" style="font-size:11px;">View</button></td>'
+      +'</tr>';
+  }).join('')||'<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--ink4);">No documents found</td></tr>';
+}
+
+// (duplicate init removed)
+
+function switchSattTab(tab){
+  ['mark','calendar','analytics'].forEach(function(t){
+    var el=document.getElementById('satt-tab-'+t);
+    if(el)el.style.display=t===tab?'':'none';
+  });
+  if(tab==='calendar') renderSattCalendar();
+  if(tab==='analytics') renderSattAnalytics();
+}
+
+function changeSattMonth(dir){
+  _sattCalMonth += dir;
+  if(_sattCalMonth > 11){_sattCalMonth=0;_sattCalYear++;}
+  if(_sattCalMonth < 0){_sattCalMonth=11;_sattCalYear--;}
+  renderSattCalendar();
+}
+
+function renderSattCalendar(){
+  var labelEl=document.getElementById('satt-cal-label');
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  if(labelEl)labelEl.textContent=months[_sattCalMonth]+' '+_sattCalYear;
+
+  // Populate staff dropdown
+  var staffSel=document.getElementById('satt-cal-staff');
+  if(staffSel&&staffSel.options.length<=1){
+    db.staff.forEach(function(s){var o=document.createElement('option');o.value=s.name||s.id;o.textContent=s.name;staffSel.appendChild(o);});
+  }
+  var selectedStaff=(staffSel||{}).value||'';
+
+  // Build calendar grid
+  var firstDay=new Date(_sattCalYear,_sattCalMonth,1).getDay();
+  var daysInMonth=new Date(_sattCalYear,_sattCalMonth+1,0).getDate();
+  var today=new Date();
+  var calEl=document.getElementById('satt-calendar');
+  if(!calEl)return;
+
+  var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var html='<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+  html+='<thead><tr>'+dayNames.map(function(d){return '<th style="padding:5px;text-align:center;font-weight:600;color:var(--ink4);font-size:11px;">'+d+'</th>';}).join('')+'</tr></thead>';
+  html+='<tbody>';
+  var day=1;
+  for(var week=0;week<6;week++){
+    if(day>daysInMonth)break;
+    html+='<tr>';
+    for(var dow=0;dow<7;dow++){
+      if((week===0&&dow<firstDay)||day>daysInMonth){
+        html+='<td style="padding:5px;"></td>';
+      } else {
+        var dateStr=_sattCalYear+'-'+String(_sattCalMonth+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+        var dayLog=STAFF_ATT_LOG[dateStr]||{};
+        var isToday=today.getDate()===day&&today.getMonth()===_sattCalMonth&&today.getFullYear()===_sattCalYear;
+        var isSun=dow===0||dow===6;
+
+        // Determine color for this day
+        var staffVals=selectedStaff?[dayLog[Object.keys(dayLog).find(function(k){return db.staff.find(function(s){return (s.name||s.id)===selectedStaff&&s.id===k;});})]]:[...new Set(Object.values(dayLog))];
+        var hasP=Object.values(dayLog).includes('P');
+        var hasA=Object.values(dayLog).includes('A');
+        var hasL=Object.values(dayLog).includes('L');
+        var hasAny=Object.keys(dayLog).length>0;
+        var dotColor=!hasAny?'transparent':hasA?'var(--red)':hasL?'var(--amber)':'var(--green)';
+
+        html+='<td style="padding:3px;text-align:center;">'
+          +'<div style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:'+(isToday?'800':'400')+';'
+          +'background:'+(isToday?'var(--ink2)':'transparent')+';'
+          +'color:'+(isToday?'#fff':isSun?'var(--ink4)':'var(--ink)')+';font-size:12px;position:relative;cursor:pointer;" title="'+dateStr+'">'
+          +day
+          +(hasAny?'<span style="position:absolute;bottom:2px;right:2px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';"></span>':'')
+          +'</div></td>';
+        day++;
+      }
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  html+='<div style="display:flex;gap:12px;margin-top:12px;font-size:11.5px;">'
+    +'<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:4px;"></span>All Present</span>'
+    +'<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-right:4px;"></span>Some Late</span>'
+    +'<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:4px;"></span>Absence</span>'
+    +'</div>';
+  calEl.innerHTML=html;
+
+  // Detail panel: show last 10 logged days
+  var detailEl=document.getElementById('satt-cal-detail');
+  if(detailEl){
+    var logDays=Object.keys(STAFF_ATT_LOG).sort().reverse().slice(0,12);
+    if(!logDays.length){
+      detailEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--ink4);">No attendance logged yet. Mark attendance on the Mark tab.</div>';
+    } else {
+      detailEl.innerHTML=logDays.map(function(date){
+        var dayLog=STAFF_ATT_LOG[date]||{};
+        var p=Object.values(dayLog).filter(function(v){return v==='P';}).length;
+        var l=Object.values(dayLog).filter(function(v){return v==='L';}).length;
+        var a=Object.values(dayLog).filter(function(v){return v==='A';}).length;
+        var total=Object.keys(dayLog).length;
+        var pct=total>0?Math.round(p/total*100):0;
+        var col=pct>=90?'var(--green)':pct>=70?'var(--amber)':'var(--red)';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--s4);">'
+          +'<div style="font-size:12px;font-weight:600;color:var(--ink2);min-width:80px;font-family:monospace;">'+date+'</div>'
+          +'<div style="flex:1;background:var(--s4);border-radius:3px;height:6px;overflow:hidden;">'
+          +'<div style="width:'+pct+'%;height:100%;background:'+col+';border-radius:3px;"></div></div>'
+          +'<div style="font-size:12px;font-weight:700;color:'+col+';min-width:32px;text-align:right;">'+pct+'%</div>'
+          +'<div style="font-size:11px;color:var(--ink4);">P:'+p+' L:'+l+' A:'+a+'</div>'
+          +'</div>';
+      }).join('');
+    }
+  }
+}
+
+function renderSattAnalytics(){
+  // Per-staff attendance rates from STAFF_ATT_LOG
+  var allDates=Object.keys(STAFF_ATT_LOG);
+  var totalDays=allDates.length;
+  var summaryBody=document.getElementById('satt-summary-body');
+  var rateChart=document.getElementById('satt-rate-chart');
+  var trendChart=document.getElementById('satt-trend-chart');
+
+  if(!totalDays){
+    if(rateChart)rateChart.innerHTML='<div style="padding:24px;text-align:center;color:var(--ink4);">No attendance data yet. Mark attendance to see analytics.</div>';
+    if(summaryBody)summaryBody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink4);">No data</td></tr>';
+    return;
+  }
+
+  // Build per-staff stats
+  var staffStats=db.staff.map(function(s){
+    var p=0,l=0,a=0,total=0;
+    allDates.forEach(function(date){
+      var dayLog=STAFF_ATT_LOG[date]||{};
+      if(dayLog[s.id]!==undefined){
+        total++;
+        if(dayLog[s.id]==='P')p++;
+        else if(dayLog[s.id]==='L')l++;
+        else if(dayLog[s.id]==='A')a++;
+      }
+    });
+    var pct=total>0?Math.round((p+l*0.5)/total*100):null;
+    return {name:s.name,dept:s.dept||'Teaching',p:p,l:l,a:a,total:total,pct:pct};
+  }).filter(function(s){return s.total>0;}).sort(function(a,b){return (b.pct||0)-(a.pct||0);});
+
+  // Rate chart: horizontal bars
+  if(rateChart){
+    if(!staffStats.length){
+      rateChart.innerHTML='<div style="padding:20px;text-align:center;color:var(--ink4);">No attendance marked yet</div>';
+    } else {
+      rateChart.innerHTML=staffStats.map(function(s){
+        var col=s.pct>=90?'var(--green)':s.pct>=70?'var(--amber)':'var(--red)';
+        return '<div style="margin-bottom:12px;">'
+          +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">'
+          +'<span style="font-weight:600;">'+s.name+'</span>'
+          +'<span style="font-weight:800;color:'+col+';">'+s.pct+'%</span></div>'
+          +'<div style="background:var(--s4);border-radius:4px;height:8px;overflow:hidden;">'
+          +'<div style="width:'+s.pct+'%;background:'+col+';height:100%;border-radius:4px;"></div></div>'
+          +'<div style="font-size:11px;color:var(--ink4);margin-top:2px;">P:'+s.p+' L:'+s.l+' A:'+s.a+' / '+s.total+' days</div>'
+          +'</div>';
+      }).join('');
+    }
+  }
+
+  // Monthly trend: last 8 dates
+  if(trendChart){
+    var recentDates=allDates.sort().slice(-8);
+    var trendData=recentDates.map(function(date){
+      var dayLog=STAFF_ATT_LOG[date]||{};
+      var vals=Object.values(dayLog);
+      var p=vals.filter(function(v){return v==='P';}).length;
+      var total=vals.length;
+      return {date:date.slice(5),pct:total>0?Math.round(p/total*100):0};
+    });
+    var maxH=100;
+    trendChart.innerHTML='<div style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:0 4px;">'
+      +trendData.map(function(d){
+        var col=d.pct>=90?'var(--green)':d.pct>=70?'var(--amber)':'var(--red)';
+        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">'
+          +'<div style="font-size:10px;font-weight:700;color:'+col+';">'+d.pct+'%</div>'
+          +'<div style="width:100%;height:'+(d.pct)+'px;background:'+col+';border-radius:3px 3px 0 0;min-height:4px;"></div>'
+          +'<div style="font-size:9px;color:var(--ink4);white-space:nowrap;">'+d.date+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="font-size:11.5px;color:var(--ink4);margin-top:8px;text-align:center;">Daily Present % — Last '+recentDates.length+' days</div>';
+  }
+
+  // Summary table
+  if(summaryBody){
+    summaryBody.innerHTML=staffStats.map(function(s){
+      var col=s.pct>=90?'var(--green)':s.pct>=70?'var(--amber)':'var(--red)';
+      var rating=s.pct>=95?'Excellent':s.pct>=85?'Good':s.pct>=70?'Average':'Needs Attention';
+      return '<tr>'
+        +'<td class="fw">'+s.name+'</td>'
+        +'<td>'+s.dept+'</td>'
+        +'<td style="color:var(--green);font-weight:600;">'+s.p+'</td>'
+        +'<td style="color:var(--amber);font-weight:600;">'+s.l+'</td>'
+        +'<td style="color:var(--red);font-weight:600;">'+s.a+'</td>'
+        +'<td>'+s.total+'</td>'
+        +'<td><div style="display:flex;align-items:center;gap:6px;">'
+        +'<div style="width:50px;background:var(--s4);border-radius:3px;height:6px;overflow:hidden;">'
+        +'<div style="width:'+s.pct+'%;height:100%;background:'+col+';"></div></div>'
+        +'<span style="font-weight:700;color:'+col+';">'+s.pct+'%</span></div></td>'
+        +'<td><span class="badge" style="background:'+col+'18;color:'+col+';">'+rating+'</span></td>'
+        +'</tr>';
+    }).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--ink4);">No data yet</td></tr>';
+  }
+}
+
+// ── Init ──
+seedDemoApplications();
+updateBadges();
+renderVacancies();
+
+// ── Seed demo attendance data ──
+(function(){
+  var today=new Date();
+  for(var i=1;i<=10;i++){
+    var d=new Date(today);
+    d.setDate(today.getDate()-i);
+    if(d.getDay()===0||d.getDay()===6)continue; // skip weekends
+    var dateStr=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(!STAFF_ATT_LOG[dateStr]){
+      var dayLog={};
+      db.staff.forEach(function(s,idx){
+        var rand=Math.random();
+        dayLog[s.id]=rand>0.1?'P':rand>0.05?'L':'A';
+      });
+      STAFF_ATT_LOG[dateStr]=dayLog;
+    }
+  }
+})();
+
+</script>
+
+</body>
+</html>

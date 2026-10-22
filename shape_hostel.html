@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAPE Hostel — Boarding Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--ink:#06101F;--ink2:#1B2D4A;--ink3:#385273;--ink4:#5E7A99;--ink5:#8FA8C2;--surf:#FFF;--s2:#F2F7FC;--s3:#E4EEF8;--s4:#CCDAEC;--s5:#AABDD4;--acc:#0B7BAA;--acc-l:#E5F4FA;--green:#0A6B45;--green-l:#E8F5EF;--red:#B81515;--red-l:#FEF0F0;--amber:#9A5000;--amber-l:#FEF5E6;--r2:6px;--r3:10px;--r4:14px;--sh1:0 1px 3px rgba(6,16,31,.07);--sh2:0 4px 14px rgba(6,16,31,.09);}
+html,body{height:100%;background:var(--s2);}
+body{font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
+.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
+.sidebar{width:220px;flex-shrink:0;background:#0A2540;overflow-y:auto;display:flex;flex-direction:column;}
+.main{flex:1;overflow-y:auto;}
+.topbar{height:48px;background:#0A2540;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;}
+.tb-badge{width:30px;height:30px;border-radius:6px;background:var(--acc);display:grid;place-items:center;font-size:14px;font-weight:800;color:#fff;}
+.tb-ttl{font-size:13.5px;font-weight:700;color:#fff;}
+.tb-links{margin-left:auto;display:flex;gap:5px;}
+.tb-link{font-size:10.5px;color:rgba(255,255,255,.3);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:3px;}
+.tb-link:hover{color:rgba(255,255,255,.7);}
+.sb-sec{padding:18px 14px 5px;font-size:8.5px;font-weight:700;color:rgba(255,255,255,.18);letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ni.active{background:var(--acc);color:#fff;font-weight:600;}
+.ni .ic{font-size:14px;width:18px;flex-shrink:0;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.45);}
+.ni.active .nb{background:rgba(255,255,255,.2);color:#fff;}
+.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+.page{padding:22px 26px 40px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.ph-ttl{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
+.ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
+.ph-r{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kc{background:var(--surf);border:1px solid var(--s4);border-radius:10px;padding:15px 17px;box-shadow:var(--sh1);border-left:3px solid var(--acc);}
+.kl{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px;}
+.kv{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;font-family:'JetBrains Mono',monospace;}
+.kn{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+.card{background:var(--surf);border:1px solid var(--s4);border-radius:10px;overflow:hidden;box-shadow:var(--sh1);margin-bottom:14px;}
+.card:last-child{margin-bottom:0;}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--s4);background:var(--s2);flex-wrap:wrap;gap:8px;}
+.ct{font-size:13.5px;font-weight:700;color:var(--ink);}
+.cb{padding:14px 18px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1.5px solid var(--s4);background:var(--s2);}
+td{padding:11px 14px;border-bottom:1px solid var(--s4);color:var(--ink3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.fw{font-weight:700;color:var(--ink);}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;}
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.bg-g{background:var(--green-l);color:var(--green);}
+.bg-b{background:var(--acc-l);color:var(--acc);}
+.bg-r{background:var(--red-l);color:var(--red);}
+.bg-o{background:var(--amber-l);color:var(--amber);}
+.bg-s{background:var(--s3);color:var(--ink4);}
+.btn{padding:7px 14px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--acc);color:#fff;}
+.bp:hover{background:#0968A0;}
+.bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
+.bo:hover{background:var(--s2);}
+.bsm{padding:5px 10px;font-size:11.5px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.flow-note{background:#EBF1FB;border:1px solid #B0B8F2;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:12.5px;color:#1249A6;}
+.room-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+.room-block{background:var(--s2);border:1.5px solid var(--s4);border-radius:8px;padding:11px 10px;cursor:pointer;transition:all .13s;text-align:center;}
+.room-block:hover{border-color:var(--acc);background:var(--acc-l);}
+.room-block.full{border-color:var(--red);background:var(--red-l);}
+.room-block.empty{border-color:var(--green);background:var(--green-l);}
+.room-num{font-size:10px;font-weight:700;color:var(--ink4);font-family:'JetBrains Mono',monospace;}
+.room-occ{font-size:18px;font-weight:800;color:var(--ink);line-height:1.2;}
+.room-lbl{font-size:10px;color:var(--ink5);margin-top:2px;}
+.mess-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--s4);}
+.mess-row:last-child{border-bottom:none;}
+.mess-lbl{min-width:140px;font-size:13px;font-weight:600;color:var(--ink2);}
+.mess-track{flex:1;height:8px;background:var(--s4);border-radius:5px;overflow:hidden;}
+.mess-fill{height:100%;border-radius:5px;}
+.mess-qty{font-size:11.5px;font-family:'JetBrains Mono',monospace;min-width:80px;text-align:right;color:var(--ink3);}
+.mess-flag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:3px;}
+.menu-cell{background:var(--surf);border:1px solid var(--s4);border-radius:8px;overflow:hidden;}
+.menu-cell-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:4px 8px;color:#fff;}
+.menu-cell textarea{width:100%;border:none;resize:none;font-size:12px;font-family:'Inter',sans-serif;padding:7px 8px;color:var(--ink2);outline:none;background:transparent;}
+.menu-cell textarea:focus{background:rgba(11,123,170,.04);}
+.ov{position:fixed;inset:0;background:rgba(6,16,31,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
+.ov.open{display:flex;}
+.modal{background:var(--surf);border-radius:14px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
+.mh{padding:18px 22px 14px;border-bottom:1px solid var(--s4);display:flex;justify-content:space-between;align-items:flex-start;}
+.mh h3{font-size:15px;font-weight:700;color:var(--ink);}
+.mh-sub{font-size:11.5px;color:var(--ink4);margin-top:2px;}
+.mc{padding:18px 22px;}
+.mf{padding:12px 22px;border-top:1px solid var(--s4);background:var(--s2);display:flex;gap:8px;justify-content:flex-end;border-radius:0 0 14px 14px;}
+.cx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--ink4);}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:6px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s;}
+.fc:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-l);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.view{display:none;}.view.active{display:block;}
+#tw{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+.toast{padding:10px 16px;border-radius:6px;font-size:13px;font-weight:600;color:#fff;box-shadow:var(--sh2);pointer-events:all;}
+#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
+#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-badge">&#127968;</div>
+  <span class="tb-ttl">SHAPE Hostel &mdash; Boarding Management</span>
+  <div class="tb-links">
+    <a href="shape_admissions.html" class="tb-link">&larr; Admissions</a>
+    <a href="shape_finance.html" class="tb-link">Finance</a>
+  </div>
+  <div style="position:relative;margin-left:8px;" id="portal-switcher">
+    <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
+      style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+      &#9783; All Portals &#9660;
+    </button>
+    <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+      <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
+      <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
+      <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
+      <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
+      <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
+      <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
+      <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
+      <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
+      <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
+    </div>
+  </div>
+  <script>(function(){document.addEventListener('click',function(e){var sw=document.getElementById('portal-switcher');var m=document.getElementById('ps-menu');if(sw&&m&&!sw.contains(e.target))m.style.display='none';});})();</script>
+</div>
+
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-sec">Boarding</div>
+  <div class="ni active" data-v="rooms"><span class="ic">&#127968;</span>Room Allocation<span class="nb" id="nb-rooms">0</span></div>
+  <div class="ni" data-v="inmates"><span class="ic">&#128101;</span>Inmate Records</div>
+  <div class="sb-sec">Finance</div>
+  <div class="ni" data-v="fees"><span class="ic">&#8377;</span>Hostel Fees</div>
+  <div class="sb-sec">Mess</div>
+  <div class="ni" data-v="mess"><span class="ic">&#127869;</span>Mess Management</div>
+  <div class="ni" data-v="menu"><span class="ic">&#128197;</span>Weekly Menu</div>
+  <div class="sb-sec">Boarder Services</div>
+  <div class="ni" data-v="outing"><span class="ic">&#128682;</span>Outing Requests</div>
+  <div class="ni" data-v="incidents"><span class="ic">&#9888;</span>Incident Log</div>
+  <div class="sb-ft">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#0A5F87);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">MZ</div>
+      <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.75);">Muhd Zahal</div><div style="font-size:10.5px;color:rgba(255,255,255,.3);">Hostel Warden</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main"><div class="page">
+
+<!-- ROOMS -->
+<div id="view-rooms" class="view active">
+  <div class="ph">
+    <div><div class="ph-ttl">Room Allocation</div><div class="ph-sub">Boarding room occupancy &amp; bed management</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="document.getElementById('ovRoom').classList.add('open')">+ Allocate Room</button></div>
+  </div>
+  <div class="kpi" id="room_kpi"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Room Grid</div><div style="font-size:12px;color:var(--ink4);">Click a room to see inmates</div></div>
+    <div class="cb"><div class="room-grid" id="room_grid"></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Boarder List</div></div>
+    <table><thead><tr><th>Name</th><th>Class</th><th>Room</th><th>Bed</th><th>Since</th><th>Diet</th><th>Emergency Contact</th></tr></thead>
+    <tbody id="room_list"></tbody></table>
+  </div>
+</div>
+
+<!-- INMATES -->
+<div id="view-inmates" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Inmate Records</div><div class="ph-sub">All boarding students &mdash; health, dietary and guardian details</div></div>
+  </div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Boarder Profiles</div>
+      <input id="inmate-search" class="fc" type="text" placeholder="Search boarder..." style="width:180px;font-size:12px;padding:5px 9px;" oninput="renderInmates()">
+    </div>
+    <table><thead><tr><th>Name</th><th>Class</th><th>Room</th><th>Diet</th><th>Health Notes</th><th>Guardian</th><th>Phone</th><th>Since</th></tr></thead>
+    <tbody id="inmate_body"></tbody></table>
+  </div>
+</div>
+
+<!-- FEES -->
+<div id="view-fees" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Hostel Fees</div><div class="ph-sub">Monthly hostel + mess fee &middot; payment status synced from Finance</div></div>
+    <div class="ph-r"><a href="shape_finance.html" class="btn bp" style="text-decoration:none;">Record Payment in Finance &rarr;</a></div>
+  </div>
+  <div class="flow-note">&#128279; <strong>Payments are recorded in shape_finance.html.</strong> Status shown here is live from the shared payment records.</div>
+  <div class="kpi" id="fee_kpi"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Fee Register</div></div>
+    <table><thead><tr><th>Student</th><th>Class</th><th>Monthly Fee</th><th>Paid This Month</th><th>Balance</th><th>Status</th></tr></thead>
+    <tbody id="fee_body"></tbody></table>
+  </div>
+</div>
+
+<!-- MESS MANAGEMENT -->
+<div id="view-mess" class="view">
+  <div class="ph">
+    <div>
+      <div class="ph-ttl">Mess Management &amp; Financial Planning</div>
+      <div class="ph-sub">Stock control, daily cost tracking, monthly budget vs actual &amp; procurement</div>
+    </div>
+    <div class="ph-r">
+      <button class="btn bo" onclick="document.getElementById('ovStock').classList.add('open')">+ Add Stock</button>
+      <button class="btn bp" onclick="document.getElementById('ovProcure').classList.add('open')">&#128666; Procurement Order</button>
+    </div>
+  </div>
+  <div class="kpi" id="mess_kpi"></div>
+  <div class="g2" style="margin-bottom:14px;">
+    <div class="card" style="margin:0;">
+      <div class="ch"><div class="ct">&#128200; Monthly Budget vs Actual</div></div>
+      <div style="padding:18px;">
+        <div id="mess-budget-bars"></div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--s4);display:flex;justify-content:space-between;">
+          <div>
+            <div style="font-size:11px;color:var(--ink4);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Budget Utilisation</div>
+            <div style="font-size:26px;font-weight:800;color:var(--ink);" id="mess-util-pct">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:var(--ink4);">Projected Month End</div>
+            <div style="font-size:18px;font-weight:700;color:var(--red);" id="mess-projected">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin:0;">
+      <div class="ch"><div class="ct">&#128666; Procurement Planner</div><span class="badge bg-o" id="procure-alert"></span></div>
+      <div id="procure-list" style="padding:8px 18px;"></div>
+      <div style="padding:0 18px 14px;">
+        <button class="btn bo bsm" style="width:100%;justify-content:center;" onclick="generateProcureOrder()">&#128196; Generate Order List</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">&#128230; Stock Inventory</div>
+      <div style="display:flex;gap:8px;">
+        <select id="mess-cat-filter" class="fc" style="width:120px;font-size:12px;padding:5px 9px;" onchange="renderMess()">
+          <option value="">All Categories</option>
+          <option>Staples</option><option>Vegetables</option><option>Dairy</option>
+          <option>Spices</option><option>Cooking Oil</option><option>Protein</option>
+        </select>
+        <input id="mess-search" class="fc" type="text" placeholder="Search..." style="width:130px;font-size:12px;padding:5px 9px;" oninput="renderMess()">
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Item</th><th>Category</th><th>Stock</th><th>Min</th><th>Unit Cost (&#8377;)</th><th>Stock Value</th><th>Status</th><th></th></tr></thead>
+      <tbody id="mess-stock-body"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">&#128197; Daily Mess Cost Log</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input type="date" id="cost-date" class="fc" style="width:145px;font-size:12px;padding:5px 9px;">
+        <input type="number" id="cost-amt" class="fc" placeholder="Amount spent (&#8377;)" style="width:160px;font-size:12px;padding:5px 9px;">
+        <button class="btn bp bsm" onclick="logDailyCost()">Log</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Date</th><th>Spent</th><th>Per Head</th><th>vs Budget</th><th>Surplus / Deficit</th></tr></thead>
+      <tbody id="cost-log-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- WEEKLY MENU -->
+<div id="view-menu" class="view">
+  <div class="ph">
+    <div>
+      <div class="ph-ttl">Weekly Mess Menu Planner</div>
+      <div class="ph-sub">Edit the meal schedule for each day &mdash; save to publish for students and parents</div>
+    </div>
+    <div class="ph-r">
+      <button class="btn bo" onclick="printMenu()">&#128438; Print Menu</button>
+      <button class="btn bp" onclick="saveMenu()">&#10003; Save Menu</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">&#127869; Meal Schedule</div>
+      <div style="display:flex;gap:14px;font-size:12px;color:var(--ink4);">
+        <span>&#127823; Breakfast &nbsp; &#127822; Lunch &nbsp; &#127847; Dinner</span>
+      </div>
+    </div>
+    <div id="menu-grid" style="padding:18px;overflow-x:auto;"></div>
+  </div>
+  <div class="flow-note">
+    <strong>&#9432; Menu Planning Guidelines:</strong> Ensure balanced nutrition — protein at every meal, green vegetable daily, fruit twice weekly. Special dietary needs are managed per student profile.
+  </div>
+</div>
+
+<!-- OUTING REQUESTS -->
+<div id="view-outing" class="view">
+  <div class="ph">
+    <div>
+      <div class="ph-ttl">Outing &amp; Leave Requests</div>
+      <div class="ph-sub">Manage boarder outings, home leave and permissions</div>
+    </div>
+    <div class="ph-r">
+      <select id="out-filter" class="fc" style="width:130px;font-size:12px;padding:5px 10px;" onchange="renderOuting()">
+        <option value="all">All Requests</option>
+        <option value="Pending Approval">Pending</option>
+        <option value="Approved">Approved</option>
+      </select>
+      <button class="btn bp" onclick="openOutingModal()">+ New Request</button>
+    </div>
+  </div>
+  <div class="kpi" id="out-kpi"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Outing Register</div><div style="font-size:12px;color:var(--ink4);">Sorted by departure date</div></div>
+    <table>
+      <thead><tr><th>Student</th><th>Class</th><th>Purpose</th><th>Departure</th><th>Return By</th><th>Parent Consent</th><th>Days Away</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="out-body"></tbody>
+    </table>
+  </div>
+</div>
+
+
+<div id="view-incidents" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Incident Log</div><div class="ph-sub">Record behavioural incidents, health emergencies and hostel issues</div></div>
+    <div class="ph-r">
+      <select id="inc-filter" class="fc" style="width:140px;font-size:12px;padding:5px 9px;" onchange="renderIncidents()">
+        <option value="all">All Incidents</option>
+        <option value="Open">Open</option>
+        <option value="Resolved">Resolved</option>
+        <option value="Health">Health</option>
+        <option value="Behavioural">Behavioural</option>
+      </select>
+      <button class="btn bp" onclick="openIncidentModal()">+ Log Incident</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;" id="inc-kpi"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Incident Register</div></div>
+    <table>
+      <thead><tr><th>Date &amp; Time</th><th>Student</th><th>Type</th><th>Description</th><th>Action Taken</th><th>Reported By</th><th>Status</th><th></th></tr></thead>
+      <tbody id="inc-body"></tbody>
+    </table>
+  </div>
+</div>
+
+</div></div><!-- /page /main -->
+</div><!-- /shell -->
+
+<div id="tw"></div>
+
+<script src="shape_db.js"></script>
+<script>
+'use strict';
+var $ = function(id){return document.getElementById(id);};
+var $$ = function(sel){return document.querySelectorAll(sel);};
+var db = SHAPE_DB.load();
+
+function toast(msg,type){
+  var t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  t.style.background=type==='s'?'#0A6B45':type==='e'?'#B81515':'#0B7BAA';
+  document.getElementById('tw').appendChild(t);
+  setTimeout(function(){t.remove();},3500);
+}
+
+function switchView(v){
+  $$('.view').forEach(function(x){x.classList.remove('active');});
+  $$('.ni').forEach(function(x){x.classList.remove('active');});
+  var el=$('view-'+v); if(el)el.classList.add('active');
+  $$('.ni[data-v="'+v+'"]').forEach(function(x){x.classList.add('active');});
+  renderView(v);
+}
+$$('.ni[data-v]').forEach(function(n){n.addEventListener('click',function(){switchView(n.dataset.v);});});
+
+function renderView(v){
+  if(v==='rooms') renderRooms();
+  else if(v==='inmates') renderInmates();
+  else if(v==='fees') renderFees();
+  else if(v==='mess') renderMess();
+  else if(v==='menu') renderMenu();
+  else if(v==='outing') renderOuting();
+}
+
+function getBoarders(){return db.students.filter(function(s){return s.boarding&&s.status==='Active';});}
+
+// ── ROOMS ──
+var ROOMS=[
+  {id:'H-101',capacity:4,inmates:['Devika Nair','Ananya R.','Fathima Z.','Sreya M.'],type:'Girls'},
+  {id:'H-102',capacity:4,inmates:['Arjun Menon','Mohammed Ashiq','Rohit T.'],type:'Boys'},
+  {id:'H-103',capacity:4,inmates:['Kiran P.','Suresh V.'],type:'Boys'},
+  {id:'H-104',capacity:4,inmates:[],type:'Girls'},
+  {id:'H-105',capacity:4,inmates:['Aishwarya K.','Meghna S.','Riya T.','Pavithra N.'],type:'Girls'},
+  {id:'H-201',capacity:4,inmates:['Abdul R.','Jithin K.'],type:'Boys'},
+  {id:'H-202',capacity:4,inmates:[],type:'Boys'},
+  {id:'H-203',capacity:2,inmates:['Warden Room'],type:'Staff'},
+];
+
+function renderRooms(){
+  var boarders=getBoarders();
+  var totalCap=ROOMS.reduce(function(a,r){return a+(r.type!=='Staff'?r.capacity:0);},0);
+  var totalOcc=ROOMS.reduce(function(a,r){return a+(r.type!=='Staff'?r.inmates.length:0);},0);
+  var fullRooms=ROOMS.filter(function(r){return r.type!=='Staff'&&r.inmates.length>=r.capacity;}).length;
+  var kpi=$('room_kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Beds',v:totalCap,n:'Across '+(ROOMS.length-1)+' rooms'},
+    {l:'Occupied',v:totalOcc,n:Math.round(totalOcc/totalCap*100)+'% occupancy',c:'var(--acc)'},
+    {l:'Available',v:totalCap-totalOcc,n:'Beds free',c:'var(--green)'},
+    {l:'Full Rooms',v:fullRooms,n:'No vacancies',c:'var(--red)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var grid=$('room_grid');
+  if(grid)grid.innerHTML=ROOMS.map(function(r){
+    var pct=Math.round(r.inmates.length/r.capacity*100);
+    var cls=r.type==='Staff'?'':r.inmates.length>=r.capacity?'full':r.inmates.length===0?'empty':'';
+    return '<div class="room-block '+cls+'"><div class="room-num">'+r.id+'</div><div class="room-occ">'+r.inmates.length+'/'+r.capacity+'</div><div class="room-lbl">'+r.type+'</div></div>';
+  }).join('');
+  var listEl=$('room_list');
+  if(listEl){
+    var rows=[];
+    ROOMS.forEach(function(r){
+      r.inmates.forEach(function(name,i){
+        rows.push('<tr><td class="fw">'+name+'</td><td>—</td><td style="font-family:monospace;font-size:12px;">'+r.id+'</td><td>Bed '+(i+1)+'</td><td>Jun 2026</td><td>—</td><td>—</td></tr>');
+      });
+    });
+    listEl.innerHTML=rows.join('')||'<tr><td colspan="7" style="text-align:center;color:var(--ink5);padding:24px;">No boarders allocated</td></tr>';
+  }
+  var nb=$('nb-rooms'); if(nb)nb.textContent=totalOcc;
+}
+
+// ── INMATES ──
+function renderInmates(){
+  var q=(($('inmate-search')||{}).value||'').toLowerCase();
+  var boarders=getBoarders().filter(function(s){return !q||s.name.toLowerCase().includes(q);});
+  var body=$('inmate_body');
+  if(!body)return;
+  body.innerHTML=boarders.length?boarders.map(function(s){
+    return '<tr><td class="fw">'+s.name+'</td><td>'+s.cls+' '+s.section+'</td><td>H-101</td>'
+      +'<td>'+s.diet+'</td><td style="font-size:12px;color:var(--ink4);">'+(s.health||'—')+'</td>'
+      +'<td>'+s.parentName+'</td><td style="font-family:monospace;font-size:11.5px;">'+s.parentPhone+'</td>'
+      +'<td>'+s.adm+'</td></tr>';
+  }).join(''):'<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink5);">No boarders found</td></tr>';
+}
+
+// ── FEES ──
+function renderFees(){
+  var boarders=getBoarders();
+  var fs=db.feeStructure;
+  var monthlyFee=fs&&fs.monthly?fs.monthly.hostel:3500;
+  var totalDue=boarders.length*monthlyFee;
+  var paid=boarders.reduce(function(a,s){
+    return a+db.payments.filter(function(p){return p.studentId===s.id&&p.category==='Hostel Monthly';}).reduce(function(x,p){return x+(p.amount||0);},0);
+  },0);
+  var kpi=$('fee_kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Monthly Hostel Fee',v:'&#8377;'+monthlyFee.toLocaleString('en-IN'),n:'Per inmate incl. mess'},
+    {l:'Total Due This Month',v:'&#8377;'+totalDue.toLocaleString('en-IN'),n:'From '+boarders.length+' inmates'},
+    {l:'Collected',v:'&#8377;'+paid.toLocaleString('en-IN'),n:'Recorded in Finance',c:'var(--green)'},
+    {l:'Outstanding',v:'&#8377;'+Math.max(0,totalDue-paid).toLocaleString('en-IN'),n:'To be collected',c:'var(--red)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';font-size:18px;':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var body=$('fee_body');
+  if(!body)return;
+  body.innerHTML=boarders.map(function(s){
+    var p=db.payments.filter(function(x){return x.studentId===s.id&&x.category==='Hostel Monthly';}).reduce(function(a,x){return a+(x.amount||0);},0);
+    var bal=Math.max(0,monthlyFee-p);
+    var col=bal===0?'var(--green)':'var(--red)';
+    return '<tr><td class="fw">'+s.name+'</td><td>'+s.cls+' '+(s.section||'')+'</td>'
+      +'<td class="mono">&#8377;'+monthlyFee.toLocaleString('en-IN')+'</td>'
+      +'<td class="mono" style="color:var(--green);">'+(p>0?'&#8377;'+p.toLocaleString('en-IN'):'&ndash;')+'</td>'
+      +'<td class="mono" style="font-weight:700;color:'+col+';">'+(bal>0?'&#8377;'+bal.toLocaleString('en-IN'):'&#10003; Clear')+'</td>'
+      +'<td><span class="badge '+(bal===0?'bg-g':'bg-r')+'">'+(bal===0?'Paid':'Outstanding')+'</span></td></tr>';
+  }).join('')||'<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--ink5);">No boarders enrolled</td></tr>';
+}
+
+// ── MESS MANAGEMENT ──
+var DAILY_COST_LOG=[
+  {date:'2026-10-14',amount:4200,by:'Warden'},
+  {date:'2026-10-13',amount:3950,by:'Cook'},
+  {date:'2026-10-12',amount:4100,by:'Warden'},
+  {date:'2026-10-11',amount:3800,by:'Cook'},
+  {date:'2026-10-10',amount:4400,by:'Warden'},
+  {date:'2026-10-09',amount:3750,by:'Cook'},
+  {date:'2026-10-08',amount:4050,by:'Warden'},
+];
+
+function renderMess(){
+  var boarders=getBoarders().length||3;
+  var fs=db.feeStructure;
+  var monthlyBudget=boarders*(fs&&fs.monthly?fs.monthly.hostel:3500);
+  var dailyBudget=Math.round(monthlyBudget/30);
+  var totalVal=db.messStock.reduce(function(a,s){return a+s.qty*s.cost;},0);
+  var lowItems=db.messStock.filter(function(s){return s.qty<=s.low;}).length;
+  var daysElapsed=new Date().getDate();
+  var spentSoFar=DAILY_COST_LOG.filter(function(l){
+    return new Date(l.date).getMonth()===new Date().getMonth();
+  }).reduce(function(a,l){return a+l.amount;},0);
+  var projected=Math.round(spentSoFar/daysElapsed*30);
+  var utilPct=monthlyBudget>0?Math.round(spentSoFar/monthlyBudget*100):0;
+  
+  var kpi=$('mess_kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Monthly Budget',v:'&#8377;'+monthlyBudget.toLocaleString('en-IN'),n:boarders+' boarders &times; &#8377;'+(fs&&fs.monthly?fs.monthly.hostel:3500)},
+    {l:'Spent This Month',v:'&#8377;'+spentSoFar.toLocaleString('en-IN'),n:daysElapsed+' days logged',c:utilPct>90?'var(--red)':utilPct>75?'var(--amber)':'var(--acc)'},
+    {l:'Stock Value',v:'&#8377;'+totalVal.toLocaleString('en-IN'),n:'Current inventory'},
+    {l:'Low Stock Items',v:lowItems,n:'Need reorder',c:lowItems>0?'var(--red)':'var(--green)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';font-size:18px;':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+
+  // Budget vs Actual bars
+  var bars=$('mess-budget-bars');
+  if(bars){
+    var categories=[
+      {cat:'Vegetables',budget:Math.round(monthlyBudget*0.25),actual:Math.round(spentSoFar*0.27)},
+      {cat:'Grains / Rice',budget:Math.round(monthlyBudget*0.20),actual:Math.round(spentSoFar*0.19)},
+      {cat:'Protein (Dal/Egg)',budget:Math.round(monthlyBudget*0.20),actual:Math.round(spentSoFar*0.22)},
+      {cat:'Dairy',budget:Math.round(monthlyBudget*0.15),actual:Math.round(spentSoFar*0.14)},
+      {cat:'Spices / Oil',budget:Math.round(monthlyBudget*0.10),actual:Math.round(spentSoFar*0.11)},
+      {cat:'Other',budget:Math.round(monthlyBudget*0.10),actual:Math.round(spentSoFar*0.07)},
+    ];
+    bars.innerHTML=categories.map(function(c){
+      var pct=c.budget>0?Math.min(100,Math.round(c.actual/c.budget*100)):0;
+      var over=c.actual>c.budget;
+      var barCol=over?'var(--red)':'var(--acc)';
+      return '<div style="margin-bottom:14px;">'
+        +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">'
+        +'<span style="font-weight:600;color:var(--ink2);">'+c.cat+'</span>'
+        +'<span style="font-family:monospace;font-size:11.5px;color:'+(over?'var(--red)':'var(--ink4)')+'">'
+        +'&#8377;'+c.actual.toLocaleString('en-IN')+' / &#8377;'+c.budget.toLocaleString('en-IN')+'</span></div>'
+        +'<div style="background:var(--s4);border-radius:4px;height:8px;overflow:hidden;">'
+        +'<div style="width:'+pct+'%;background:'+barCol+';height:100%;border-radius:4px;transition:width .4s;"></div></div>'
+        +(over?'<div style="font-size:10.5px;color:var(--red);margin-top:2px;">&#9650; Over by &#8377;'+(c.actual-c.budget).toLocaleString('en-IN')+'</div>':'')
+        +'</div>';
+    }).join('');
+  }
+  var utilEl=$('mess-util-pct');
+  if(utilEl)utilEl.textContent=utilPct+'%';
+  if(utilEl)utilEl.style.color=utilPct>90?'var(--red)':utilPct>75?'var(--amber)':'var(--ink)';
+  var projEl=$('mess-projected');
+  if(projEl){projEl.textContent='&#8377;'+projected.toLocaleString('en-IN');projEl.style.color=projected>monthlyBudget?'var(--red)':'var(--green)';}
+
+  // Procurement planner
+  var lowStock=db.messStock.filter(function(s){return s.qty<=s.low;});
+  var procureAlert=$('procure-alert');
+  if(procureAlert)procureAlert.textContent=lowStock.length>0?lowStock.length+' items low':'Stock OK';
+  if(procureAlert)procureAlert.className='badge '+(lowStock.length>0?'bg-r':'bg-g');
+  var procureList=$('procure-list');
+  if(procureList){
+    procureList.innerHTML=lowStock.length?lowStock.map(function(s){
+      var needed=s.max-s.qty;
+      var cost=needed*s.cost;
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--s4);">'
+        +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+s.item+'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink4);">Need '+needed+' '+s.unit+' &middot; &#8377;'+cost.toLocaleString('en-IN')+'</div></div>'
+        +'<span class="badge bg-r" style="font-size:10px;">'+s.qty+'/'+s.max+' '+s.unit+'</span>'
+        +'</div>';
+    }).join(''):'<div style="padding:20px 0;text-align:center;color:var(--ink5);font-size:13px;">&#10003; All items adequately stocked</div>';
+  }
+
+  // Stock table
+  var catF=(($('mess-cat-filter')||{}).value||'');
+  var qF=(($('mess-search')||{}).value||'').toLowerCase();
+  var filtered=db.messStock.filter(function(s){
+    return (!catF||s.cat===catF)&&(!qF||s.item.toLowerCase().includes(qF));
+  });
+  var stockBody=$('mess-stock-body');
+  if(stockBody)stockBody.innerHTML=filtered.map(function(s,i){
+    var pct=s.max>0?Math.round(s.qty/s.max*100):0;
+    var col=s.qty<=s.low?'var(--red)':s.qty<=s.low*2?'var(--amber)':'var(--green)';
+    var badge=s.qty<=s.low?'bg-r':s.qty<=s.low*2?'bg-o':'bg-g';
+    var status=s.qty<=s.low?'Low Stock':s.qty<=s.low*2?'Reorder Soon':'OK';
+    return '<tr><td class="fw">'+s.item+'</td><td><span class="badge bg-s">'+s.cat+'</span></td>'
+      +'<td><div style="display:flex;align-items:center;gap:8px;">'
+      +'<div style="width:60px;background:var(--s4);border-radius:3px;height:6px;overflow:hidden;">'
+      +'<div style="width:'+pct+'%;background:'+col+';height:100%;"></div></div>'
+      +'<span class="mono" style="color:'+col+';">'+s.qty+' '+s.unit+'</span></div></td>'
+      +'<td class="mono">'+s.low+' '+s.unit+'</td>'
+      +'<td class="mono">&#8377;'+s.cost+'</td>'
+      +'<td class="mono" style="font-weight:700;">&#8377;'+(s.qty*s.cost).toLocaleString('en-IN')+'</td>'
+      +'<td><span class="badge '+badge+'">'+status+'</span></td>'
+      +'<td><button class="btn bo bsm" data-si="'+i+'" onclick="editStock(this.dataset.si)" style="font-size:11px;">Edit</button></td></tr>';
+  }).join('')||'<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink5);">No stock items</td></tr>';
+
+  // Daily cost log
+  var logBody=$('cost-log-body');
+  if(logBody)logBody.innerHTML=DAILY_COST_LOG.slice(0,10).map(function(l){
+    var perHead=boarders>0?Math.round(l.amount/boarders):0;
+    var diff=l.amount-dailyBudget;
+    var col=diff>0?'var(--red)':'var(--green)';
+    return '<tr><td>'+l.date+'</td>'
+      +'<td class="mono" style="font-weight:700;">&#8377;'+l.amount.toLocaleString('en-IN')+'</td>'
+      +'<td class="mono">&#8377;'+perHead+'/head</td>'
+      +'<td class="mono" style="color:var(--ink4);">Budget: &#8377;'+dailyBudget+'</td>'
+      +'<td class="mono" style="color:'+col+';font-weight:700;">'+(diff>0?'&#9650; +':'&#9660; ')+Math.abs(diff).toLocaleString('en-IN')+'</td></tr>';
+  }).join('')||'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink5);">No cost logs yet</td></tr>';
+
+  // Init cost date
+  var cd=$('cost-date'); if(cd&&!cd.value)cd.value=new Date().toISOString().slice(0,10);
+}
+
+function logDailyCost(){
+  var date=($('cost-date')||{}).value||new Date().toISOString().slice(0,10);
+  var amt=parseInt(($('cost-amt')||{}).value||0);
+  if(!amt){toast('Enter amount spent','e');return;}
+  DAILY_COST_LOG.unshift({date:date,amount:amt,by:'Warden'});
+  var ca=$('cost-amt'); if(ca)ca.value='';
+  toast('Daily cost logged: &#8377;'+amt.toLocaleString('en-IN'),'s');
+  renderMess();
+}
+
+function editStock(i){
+  var s=db.messStock[i];
+  var newQty=prompt('Update stock for '+s.item+'\nCurrent: '+s.qty+' '+s.unit+'\nEnter new quantity:',s.qty);
+  if(newQty!==null&&!isNaN(parseInt(newQty))){
+    s.qty=parseInt(newQty);
+    SHAPE_DB.save(db);
+    toast(s.item+' stock updated to '+s.qty+' '+s.unit,'s');
+    renderMess();
+  }
+}
+
+function generateProcureOrder(){
+  var low=db.messStock.filter(function(s){return s.qty<=s.low;});
+  if(!low.length){toast('All items adequately stocked — no order needed','s');return;}
+  var total=low.reduce(function(a,s){return a+(s.max-s.qty)*s.cost;},0);
+  var lines=low.map(function(s){return s.item+': '+(s.max-s.qty)+' '+s.unit+' @ &#8377;'+s.cost+' = &#8377;'+(s.max-s.qty)*s.cost;}).join('\n');
+  toast('Procurement order generated — '+low.length+' items, total &#8377;'+total.toLocaleString('en-IN'),'s');
+  alert('PROCUREMENT ORDER — Arete Model School Hostel\n'+new Date().toDateString()+'\n\n'+low.map(function(s){return s.item+': '+(s.max-s.qty)+' '+s.unit+' (unit cost: Rs '+s.cost+')'}).join('\n')+'\n\nEstimated Total: Rs '+total.toLocaleString('en-IN'));
+}
+
+// ── WEEKLY MENU ──
+var MENU={
+  Monday:   {B:'Idli (3), Sambar, Coconut Chutney, Banana',L:'Rice, Dal Tadka, Beans Mezhukkupuratti, Pickle, Papad',D:'Chapati (2), Paneer Butter Masala, Salad, Rice'},
+  Tuesday:  {B:'Puttu, Kadala Curry, Boiled Egg, Tea',L:'Rice, Fish Curry (Kerala), Thoran, Rasam',D:'Chapati (2), Egg Curry, Dal, Rice'},
+  Wednesday:{B:'Dosa (2), Sambar, Chutneys, Tea',L:'Rice, Chicken Curry, Cabbage Thoran, Buttermilk',D:'Chapati (2), Dal Makhani, Vegetable Sabzi, Salad'},
+  Thursday: {B:'Idiyappam (4), Egg Curry, Tea',L:'Rice, Sambar, Avial, Papad',D:'Parotta (2), Veg Kurma, Rice, Pickle'},
+  Friday:   {B:'Poori (3), Chana Masala, Tea',L:'Rice, Fish Curry, Stir Fry, Rasam',D:'Chapati (2), Mixed Veg Curry, Dal, Curd Rice'},
+  Saturday: {B:'Upma, Coconut Chutney, Tea, Fruit',L:'Chicken Biryani, Raita, Salad, Papad',D:'Chapati (2), Paneer Sabzi, Dal, Rice'},
+  Sunday:   {B:'Appam (3), Vegetable Stew, Fruit Juice',L:'Special Meals: Biriyani / Pulao, Raita, Payasam',D:'Chapati (2), Butter Chicken, Dal, Rice, Ice Cream'},
+};
+var DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var MEAL_COLORS={B:'#FFF3CD',L:'#D4EDDA',D:'#CCE5FF'};
+var MEAL_BORDER={B:'#F0C040',L:'#82C99A',D:'#7EB9FF'};
+var MEAL_LABELS={B:'&#9728; Breakfast',L:'&#127807; Lunch',D:'&#127769; Dinner'};
+
+function renderMenu(){
+  var el=$('menu-grid');
+  if(!el)return;
+  // Build a 3-row (meals) x 7-col (days) grid
+  var html='<table style="width:100%;border-collapse:separate;border-spacing:4px;">';
+  html+='<thead><tr><th style="width:80px;"></th>';
+  DAYS.forEach(function(d){html+='<th style="font-size:11px;font-weight:700;color:var(--ink3);padding:4px 8px;text-align:left;">'+d+'</th>';});
+  html+='</tr></thead><tbody>';
+  ['B','L','D'].forEach(function(m){
+    html+='<tr><td style="padding:4px;"><div style="font-size:11px;font-weight:700;color:var(--ink4);white-space:nowrap;padding:4px 0;">'+MEAL_LABELS[m]+'</div></td>';
+    DAYS.forEach(function(d){
+      var id='menu_'+d+'_'+m;
+      html+='<td style="padding:4px;vertical-align:top;">'
+        +'<div style="background:'+MEAL_COLORS[m]+';border:1px solid '+MEAL_BORDER[m]+';border-radius:7px;overflow:hidden;">'
+        +'<textarea id="'+id+'" style="width:100%;min-height:70px;border:none;background:transparent;font-size:11.5px;font-family:Inter,sans-serif;padding:7px 8px;color:var(--ink2);resize:vertical;outline:none;">'+((MENU[d]||{})[m]||'')+'</textarea>'
+        +'</div></td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function saveMenu(){
+  DAYS.forEach(function(d){
+    ['B','L','D'].forEach(function(m){
+      var el=$('menu_'+d+'_'+m);
+      if(el)MENU[d][m]=el.value;
+    });
+  });
+  toast('Menu saved and published for this week','s');
+}
+
+function printMenu(){
+  var w=window.open('','_blank','width=1000,height=700');
+  var rows=['B','L','D'].map(function(m){
+    var cells=DAYS.map(function(d){return '<td style="border:1px solid #ccc;padding:8px;font-size:12px;vertical-align:top;">'+((MENU[d]||{})[m]||'')+'</td>';}).join('');
+    return '<tr><td style="border:1px solid #ccc;padding:8px;font-weight:700;background:#f5f5f5;font-size:12px;">'+(m==='B'?'Breakfast':m==='L'?'Lunch':'Dinner')+'</td>'+cells+'</tr>';
+  }).join('');
+  var headers=DAYS.map(function(d){return '<th style="border:1px solid #ccc;padding:8px;background:#eee;font-size:12px;">'+d+'</th>';}).join('');
+  w.document.write('<!DOCTYPE html><html><head><title>Weekly Mess Menu</title></head><body style="font-family:Arial,sans-serif;padding:24px;">'
+    +'<h2 style="margin-bottom:4px;">Arete Model School — Hostel Mess Menu</h2>'
+    +'<p style="color:#666;font-size:13px;margin-bottom:16px;">Week of '+new Date().toDateString()+'</p>'
+    +'<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="border:1px solid #ccc;padding:8px;background:#eee;font-size:12px;">Meal</th>'+headers+'</tr></thead>'
+    +'<tbody>'+rows+'</tbody></table>'
+    +'<button onclick="window.print()" style="margin-top:20px;padding:8px 20px;background:#0B7BAA;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">Print</button>'
+    +'<\/body><\/html>');
+  w.document.close();
+}
+
+// ── OUTING REQUESTS ──
+var OUTINGS=[
+  {id:'OUT001',stuId:'S003',stuName:'Devika Nair',cls:'Grade 10 A',purpose:'Family Visit',dep:'2026-10-20',ret:'2026-10-22',consent:'Written',status:'Approved'},
+  {id:'OUT002',stuId:'S006',stuName:'Arjun Menon',cls:'Grade 9 A',purpose:'Medical',dep:'2026-10-18',ret:'2026-10-18',consent:'WhatsApp',status:'Approved'},
+  {id:'OUT003',stuId:'S003',stuName:'Devika Nair',cls:'Grade 10 A',purpose:'Festival',dep:'2026-10-28',ret:'2026-10-31',consent:'Pending',status:'Pending Approval'},
+];
+
+function renderOuting(){
+  var filt=($('out-filter')||{}).value||'all';
+  var today=new Date().toISOString().slice(0,10);
+  var weekAgo=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+  var pending=OUTINGS.filter(function(o){return o.status==='Pending Approval';}).length;
+  var approved=OUTINGS.filter(function(o){return o.status==='Approved';}).length;
+  var away=OUTINGS.filter(function(o){return o.status==='Approved'&&o.dep<=today&&o.ret>=today;}).length;
+  var kpi=$('out-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Pending Approval',v:pending,n:'Awaiting warden sign-off',c:'var(--amber)'},
+    {l:'Approved',v:approved,n:'This month'},
+    {l:'Currently Away',v:away,n:'Out of hostel now',c:'var(--red)'},
+    {l:'Total Requests',v:OUTINGS.length,n:'All time'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var list=filt==='all'?OUTINGS:OUTINGS.filter(function(o){return o.status===filt;});
+  var body=$('out-body');
+  if(!body)return;
+  body.innerHTML=list.map(function(o){
+    var dep=new Date(o.dep), ret=new Date(o.ret);
+    var days=Math.max(1,Math.round((ret-dep)/86400000)+1);
+    var col=o.status==='Approved'?'var(--green)':o.status==='Pending Approval'?'var(--amber)':'var(--red)';
+    var badge=o.status==='Approved'?'bg-g':'bg-o';
+    var actionBtn=o.status==='Pending Approval'
+      ?'<button class="btn bp bsm" data-oid="'+o.id+'" onclick="approveOuting(this.dataset.oid)" style="font-size:11px;">&#10003; Approve</button>'
+      :'<span style="color:var(--ink5);font-size:12px;">&#10003; Done</span>';
+    return '<tr><td class="fw">'+o.stuName+'</td><td style="font-size:12px;">'+o.cls+'</td><td>'+o.purpose+'</td>'
+      +'<td style="font-family:monospace;font-size:12px;">'+o.dep+'</td>'
+      +'<td style="font-family:monospace;font-size:12px;">'+o.ret+'</td>'
+      +'<td><span class="badge '+(o.consent==='Pending'?'bg-o':'bg-g')+'">'+o.consent+'</span></td>'
+      +'<td style="text-align:center;font-weight:700;">'+days+'</td>'
+      +'<td><span class="badge '+badge+'">'+o.status+'</span></td>'
+      +'<td>'+actionBtn+'</td></tr>';
+  }).join('')||'<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--ink5);">No outing requests</td></tr>';
+}
+
+function approveOuting(id){
+  var o=OUTINGS.find(function(x){return x.id===id;});
+  if(o){o.status='Approved';toast('Outing approved for '+o.stuName+' &#8212; '+o.dep+' to '+o.ret,'s');}
+  renderOuting();
+}
+
+function openOutingModal(){
+  var sel=$('out_stu');
+  if(sel&&db&&db.students){
+    sel.innerHTML=getBoarders().map(function(s){
+      return '<option value="'+s.id+'">'+s.name+' &mdash; '+s.cls+'</option>';
+    }).join('');
+  }
+  var dep=$('out_dep'); if(dep)dep.value=new Date().toISOString().slice(0,10);
+  document.getElementById('ovOuting').classList.add('open');
+}
+
+function saveOuting(){
+  var sel=$('out_stu');
+  var stuOpt=sel?sel.options[sel.selectedIndex]:null;
+  var dep=($('out_dep')||{}).value||'';
+  var ret=($('out_ret')||{}).value||'';
+  if(!dep||!ret){toast('Enter departure and return dates','e');return;}
+  OUTINGS.unshift({
+    id:'OUT'+Date.now().toString().slice(-4),
+    stuId:(sel||{}).value||'',
+    stuName:stuOpt?stuOpt.text.split(' — ')[0]:'Unknown',
+    cls:stuOpt?stuOpt.text.split(' — ')[1]||'':'',
+    purpose:($('out_purpose')||{}).value||'Other',
+    dep:dep,ret:ret,
+    consent:($('out_consent')||{}).value||'Pending',
+    status:'Pending Approval'
+  });
+  document.getElementById('ovOuting').classList.remove('open');
+  toast('Outing request submitted — pending warden approval','s');
+  renderOuting();
+}
+
+// ── ROOM MODAL ──
+function allocateRoom(){}
+
+// ── INIT ──
+renderRooms();
+</script>
+
+<!-- Incident Modal -->
+<div class="ov" id="ovIncident">
+  <div class="modal" style="max-width:520px;">
+    <div class="mh"><div><h3>Log Incident</h3><div class="mh-sub">Record a hostel incident or health emergency</div></div>
+      <button class="cx" onclick="document.getElementById('ovIncident').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Student</label><select class="fc" id="inc_stu"></select></div>
+        <div class="fg"><label class="fl">Type</label>
+          <select class="fc" id="inc_type"><option>Health</option><option>Behavioural</option><option>Safety</option><option>Property Damage</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Date &amp; Time</label><input type="datetime-local" class="fc" id="inc_dt"></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fc" id="inc_desc" rows="3" placeholder="Describe what happened..."></textarea></div>
+      <div class="fg"><label class="fl">Action Taken</label><textarea class="fc" id="inc_action" rows="2" placeholder="Steps taken..."></textarea></div>
+      <div class="fg"><label class="fl">Reported By</label><input class="fc" id="inc_by" value="Muhd Zahal (Warden)"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovIncident').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveIncident()">Log Incident</button>
+    </div>
+  </div>
+</div>
+<!-- Stock Modal -->
+<div class="ov" id="ovStock">
+  <div class="modal" style="max-width:460px;">
+    <div class="mh"><div><h3>Add / Update Stock</h3><div class="mh-sub">Add a new item or update existing stock levels</div></div><button class="cx" onclick="document.getElementById('ovStock').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Item Name</label><input class="fc" id="sk_name" placeholder="e.g. Rice, Dal, Onion"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Category</label>
+          <select class="fc" id="sk_cat"><option>Staples</option><option>Vegetables</option><option>Dairy</option><option>Spices</option><option>Cooking Oil</option><option>Protein</option></select>
+        </div>
+        <div class="fg"><label class="fl">Unit</label>
+          <select class="fc" id="sk_unit"><option>kg</option><option>litres</option><option>pieces</option><option>grams</option><option>packets</option></select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Quantity in Stock</label><input type="number" class="fc" id="sk_qty" placeholder="0"></div>
+        <div class="fg"><label class="fl">Unit Cost (&#8377;)</label><input type="number" class="fc" id="sk_cost" placeholder="0"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Min Level (reorder trigger)</label><input type="number" class="fc" id="sk_low" placeholder="e.g. 5"></div>
+        <div class="fg"><label class="fl">Max Level</label><input type="number" class="fc" id="sk_max" placeholder="e.g. 25"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="document.getElementById('ovStock').classList.remove('open')">Cancel</button><button class="btn bp" onclick="saveStock()">Save Stock</button></div>
+  </div>
+</div>
+
+<!-- Procurement Modal -->
+<div class="ov" id="ovProcure">
+  <div class="modal" style="max-width:500px;">
+    <div class="mh"><div><h3>Procurement Order</h3><div class="mh-sub">Send purchase order to supplier</div></div><button class="cx" onclick="document.getElementById('ovProcure').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Supplier Name</label><input class="fc" id="proc_supplier" placeholder="e.g. Kerala Agro Traders"></div>
+      <div class="fg"><label class="fl">Items to Order</label><textarea class="fc" id="proc_items" rows="5" placeholder="List items and quantities..."></textarea></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Estimated Total (&#8377;)</label><input type="number" class="fc" id="proc_total"></div>
+        <div class="fg"><label class="fl">Expected Delivery</label><input type="date" class="fc" id="proc_date"></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="document.getElementById('ovProcure').classList.remove('open')">Cancel</button><button class="btn bp" onclick="submitProcure()">Submit Order</button></div>
+  </div>
+</div>
+
+<!-- Outing Modal -->
+<div class="ov" id="ovOuting">
+  <div class="modal" style="max-width:480px;">
+    <div class="mh"><div><h3>Outing Request</h3><div class="mh-sub">Log a boarder outing or leave request</div></div><button class="cx" onclick="document.getElementById('ovOuting').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Student</label><select class="fc" id="out_stu"></select></div>
+      <div class="fg"><label class="fl">Purpose</label>
+        <select class="fc" id="out_purpose"><option>Family Visit</option><option>Medical</option><option>Festival</option><option>Emergency</option><option>Other</option></select>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Departure Date</label><input type="date" class="fc" id="out_dep"></div>
+        <div class="fg"><label class="fl">Return By</label><input type="date" class="fc" id="out_ret"></div>
+      </div>
+      <div class="fg"><label class="fl">Parent Consent</label>
+        <select class="fc" id="out_consent"><option>Verbal</option><option>Written</option><option>WhatsApp</option><option>Pending</option></select>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="document.getElementById('ovOuting').classList.remove('open')">Cancel</button><button class="btn bp" onclick="saveOuting()">Submit Request</button></div>
+  </div>
+</div>
+
+<!-- Room Modal -->
+<div class="ov" id="ovRoom">
+  <div class="modal" style="max-width:440px;">
+    <div class="mh"><div><h3>Allocate Room</h3><div class="mh-sub">Assign a boarder to a room and bed</div></div><button class="cx" onclick="document.getElementById('ovRoom').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Student</label><select class="fc" id="room_stu"></select></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Room</label>
+          <select class="fc" id="room_num"><option>H-101</option><option>H-102</option><option>H-103</option><option>H-104</option><option>H-105</option><option>H-201</option><option>H-202</option></select>
+        </div>
+        <div class="fg"><label class="fl">Bed No.</label>
+          <select class="fc" id="room_bed"><option>Bed 1</option><option>Bed 2</option><option>Bed 3</option><option>Bed 4</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="document.getElementById('ovRoom').classList.remove('open')">Cancel</button><button class="btn bp" onclick="confirmRoom()">Allocate</button></div>
+  </div>
+</div>
+
+<script>
+function saveStock(){
+  var name=($('sk_name')||{}).value.trim();
+  if(!name){toast('Enter item name','e');return;}
+  var qty=parseInt(($('sk_qty')||{}).value||0);
+  var cost=parseInt(($('sk_cost')||{}).value||0);
+  var low=parseInt(($('sk_low')||{}).value||Math.round(qty*0.2));
+  var max=parseInt(($('sk_max')||{}).value||qty*2);
+  var existing=db.messStock.find(function(s){return s.item===name;});
+  if(existing){existing.qty=qty;existing.cost=cost;existing.low=low;existing.max=max;}
+  else{db.messStock.push({item:name,unit:($('sk_unit')||{}).value||'kg',qty:qty,max:max,low:low,cost:cost,cat:($('sk_cat')||{}).value||'Staples'});}
+  SHAPE_DB.save(db);
+  document.getElementById('ovStock').classList.remove('open');
+  ['sk_name','sk_qty','sk_cost','sk_low','sk_max'].forEach(function(id){var el=$(id);if(el)el.value='';});
+  toast('Stock updated — '+name,'s');
+  renderMess();
+}
+
+function submitProcure(){
+  var supplier=($('proc_supplier')||{}).value||'';
+  var total=($('proc_total')||{}).value||'';
+  document.getElementById('ovProcure').classList.remove('open');
+  toast('Procurement order sent to '+(supplier||'supplier')+' — &#8377;'+parseInt(total||0).toLocaleString('en-IN'),'s');
+}
+
+function confirmRoom(){
+  var sel=$('room_stu');
+  var name=sel?sel.options[sel.selectedIndex].text:'';
+  var room=($('room_num')||{}).value||'H-101';
+  var r=ROOMS.find(function(x){return x.id===room;});
+  if(r&&r.inmates.length<r.capacity){r.inmates.push(name);}
+  document.getElementById('ovRoom').classList.remove('open');
+  toast(name+' allocated to '+room,'s');
+  renderRooms();
+}
+
+// Populate room student dropdown on open
+document.getElementById('ovRoom').addEventListener('click',function(e){
+  var sel=$('room_stu');
+  if(sel&&sel.options.length===0&&db&&db.students){
+    sel.innerHTML=db.students.filter(function(s){return s.status==='Active';}).map(function(s){
+      return '<option>'+s.name+' — '+s.cls+'</option>';
+    }).join('');
+  }
+});
+
+var INCIDENTS=[
+  {id:'INC001',date:'2026-10-15 21:30',stuName:'Mohammed Ashiq',cls:'Grade 7',type:'Health',desc:'Student complained of fever and stomach ache after dinner. Temperature: 38.4\u00b0C.',action:'Paracetamol given. Parents informed. Dr. Rajan consulted over phone. Student resting in sick room.',by:'Muhd Zahal (Warden)',status:'Resolved'},
+  {id:'INC002',date:'2026-10-12 19:00',stuName:'Arjun Menon',cls:'Grade 9',type:'Behavioural',desc:'Argument with roommate over phone usage. Raised voice and minor push incident.',action:'Both students counselled. Room rules reminder. Parents to be informed at next meeting.',by:'Muhd Zahal (Warden)',status:'Open'},
+];
+
+function renderIncidents(){
+  var filt=(document.getElementById('inc-filter')||{}).value||'all';
+  var open=INCIDENTS.filter(function(i){return i.status==='Open';}).length;
+  var health=INCIDENTS.filter(function(i){return i.type==='Health';}).length;
+  var kpi=document.getElementById('inc-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Incidents',v:INCIDENTS.length,n:'All time'},
+    {l:'Open',v:open,n:'Needs follow-up',c:'var(--red)'},
+    {l:'Resolved',v:INCIDENTS.length-open,n:'Closed',c:'var(--green)'},
+    {l:'Health',v:health,n:'Medical incidents',c:'var(--amber)'},
+  ].map(function(s){return '<div class="kc"><div class="kl">'+s.l+'</div><div class="kv" style="'+(s.c?'color:'+s.c+';':'')+'">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var list=filt==='all'?INCIDENTS:INCIDENTS.filter(function(i){return i.status===filt||i.type===filt;});
+  var body=document.getElementById('inc-body');
+  if(!body)return;
+  body.innerHTML=list.map(function(inc){
+    var badge=inc.status==='Open'?'<span class="badge bg-r">Open</span>':'<span class="badge bg-g">Resolved</span>';
+    var resolveBtn=inc.status==='Open'?'<button class="btn bp bsm" data-incid="'+inc.id+'" onclick="resolveIncident(this.dataset.incid)" style="font-size:11px;">Resolve</button>':'';
+    return '<tr>'
+      +'<td style="font-family:monospace;font-size:11.5px;white-space:nowrap;">'+inc.date+'</td>'
+      +'<td class="fw">'+inc.stuName+'<br><span style="font-size:11px;color:var(--ink4);font-weight:400;">'+inc.cls+'</span></td>'
+      +'<td><span class="badge '+(inc.type==='Health'?'bg-o':inc.type==='Behavioural'?'bg-r':'bg-s')+'">'+inc.type+'</span></td>'
+      +'<td style="font-size:12px;">'+inc.desc.substring(0,80)+'</td>'
+      +'<td style="font-size:12px;color:var(--ink3);">'+inc.action.substring(0,60)+'</td>'
+      +'<td style="font-size:12px;">'+inc.by+'</td>'
+      +'<td>'+badge+'</td>'
+      +'<td>'+resolveBtn+'</td></tr>';
+  }).join('')||'<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink4);">No incidents logged</td></tr>';
+}
+
+function resolveIncident(id){
+  var inc=INCIDENTS.find(function(x){return x.id===id;});
+  if(inc){inc.status='Resolved';toast('Incident '+id+' marked resolved','s');}
+  renderIncidents();
+}
+
+function saveIncident(){
+  var sel=document.getElementById('inc_stu');
+  var stuName=sel&&sel.selectedIndex>=0?sel.options[sel.selectedIndex].text.split(' \u2014 ')[0]:'Unknown';
+  var desc=(document.getElementById('inc_desc')||{}).value||'';
+  if(!desc){toast('Enter incident description','e');return;}
+  INCIDENTS.unshift({
+    id:'INC'+Date.now().toString().slice(-4),
+    date:(document.getElementById('inc_dt')||{}).value||new Date().toISOString().slice(0,16),
+    stuName:stuName,cls:'',
+    type:(document.getElementById('inc_type')||{}).value||'Other',
+    desc:desc,
+    action:(document.getElementById('inc_action')||{}).value||'Under review',
+    by:(document.getElementById('inc_by')||{}).value||'Warden',
+    status:'Open'
+  });
+  document.getElementById('ovIncident').classList.remove('open');
+  toast('Incident logged','s');
+  renderIncidents();
+}
+
+function openIncidentModal(){
+  var sel=document.getElementById('inc_stu');
+  if(sel&&db&&db.students){
+    sel.innerHTML=getBoarders().map(function(s){
+      return '<option value="'+s.id+'">'+s.name+' — '+s.cls+'</option>';
+    }).join('');
+  }
+  var dt=document.getElementById('inc_dt');
+  if(dt)dt.value=new Date().toISOString().slice(0,16);
+  document.getElementById('ovIncident').classList.add('open');
+}
+</script>
+
+<div class="ov" id="ovIncident">
+  <div class="modal" style="max-width:520px;">
+    <div class="mh"><div><h3>Log Incident</h3><div class="mh-sub">Record a hostel incident or health emergency</div></div>
+      <button class="cx" onclick="document.getElementById('ovIncident').classList.remove('open')">&#215;</button></div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Student</label><select class="fc" id="inc_stu"></select></div>
+        <div class="fg"><label class="fl">Type</label>
+          <select class="fc" id="inc_type"><option>Health</option><option>Behavioural</option><option>Safety</option><option>Property Damage</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Date &amp; Time</label><input type="datetime-local" class="fc" id="inc_dt"></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fc" id="inc_desc" rows="3" placeholder="Describe what happened..."></textarea></div>
+      <div class="fg"><label class="fl">Action Taken</label><textarea class="fc" id="inc_action" rows="2" placeholder="Steps taken..."></textarea></div>
+      <div class="fg"><label class="fl">Reported By</label><input class="fc" id="inc_by" value="Muhd Zahal (Warden)"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovIncident').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveIncident()">Log Incident</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

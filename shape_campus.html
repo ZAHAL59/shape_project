@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAPE Campus — Administration Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0C1524;--ink2:#1E2E44;--ink3:#3A5270;--ink4:#607A96;--ink5:#8FA8C0;--ink6:#BDD0E0;
+  --surf:#FFFFFF;--s2:#F3F7FB;--s3:#E6EEF6;--s4:#D0DDE9;--s5:#B4C6D8;
+  --violet:#3B1FA6;--violet-l:#EEEAFB;--violet-m:#C4B8F5;
+  --teal:#076B6B;--teal-l:#E5F5F5;--teal-m:#7ED4D4;
+  --amber:#875100;--amber-l:#FEF5E6;--amber-m:#F5C96A;
+  --red:#A31313;--red-l:#FDF0F0;--red-m:#F5AAAA;
+  --slate:#2D4060;
+  --r2:7px;--r3:11px;--r4:15px;
+  --sh1:0 1px 3px rgba(12,21,36,.06);--sh2:0 4px 16px rgba(12,21,36,.09);
+}
+html,body{height:100%;background:var(--s2);}
+body{font-family:'Outfit',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
+.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
+.sidebar{width:228px;flex-shrink:0;background:var(--slate);overflow-y:auto;display:flex;flex-direction:column;}
+.main{flex:1;overflow-y:auto;}
+
+.topbar{height:48px;background:var(--slate);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;}
+.tb-crest{width:30px;height:30px;border-radius:var(--r2);background:linear-gradient(135deg,var(--violet),#6B3BF5);display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;}
+.tb-ttl{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.tb-mod{font-size:10.5px;color:rgba(255,255,255,.3);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-school{font-size:11px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);padding:3px 10px;border-radius:3px;}
+
+.sb-sec{padding:18px 14px 5px;font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:var(--r2);cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ni.active{background:linear-gradient(90deg,var(--violet),#5B30F0);color:#fff;font-weight:600;}
+.ni .ic{font-size:14px;width:18px;flex-shrink:0;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);}
+.ni.active .nb{background:rgba(255,255,255,.22);color:#fff;}
+.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+
+.page{padding:22px 26px 40px;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.ph-ttl{font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.45px;}
+.ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
+.ph-r{display:flex;gap:8px;flex-shrink:0;}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.stat{background:var(--surf);border:1px solid var(--s4);border-radius:var(--r3);padding:15px 17px;box-shadow:var(--sh1);}
+.stat-l{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:8px;}
+.stat-v{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;}
+.stat-n{font-size:11.5px;color:var(--ink5);margin-top:4px;}
+
+.card{background:var(--surf);border:1px solid var(--s4);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1);margin-bottom:14px;}
+.card:last-child{margin-bottom:0;}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--s4);background:var(--s2);}
+.ct{font-size:13.5px;font-weight:700;color:var(--ink);}
+.cb{padding:14px 18px;}
+
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1.5px solid var(--s4);background:var(--s2);}
+td{padding:11px 14px;border-bottom:1px solid var(--s4);color:var(--ink3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.fw{font-weight:700;color:var(--ink);}
+
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.bg-g{background:var(--teal-l);color:var(--teal);}
+.bg-v{background:var(--violet-l);color:var(--violet);}
+.bg-o{background:var(--amber-l);color:var(--amber);}
+.bg-r{background:var(--red-l);color:var(--red);}
+.bg-s{background:var(--s3);color:var(--ink4);}
+
+.btn{padding:7px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--violet);color:#fff;box-shadow:0 2px 8px rgba(59,31,166,.22);}
+.bp:hover{background:#2D1694;}
+.bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
+.bo:hover{background:var(--s2);}
+.bsm{padding:5px 10px;font-size:11.5px;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3c{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* Complaint timeline */
+.cmp{border-left:3px solid var(--s4);margin-left:16px;padding-left:20px;position:relative;padding-bottom:16px;}
+.cmp::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--violet);position:absolute;left:-6.5px;top:3px;}
+.cmp-id{font-size:10px;font-weight:700;color:var(--ink5);font-family:'Fira Mono',monospace;margin-bottom:3px;}
+.cmp-ttl{font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:4px;}
+.cmp-meta{font-size:12px;color:var(--ink4);}
+.cmp-action{font-size:12.5px;color:var(--teal);margin-top:8px;font-weight:500;}
+
+/* Inventory grid */
+.inv-card{background:var(--surf);border:1px solid var(--s4);border-radius:var(--r3);padding:16px 18px;box-shadow:var(--sh1);}
+.inv-icon{font-size:26px;margin-bottom:10px;}
+.inv-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.inv-cat{font-size:11px;color:var(--ink5);margin-bottom:10px;}
+.inv-nums{display:flex;gap:16px;}
+.inv-num{text-align:center;}
+.inv-num-v{font-size:18px;font-weight:800;color:var(--ink);font-family:'Fira Mono',monospace;line-height:1;}
+.inv-num-l{font-size:10px;color:var(--ink5);margin-top:3px;}
+
+/* Event card */
+.ev-card{display:flex;gap:14px;padding:14px 18px;border-bottom:1px solid var(--s4);align-items:flex-start;transition:background .1s;}
+.ev-card:last-child{border-bottom:none;}
+.ev-card:hover{background:var(--s2);}
+.ev-date{width:48px;flex-shrink:0;text-align:center;}
+.ev-day{font-size:22px;font-weight:800;color:var(--violet);line-height:1;}
+.ev-month{font-size:10px;font-weight:600;color:var(--ink5);text-transform:uppercase;letter-spacing:.5px;}
+.ev-info{flex:1;}
+.ev-ttl{font-size:13.5px;font-weight:700;color:var(--ink2);}
+.ev-meta{font-size:12px;color:var(--ink4);margin-top:3px;}
+.ev-seats{font-size:12px;font-weight:600;color:var(--violet);margin-top:4px;}
+
+.ov{position:fixed;inset:0;background:rgba(12,21,36,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
+.ov.open{display:flex;}
+.modal{background:var(--surf);border-radius:var(--r4);max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
+.mh{padding:18px 22px 14px;border-bottom:1px solid var(--s4);display:flex;justify-content:space-between;align-items:flex-start;}
+.mh h3{font-size:15px;font-weight:700;color:var(--ink);}
+.mh-sub{font-size:11.5px;color:var(--ink4);margin-top:2px;}
+.mc{padding:18px 22px;}
+.mf{padding:12px 22px;border-top:1px solid var(--s4);background:var(--s2);display:flex;gap:8px;justify-content:flex-end;border-radius:0 0 var(--r4) var(--r4);}
+.cx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--ink4);padding:2px 5px;}
+.fg{margin-bottom:13px;}
+.fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:var(--r2);font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s,box-shadow .12s;}
+.fc:focus{border-color:var(--violet);box-shadow:0 0 0 3px var(--violet-l);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+
+.view{display:none;}.view.active{display:block;}
+#tw{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;}
+.toast{padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:600;color:#fff;box-shadow:var(--sh2);}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-crest">C</div>
+  <div>
+    <span class="tb-ttl">SHAPE Campus</span>
+    <span class="tb-mod" style="margin-left:6px;">Administration Platform</span>
+  </div>
+  <div class="tb-r"><span class="tb-school">Arete Model School · Nadapuram</span>
+    <a href="shape_admissions.html" style="font-size:10.5px;color:rgba(255,255,255,.3);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:3px;margin-left:auto;">← Admissions</a>
+    <a href="shape_finance.html" style="font-size:10.5px;color:rgba(255,255,255,.3);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:3px;">Finance</a>
+    </div>
+
+<div style="position:relative;margin-left:8px;" id="portal-switcher">
+  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
+    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+    &#9783; All Portals &#9660;
+  </button>
+  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
+    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
+    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
+    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
+    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
+    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
+    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
+    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
+    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
+    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
+    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
+  </div>
+</div>
+<style>
+#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
+#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+</style>
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var sw=document.getElementById('portal-switcher');
+    var m=document.getElementById('ps-menu');
+    if(sw&&m&&!sw.contains(e.target))m.style.display='none';
+  });
+})();
+</script>
+</div>
+
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-sec">Reception</div>
+  <div class="ni active" data-v="complaints"><span class="ic">📩</span>Complaints<span class="nb">3</span></div>
+  <div class="sb-sec">Scheduling</div>
+  <div class="ni" data-v="meetings"><span class="ic">📅</span>Meetings &amp; Events</div>
+  <div class="sb-sec">Assets</div>
+  <div class="ni" data-v="inventory"><span class="ic">📦</span>Inventory</div>
+  <div class="sb-sec">Library</div>
+  <div class="ni" data-v="library"><span class="ic">📚</span>Library Management</div>
+  <div class="ni" data-v="visitors"><span class="ic">&#128100;</span> Visitor Log</div>
+  <div class="ni" data-v="finance"><span class="ic">&#8377;</span> Finance Summary</div>
+  <div class="sb-ft">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--violet),#6B3BF5);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">MZ</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#fff;">Muhd Zahal</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.28);">Campus Administrator</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="main"><div class="page"><!-- COMPLAINTS -->
+<div id="view-complaints" class="view active">
+  <div class="ph">
+    <div><div class="ph-ttl">Reception &amp; Complaints</div><div class="ph-sub">Log, track and resolve every complaint from first contact to closure</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="document.getElementById('ovComplaint').classList.add('open')">+ Log Complaint</button></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-l">Open Complaints</div><div class="stat-v" style="color:var(--amber);">3</div><div class="stat-n">Awaiting resolution</div></div>
+    <div class="stat"><div class="stat-l">Resolved This Month</div><div class="stat-v" style="color:var(--teal);">14</div><div class="stat-n">Average 1.8 days</div></div>
+    <div class="stat"><div class="stat-l">Most Common Type</div><div class="stat-v" style="font-size:14px;">Academic</div><div class="stat-n">6 of 17 this month</div></div>
+    <div class="stat"><div class="stat-l">Oldest Open</div><div class="stat-v" style="color:var(--red);">4 days</div><div class="stat-n">CP003 — Facility</div></div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ct">Open — Requires Action</div><span class="badge bg-o">3 pending</span></div>
+        <div class="cb" id="openComplaints"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ct">Recently Resolved</div></div>
+        <table>
+          <thead><tr><th>ID</th><th>Subject</th><th>Type</th><th>Resolved In</th></tr></thead>
+          <tbody id="resolvedTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEETINGS -->
+<div id="view-meetings" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Meetings &amp; Events</div><div class="ph-sub">Schedule, resource and seat-allocate every meeting and school event</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="document.getElementById('ovMeeting').classList.add('open')">+ Schedule</button></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-l">Upcoming Events</div><div class="stat-v">5</div><div class="stat-n">Next 30 days</div></div>
+    <div class="stat"><div class="stat-l">Seats Allocated</div><div class="stat-v">356</div><div class="stat-n">Across all events</div></div>
+    <div class="stat"><div class="stat-l">Next Event</div><div class="stat-v" style="font-size:13px;">PTM Gr.8</div><div class="stat-n">20 Oct 2026</div></div>
+    <div class="stat"><div class="stat-l">Resources Reserved</div><div class="stat-v">8</div><div class="stat-n">Hall, projectors, chairs</div></div>
+  </div>
+  <div class="card" id="eventList"></div>
+</div>
+
+<!-- INVENTORY -->
+<div id="view-inventory" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Inventory Management</div><div class="ph-sub">All school assets · classified, counted and logged</div></div>
+    <div class="ph-r"><button class="btn bp" onclick="document.getElementById('ovAsset').classList.add('open')">+ Add Asset</button></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-l">Total Asset Types</div><div class="stat-v">6</div><div class="stat-n">Across all categories</div></div>
+    <div class="stat"><div class="stat-l">Total Asset Count</div><div class="stat-v">532</div><div class="stat-n">Individual items</div></div>
+    <div class="stat"><div class="stat-l">Est. Total Value</div><div class="stat-v" style="font-size:18px;">₹39.9L</div><div class="stat-n">Replacement cost</div></div>
+    <div class="stat"><div class="stat-l">Items Needing Repair</div><div class="stat-v" style="color:var(--red);">13</div><div class="stat-n">Flagged for service</div></div>
+  </div>
+  <div class="g3c" id="invGrid" style="margin-bottom:16px;"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Recent Activity Log</div></div>
+    <table>
+      <thead><tr><th>Date</th><th>Asset</th><th>Action</th><th>Qty</th><th>Logged By</th></tr></thead>
+      <tbody id="invLog"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div id="view-library" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Library Management</div><div class="ph-sub">Catalogue, issue records, reading analytics and student interest profiles</div></div>
+    <div class="ph-r">
+      <button class="btn bo bsm" onclick="switchLibTab('catalogue')">📚 Catalogue</button>
+      <button class="btn bo bsm" onclick="switchLibTab('analytics')">📊 Analytics</button>
+      <button class="btn bo bsm" onclick="openIssueModal()">📤 Issue Book</button> <button class="btn bp" onclick="document.getElementById('ovBook').classList.add('open')">+ Add Book</button>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="stats" id="lib-kpi"></div>
+
+  <!-- TAB: Catalogue -->
+  <div id="lib-tab-catalogue">
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Book Catalogue & Issues</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input id="lib-search" class="fc" type="text" placeholder="🔍 Search title, category…" style="width:180px;padding:5px 9px;font-size:12px;" oninput="renderLibrary()">
+          <select id="lib-cat-filter" class="fc" style="width:140px;padding:5px 9px;font-size:12px;" onchange="renderLibrary()">
+            <option value="">All Categories</option>
+          </select>
+          <select id="lib-status-filter" class="fc" style="width:130px;padding:5px 9px;font-size:12px;" onchange="renderLibrary()">
+            <option value="">All Status</option>
+            <option value="Issued">Issued</option>
+            <option value="Overdue">Overdue</option>
+            <option value="Available">Available</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Title</th><th>Category</th><th>Student</th><th>Class</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
+        <tbody id="libTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: Analytics -->
+  <div id="lib-tab-analytics" style="display:none;">
+
+    <!-- Row 1: Category breakdown + top readers -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+
+      <!-- Category breakdown -->
+      <div class="card" style="margin:0;">
+        <div class="ch">
+          <div class="ct">Books by Category</div>
+          <select id="lib-ana-filter" class="fc" style="width:130px;padding:5px 9px;font-size:12px;" onchange="renderCategoryAnalytics()">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+        <div class="cb" id="lib-cat-breakdown"></div>
+      </div>
+
+      <!-- Reading activity -->
+      <div class="card" style="margin:0;">
+        <div class="ch"><div class="ct">Currently Issued — by Category</div></div>
+        <div class="cb" id="lib-issued-chart"></div>
+      </div>
+    </div>
+
+    <!-- Row 2: Student reading profile -->
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct">Student Reading Profile</div><div style="font-size:12px;color:var(--ink4);margin-top:2px;">Select a student to see their full reading record, interests and recommendations</div></div>
+        <select id="lib-stu-select" class="fc" style="width:220px;padding:6px 9px;font-size:12.5px;" onchange="renderStudentReading()">
+          <option value="">Select a student…</option>
+        </select>
+      </div>
+      <div id="lib-stu-profile" style="padding:16px 18px;">
+        <div style="text-align:center;padding:32px;color:var(--ink5);">Select a student above to view their reading profile</div>
+      </div>
+    </div>
+
+    <!-- Row 3: Overdue + most active readers -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+      <div class="card" style="margin:0;">
+        <div class="ch"><div class="ct">⚠ Overdue Books</div></div>
+        <div id="lib-overdue-list" style="padding:0 18px 14px;"></div>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="ch"><div class="ct">Most Active Readers</div></div>
+        <div id="lib-top-readers" style="padding:0 18px 14px;"></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /view-library -->
+
+
+<!-- FINANCE SUMMARY -->
+
+<div id="view-visitors" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Visitor Management</div><div class="ph-sub">Log and track every visitor to Arete Model School</div></div>
+    <div class="ph-r">
+      <button class="btn bp" onclick="openVisitorModal()">+ Log Visitor</button>
+    </div>
+  </div>
+  <div class="stats" id="vis-kpi"></div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Visitor Register</div>
+      <div style="display:flex;gap:8px;">
+        <input id="vis-search" class="fc" type="text" placeholder="Search name, purpose..." style="width:160px;font-size:12px;padding:5px 9px;" oninput="renderVisitors()">
+        <select id="vis-date-filter" class="fc" style="width:120px;font-size:12px;padding:5px 9px;" onchange="renderVisitors()">
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="all">All Records</option>
+        </select>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Name</th><th>Purpose</th><th>Meeting With</th><th>Phone</th><th>Time In</th><th>Time Out</th><th>Status</th><th></th></tr></thead>
+      <tbody id="vis-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="view-finance" class="view">
+  <div class="ph">
+    <div><div class="ph-ttl">Finance Summary</div><div class="ph-sub">Fee collection overview and payroll — full management in Finance portal</div></div>
+    <div class="ph-r">
+      <a href="shape_finance.html" target="_blank" class="btn bp" style="text-decoration:none;">Open Finance Portal ↗</a>
+    </div>
+  </div>
+
+  <!-- Fee Collection KPI -->
+  <div class="stats" id="fin-kpi"></div>
+
+  <!-- Two column layout -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;">
+
+    <!-- Fee status by student -->
+    <div class="card" style="margin:0;">
+      <div class="ch">
+        <div class="ct">Student Fee Status</div>
+        <input id="fin-search" class="fc" type="text" placeholder="Search student…" style="width:160px;font-size:12px;padding:5px 9px;" oninput="renderFinance()">
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>Student</th><th>Class</th><th>Term Due</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
+          <tbody id="fin-fee-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Payroll summary -->
+    <div class="card" style="margin:0;">
+      <div class="ch">
+        <div class="ct">Staff Payroll</div>
+        <span style="font-size:12px;color:var(--ink4);">This month</span>
+      </div>
+      <div id="fin-payroll-body" style="padding:0 18px 14px;"></div>
+      <div class="ch" style="border-top:1px solid var(--bdr);margin-top:0;padding-top:12px;">
+        <div style="font-size:12px;color:var(--ink4);">Monthly Total</div>
+        <div id="fin-payroll-total" style="font-size:18px;font-weight:800;color:var(--pri);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent payments -->
+  <div class="card" style="margin-top:14px;">
+    <div class="ch">
+      <div class="ct">Recent Payments</div>
+        <a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:11px;">View All →</a>
+      </div>
+      <table>
+        <thead><tr><th>Receipt</th><th>Student</th><th>Category</th><th>Amount</th><th>Date</th><th>Mode</th></tr></thead>
+        <tbody id="fin-payments-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<script src="shape_db.js"></script>
+<script>
+var VISITORS=[
+  {id:'V001',name:'Priya Suresh',phone:'+91 94470 11201',purpose:'Parent Meeting',meeting:'Ms. Latha R.',date:new Date().toISOString().slice(0,10),timeIn:'09:15',timeOut:'10:00',status:'Out',idProof:'Aadhaar'},
+  {id:'V002',name:'Rajan K.',phone:'+91 98470 22301',purpose:'Admission Enquiry',meeting:'Principal',date:new Date().toISOString().slice(0,10),timeIn:'10:30',timeOut:'',status:'In',idProof:'Voter ID'},
+  {id:'V003',name:'Suresh Babu',phone:'+91 95670 44512',purpose:'Delivery',meeting:'Office',date:new Date().toISOString().slice(0,10),timeIn:'11:05',timeOut:'11:20',status:'Out',idProof:'Other'},
+];
+
+function openVisitorModal(){
+  var di=document.getElementById('vis_date'); if(di) di.value=new Date().toISOString().slice(0,10);
+  var ti=document.getElementById('vis_in'); if(ti) ti.value=new Date().toTimeString().slice(0,5);
+  document.getElementById('ovVisitor').classList.add('open');
+}
+
+function logVisitor(){
+  var name=(document.getElementById('vis_name')||{}).value||'';
+  if(!name){toast('Enter visitor name','e');return;}
+  VISITORS.unshift({
+    id:'V'+Date.now().toString().slice(-5),
+    name:name,
+    phone:(document.getElementById('vis_phone')||{}).value||'—',
+    purpose:(document.getElementById('vis_purpose')||{}).value||'Other',
+    meeting:(document.getElementById('vis_meeting')||{}).value||'—',
+    date:(document.getElementById('vis_date')||{}).value||new Date().toISOString().slice(0,10),
+    timeIn:(document.getElementById('vis_in')||{}).value||'—',
+    timeOut:'',status:'In',
+    idProof:(document.getElementById('vis_id')||{}).value||'Other'
+  });
+  document.getElementById('ovVisitor').classList.remove('open');
+  var ne=document.getElementById('vis_name'); if(ne)ne.value='';
+  var pe=document.getElementById('vis_phone'); if(pe)pe.value='';
+  var me=document.getElementById('vis_meeting'); if(me)me.value='';
+  toast('Visitor logged — '+name+' is IN','s');
+  renderVisitors();
+}
+
+function checkOutVisitor(id){
+  var v=VISITORS.find(function(x){return x.id===id;});
+  if(!v)return;
+  v.timeOut=new Date().toTimeString().slice(0,5);
+  v.status='Out';
+  toast(v.name+' checked out at '+v.timeOut,'s');
+  renderVisitors();
+}
+
+function renderVisitors(){
+  var q=(document.getElementById('vis-search')||{}).value||'';
+  var df=(document.getElementById('vis-date-filter')||{}).value||'today';
+  var today=new Date().toISOString().slice(0,10);
+  var weekAgo=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+  var list=VISITORS.filter(function(v){
+    var dateOk=df==='all'||(df==='today'&&v.date===today)||(df==='week'&&v.date>=weekAgo);
+    var qOk=!q||v.name.toLowerCase().includes(q.toLowerCase())||v.purpose.toLowerCase().includes(q.toLowerCase());
+    return dateOk&&qOk;
+  });
+  var inNow=VISITORS.filter(function(v){return v.status==='In'&&v.date===today;}).length;
+  var todayCnt=VISITORS.filter(function(v){return v.date===today;}).length;
+  var kpi=document.getElementById('vis-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Currently Inside',v:inNow,n:'On premises right now',c:'var(--red)'},
+    {l:'Visitors Today',v:todayCnt,n:'Total entries today'},
+    {l:'This Week',v:VISITORS.filter(function(v){return v.date>=weekAgo;}).length,n:'Total visits'},
+    {l:'Total Records',v:VISITORS.length,n:'All time'},
+  ].map(function(s){return '<div class="stat"><div class="stat-l">'+s.l+'</div><div class="stat-v" style="'+(s.c?'color:'+s.c+';':'')+'">'+s.v+'</div><div class="stat-n">'+s.n+'</div></div>';}).join('');
+  var tbody=document.getElementById('vis-body');
+  if(!tbody)return;
+  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink5);">No visitors found</td></tr>';return;}
+  tbody.innerHTML=list.map(function(v){
+    var statusCol=v.status==='In'?'var(--red)':'var(--ink5)';
+    var outBtn=v.status==='In'?'<button class="btn bo bsm" data-vid="'+v.id+'" onclick="checkOutVisitor(this.dataset.vid)" style="font-size:11px;">Check Out</button>':'';
+    return '<tr>'
+      +'<td class="fw"><div style="font-weight:600;">'+v.name+'</div><div style="font-size:11px;color:var(--ink5);">'+v.idProof+'</div></td>'
+      +'<td>'+v.purpose+'</td><td>'+v.meeting+'</td>'
+      +'<td style="font-size:12px;">'+v.phone+'</td>'
+      +'<td style="font-family:monospace;">'+v.timeIn+'</td>'
+      +'<td style="font-family:monospace;">'+(v.timeOut||'—')+'</td>'
+      +'<td><span class="badge" style="background:'+statusCol+'18;color:'+statusCol+';">'+v.status+'</span></td>'
+      +'<td>'+outBtn+'</td></tr>';
+  }).join('');
+}
+
+'use strict';
+var $ = function(id){ return document.getElementById(id); };
+var $$ = function(sel){ return document.querySelectorAll(sel); };
+var db = (typeof SHAPE_DB !== 'undefined') ? SHAPE_DB.load() : null;
+
+
+function toast(m,t){var d=document.createElement('div');d.className='toast';d.style.background=t==='s'?'var(--teal)':t==='e'?'var(--red)':'var(--violet)';d.textContent=m;$('tw').appendChild(d);setTimeout(()=>d.remove(),3000);}
+function switchView(v){$$('.view').forEach(x=>x.classList.remove('active'));$$('.ni').forEach(x=>x.classList.remove('active'));$('view-'+v).classList.add('active');$$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));renderView(v);}
+$$('.ni[data-v]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+
+var COMPLAINTS_OPEN=[
+  {id:'CP001',date:'10 Oct',who:'Parent - Mrs. Suma R.',type:'Academic',subj:'Assignment load too heavy for Grade 5 - children unable to complete independently',action:'Referred to HOD Primary - discussion scheduled 16 Oct',days:4},
+  {id:'CP002',date:'12 Oct',who:'Staff - Mr. Arun P.',type:'Facility',subj:'Projector in Room 12 not functioning for 5 days - affecting lessons',action:'IT team notified 12 Oct · awaiting part delivery',days:2},
+  {id:'CP003',date:'14 Oct',who:'Parent - Mr. Suresh K.',type:'Transport',subj:'Morning pickup at Vatakara consistently 10 min late this week',action:'Driver Krishnan K. spoken to · Route timing under review',days:0},
+];
+var COMPLAINTS_RES=[
+  {id:'CP-S01',subj:'Canteen menu - no vegetarian hot option',type:'Facility',resolved:'2 days'},
+  {id:'CP-S02',subj:'Library noise levels during study periods',type:'Academic',resolved:'1 day'},
+  {id:'CP-S03',subj:'Bus air-conditioning not working',type:'Transport',resolved:'3 days'},
+  {id:'CP-S04',subj:'Washroom taps not working - Block B',type:'Facility',resolved:'1 day'},
+];
+var EVENTS=[
+  {title:'Parent-Teacher Meeting - Grade 8',type:'Parent Meeting',date:'20',month:'Oct',time:'10:00 AM',venue:'Main Hall',seats:120,alloc:98,resources:['Projector','Microphone','250 chairs']},
+  {title:'Monthly Staff Meeting',type:'Staff Meeting',date:'25',month:'Oct',time:'4:00 PM',venue:'Staff Room',seats:40,alloc:38,resources:['Whiteboard','Attendance register']},
+  {title:'Annual Day Planning Committee',type:'Committee',date:'01',month:'Nov',time:'11:00 AM',venue:"Principal's Office",seats:10,alloc:8,resources:['Laptop','Projector']},
+  {title:'Science Fair - Grades 6-10',type:'School Event',date:'08',month:'Nov',time:'9:00 AM',venue:'Main Hall + Grounds',seats:600,alloc:540,resources:['PA System','Tables','Projectors (3)','Judges seating']},
+  {title:'Parent-Teacher Meeting - Grade 10',type:'Parent Meeting',date:'15',month:'Nov',time:'10:00 AM',venue:'Main Hall',seats:120,alloc:0,resources:['Projector']},
+];
+var INV=[
+  {icon:'💻',name:'Laptops',cat:'IT Equipment',total:42,working:39,repair:3,value:'₹21.0L'},
+  {icon:'📽',name:'Projectors',cat:'IT Equipment',total:18,working:16,repair:2,value:'₹5.4L'},
+  {icon:'🔬',name:'Science Lab Sets',cat:'Lab Equipment',total:12,working:12,repair:0,value:'₹3.6L'},
+  {icon:'🪑',name:'Student Desks',cat:'Furniture',total:420,working:414,repair:6,value:'₹8.4L'},
+  {icon:'🖊',name:'Whiteboards',cat:'Classroom',total:24,working:24,repair:0,value:'₹1.2L'},
+  {icon:'🧯',name:'Fire Extinguishers',cat:'Safety',total:16,working:16,repair:0,value:'₹0.3L'},
+];
+var INV_LOG=[
+  {date:'14 Oct',asset:'Laptop',action:'Issued for classroom use',qty:2,by:'Ms. Latha R.'},
+  {date:'12 Oct',asset:'Projector',action:'Sent for repair',qty:1,by:'Admin Office'},
+  {date:'10 Oct',asset:'Student Desks',action:'Added - new purchase',qty:12,by:'Muhd Zahal'},
+  {date:'08 Oct',asset:'Laptop',action:'Returned from repair',qty:1,by:'IT Dept'},
+  {date:'05 Oct',asset:'Fire Extinguisher',action:'Annual inspection checked',qty:16,by:'Safety Officer'},
+];
+var BOOKS=[
+  {id:'BK001',title:'Mathematics for Grade 8',cat:'Textbook',stu:'Arjun Krishnan',cls:'8A',due:'20 Oct',status:'Issued'},
+  {id:'BK002',title:'The Secret Garden',cat:'Fiction',stu:'Sneha Pillai',cls:'7B',due:'18 Oct',status:'Overdue'},
+  {id:'BK003',title:'A Brief History of Time',cat:'Science',stu:'Mohammed Faris',cls:'9A',due:'25 Oct',status:'Issued'},
+  {id:'BK004',title:'Wings of Fire (Kalam)',cat:'Biography',stu:'Nisha Thomas',cls:'10A',due:'28 Oct',status:'Issued'},
+  {id:'BK005',title:'NCERT Science Grade 9',cat:'Textbook',stu:'Akash V.',cls:'9B',due:'16 Oct',status:'Overdue'},
+  {id:'BK006',title:'The Alchemist',cat:'Fiction',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK007',title:'Sapiens: A Brief History of Humankind',cat:'History',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK008',title:'NCERT Mathematics Grade 10',cat:'Textbook',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK009',title:'Harry Potter and the Philosopher Stone',cat:'Fiction',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK010',title:'Cosmos by Carl Sagan',cat:'Science',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK011',title:'My Experiments with Truth',cat:'Biography',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK012',title:'India After Gandhi',cat:'History',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK013',title:'The Jungle Book',cat:'Fiction',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK014',title:'NCERT Physics Grade 11',cat:'Textbook',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK015',title:'Astrophysics for People in a Hurry',cat:'Science',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK016',title:'Cricket Legends of India',cat:'Sports',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK017',title:'Tamil Nadu History',cat:'History',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK018',title:'The Gene: An Intimate History',cat:'Science',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK019',title:'Open by Andre Agassi',cat:'Sports',stu:'-',cls:'-',due:'-',status:'Available'},
+  {id:'BK020',title:'NCERT Chemistry Grade 12',cat:'Textbook',stu:'-',cls:'-',due:'-',status:'Available'},
+];
+var LIB_ANALYTICS=[
+  {stu:'Arjun Krishnan',cls:'8A',total:12,cats:['Science (5)','Fiction (4)','Biography (3)']},
+  {stu:'Sneha Pillai',cls:'7B',total:9,cats:['Fiction (6)','Poetry (2)','History (1)']},
+  {stu:'Mohammed Faris',cls:'9A',total:15,cats:['Science (8)','Maths (4)','Biography (3)']},
+];
+
+function renderView(v){
+  if(v==='visitors') renderVisitors();
+  if(v==='finance') renderFinance();
+  if(v==='complaints') renderComplaints();
+  else if(v==='meetings') renderMeetings();
+  else if(v==='inventory') renderInventory();
+  else if(v==='library') renderLibrary();
+}
+
+function renderComplaints(){
+  if(typeof db!=='undefined'&&db&&db.complaints){
+    db.complaints.forEach(function(c){
+      if(c.status==='Open'&&!COMPLAINTS_OPEN.find(function(x){return x.id===c.id;})){
+        var d=c.date?new Date(c.date):new Date();
+        COMPLAINTS_OPEN.unshift({id:c.id,
+          date:d.getDate()+' '+d.toLocaleString('en-IN',{month:'short'}),
+          who:c.who||'Anonymous',type:c.type||'General',
+          subj:c.subj||c.description||'Complaint',
+          action:'Logged — awaiting review',days:0});
+      }
+      if(c.status==='Resolved'){
+        var idx=COMPLAINTS_OPEN.findIndex(function(x){return x.id===c.id;});
+        if(idx>-1){
+          var done=COMPLAINTS_OPEN.splice(idx,1)[0];
+          if(!COMPLAINTS_RES.find(function(x){return x.id===c.id;}))
+            COMPLAINTS_RES.unshift({id:done.id,subj:done.subj.substring(0,60),type:done.type,resolved:done.days+' days'});
+        }
+      }
+    });
+  }
+  var open=COMPLAINTS_OPEN.map(c=>`
+    <div class="cmp">
+      <div class="cmp-id">${c.id} · ${c.date} Oct · ${c.type}</div>
+      <div class="cmp-ttl">${c.subj}</div>
+      <div class="cmp-meta">From: ${c.who}</div>
+      <div class="cmp-action">⚡ ${c.action}</div>
+      <div style="display:flex;gap:6px;margin-top:10px;">
+        <button class="btn bp bsm" onclick="resolveComplaint('${c.id}')">Mark Resolved</button>
+        <button class="btn bo bsm" onclick="document.getElementById('ovNote').classList.add('open')">Add Note</button>
+      </div>
+    </div>`).join('');
+  $('openComplaints').innerHTML=open;
+  var resRows=COMPLAINTS_RES.map(c=>`<tr><td class="fw" style="font-family:'Fira Mono',monospace;font-size:11px;">${c.id}</td><td>${c.subj}</td><td><span class="badge bg-s">${c.type}</span></td><td><span class="badge bg-g">✓ ${c.resolved}</span></td></tr>`).join('');
+  $('resolvedTable').innerHTML=resRows;
+}
+
+function renderMeetings(){
+  var cards=EVENTS.map(e=>`
+    <div class="ev-card">
+      <div class="ev-date"><div class="ev-day">${e.date}</div><div class="ev-month">${e.month}</div></div>
+      <div class="ev-info">
+        <div class="ev-ttl">${e.title}</div>
+        <div class="ev-meta">${e.time} · ${e.venue} · <span class="badge bg-s" style="font-size:10px;">${e.type}</span></div>
+        <div class="ev-seats" style="margin-top:6px;">Seats: ${e.alloc===0?'<em style="color:var(--ink5);font-weight:400;">Not yet allocated</em>':e.alloc+' / '+e.seats+' allocated'}</div>
+        <div style="font-size:11.5px;color:var(--ink4);margin-top:3px;">Resources: ${e.resources.join(', ')}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
+        <button class="btn bo bsm" onclick="editEvent('${e.title}')">Edit</button>
+        ${e.alloc===0?`<button class="btn bp bsm" onclick="allocateSeats('${e.title}')">Allocate Seats</button>`:''}
+      </div>
+    </div>`).join('');
+  $('eventList').innerHTML=cards;
+}
+
+function renderInventory(){
+  var grid=INV.map((i,idx)=>{
+    var condColor = i.repair>0 ? (i.repair/i.total>0.2?'var(--red)':'var(--orange,#C05A00)') : 'var(--ink5)';
+    return `<div class="inv-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+        <div class="inv-icon">${i.icon}</div>
+        <button class="btn bo bsm" style="font-size:11px;padding:3px 10px;" onclick="openEditAsset(${idx})">✎ Edit</button>
+      </div>
+      <div class="inv-name">${i.name}</div>
+      <div class="inv-cat">${i.cat}</div>
+      <div class="inv-nums">
+        <div class="inv-num"><div class="inv-num-v">${i.total}</div><div class="inv-num-l">Total</div></div>
+        <div class="inv-num"><div class="inv-num-v" style="color:var(--teal);">${i.working}</div><div class="inv-num-l">Working</div></div>
+        <div class="inv-num"><div class="inv-num-v" style="color:${condColor};">${i.repair}</div><div class="inv-num-l">Repair</div></div>
+        <div class="inv-num"><div class="inv-num-v" style="font-size:13px;font-weight:700;">${i.value}</div><div class="inv-num-l">Value</div></div>
+      </div>
+      ${i.repair>0?`<div style="font-size:11px;color:var(--red);margin-top:8px;padding:4px 8px;background:#FEF2F2;border-radius:4px;">⚠ ${i.repair} unit${i.repair>1?'s':''} need${i.repair===1?'s':''} repair</div>`:''}
+    </div>`;
+  }).join('');
+  $('invGrid').innerHTML=grid;
+  var logRows=INV_LOG.map(l=>`<tr><td>${l.date}</td><td class="fw">${l.asset}</td><td>${l.action}</td><td>${l.qty}</td><td>${l.by}</td></tr>`).join('');
+  $('invLog').innerHTML=logRows || '<tr><td colspan="5" style="text-align:center;color:var(--ink5);padding:20px;">No activity logged yet</td></tr>';
+}
+
+var _editAssetIdx = -1;
+
+function openEditAsset(idx){
+  _editAssetIdx = idx;
+  var i = INV[idx];
+  if(!i) return;
+  var el = function(id){ return document.getElementById(id); };
+  el('ea_modal_ttl').textContent = 'Update — ' + i.name;
+  el('ea_name').value   = i.name;
+  el('ea_cat').value    = i.cat;
+  el('ea_total').value  = i.total;
+  el('ea_working').value= i.working;
+  el('ea_repair').value = i.repair;
+  el('ea_value').value  = i.value;
+  el('ea_action').value = '';
+  el('ea_note').value   = i.note || '';
+  // Show damage warning if repair > 0
+  var warn = el('ea_repair_warn');
+  if(warn) warn.style.display = i.repair > 0 ? '' : 'none';
+  document.getElementById('ovEditAsset').classList.add('open');
+}
+
+function saveAssetEdit(){
+  if(_editAssetIdx < 0) return;
+  var el = function(id){ return document.getElementById(id); };
+  var i = INV[_editAssetIdx];
+  var oldRepair = i.repair;
+  i.name    = el('ea_name').value.trim() || i.name;
+  i.cat     = el('ea_cat').value || i.cat;
+  i.total   = parseInt(el('ea_total').value) || i.total;
+  i.working = parseInt(el('ea_working').value) || 0;
+  i.repair  = parseInt(el('ea_repair').value) || 0;
+  i.value   = el('ea_value').value.trim() || i.value;
+  i.note    = el('ea_note').value.trim();
+  // Auto-correct: working + repair cannot exceed total
+  if(i.working + i.repair > i.total) i.working = i.total - i.repair;
+  // Log the action
+  var action = el('ea_action').value.trim();
+  var logEntry = action || (i.repair > oldRepair ? 'Sent for repair' : i.repair < oldRepair ? 'Returned from repair' : 'Details updated');
+  INV_LOG.unshift({
+    date: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
+    asset: i.name,
+    action: logEntry,
+    qty: Math.abs(i.repair - oldRepair) || 1,
+    by: 'Campus Admin'
+  });
+  // Save to db if available
+  if(typeof db !== 'undefined' && db && db.inventory){
+    var dbItem = db.inventory.find(function(x){ return x.name===i.name; });
+    if(dbItem){ dbItem.total=i.total; dbItem.working=i.working; dbItem.repair=i.repair; dbItem.value=i.value; }
+    SHAPE_DB.save(db);
+  }
+  document.getElementById('ovEditAsset').classList.remove('open');
+  toast(i.name + ' updated · ' + i.working + ' working · ' + i.repair + ' in repair', 's');
+  renderInventory();
+}
+
+
+// ── Library helper data (reading history — simulated from current issues) ──
+function getBookHistory(){
+  if(!db||!db.books) return [];
+  var history = db.books.map(function(b){
+    if(!b.issuedTo) return null;
+    var s = SHAPE_DB.getStudent(db, b.issuedTo);
+    return s ? {bookId:b.id,title:b.title,cat:b.cat,studentId:b.issuedTo,studentName:s.name,cls:s.cls,dueDate:b.dueDate,status:b.status} : null;
+  }).filter(Boolean);
+  // Add simulated past reads for richer analytics
+  var pastReads = [
+    {bookId:'H001',title:'Harry Potter & Sorcerer\'s Stone',cat:'Fiction',studentId:'S001',studentName:'Ananya Krishnan',cls:'Grade 8',dueDate:'2026-09-10',status:'Returned'},
+    {bookId:'H002',title:'NCERT Mathematics Grade 8',cat:'Textbook',studentId:'S001',studentName:'Ananya Krishnan',cls:'Grade 8',dueDate:'2026-08-20',status:'Returned'},
+    {bookId:'H003',title:'My Experiments with Truth',cat:'Biography',studentId:'S001',studentName:'Ananya Krishnan',cls:'Grade 8',dueDate:'2026-07-15',status:'Returned'},
+    {bookId:'H004',title:'The Diary of a Young Girl',cat:'Biography',studentId:'S002',studentName:'Mohammed Ashiq',cls:'Grade 7',dueDate:'2026-09-05',status:'Returned'},
+    {bookId:'H005',title:'Cricket Legends of India',cat:'Sports',studentId:'S002',studentName:'Mohammed Ashiq',cls:'Grade 7',dueDate:'2026-08-12',status:'Returned'},
+    {bookId:'H006',title:'Cosmos by Carl Sagan',cat:'Science',studentId:'S004',studentName:'Rahul P.',cls:'Grade 9',dueDate:'2026-09-20',status:'Returned'},
+    {bookId:'H007',title:'The Alchemist',cat:'Fiction',studentId:'S003',studentName:'Devika Nair',cls:'Grade 10',dueDate:'2026-09-15',status:'Returned'},
+    {bookId:'H008',title:'Tamil Nadu History',cat:'History',studentId:'S003',studentName:'Devika Nair',cls:'Grade 10',dueDate:'2026-08-28',status:'Returned'},
+    {bookId:'H009',title:'Wings of Fire (Kalam)',cat:'Biography',studentId:'S005',studentName:'Sreelakshmi K.',cls:'Grade 6',dueDate:'2026-09-01',status:'Returned'},
+    {bookId:'H010',title:'The Jungle Book',cat:'Fiction',studentId:'S005',studentName:'Sreelakshmi K.',cls:'Grade 6',dueDate:'2026-07-20',status:'Returned'},
+    {bookId:'H011',title:'NCERT Physics Grade 9',cat:'Textbook',studentId:'S006',studentName:'Arjun Menon',cls:'Grade 9',dueDate:'2026-09-25',status:'Returned'},
+    {bookId:'H012',title:'Sapiens: A Brief History',cat:'History',studentId:'S004',studentName:'Rahul P.',cls:'Grade 9',dueDate:'2026-08-10',status:'Returned'},
+  ];
+  return history.concat(pastReads);
+}
+
+function switchLibTab(tab){
+  document.getElementById('lib-tab-catalogue').style.display = tab==='catalogue' ? '' : 'none';
+  document.getElementById('lib-tab-analytics').style.display = tab==='analytics' ? '' : 'none';
+  if(tab==='analytics') renderLibAnalytics();
+}
+
+function renderLibrary(){
+  if(db&&db.books&&db.books.length>0){
+    BOOKS=db.books.map(function(b){
+      var nb=Object.assign({},b);
+      if(b.issuedTo){var s=SHAPE_DB.getStudent(db,b.issuedTo);if(s){nb.stu=s.name;nb.cls=s.cls;}}
+      nb.stu = nb.stu||'-'; nb.cls = nb.cls||'-';
+      nb.due = nb.dueDate||nb.due||'-';
+      return nb;
+    });
+  }
+
+  // Populate category filter
+  var cats = [...new Set(BOOKS.map(function(b){return b.cat;}))].sort();
+  var catSel = document.getElementById('lib-cat-filter');
+  if(catSel&&catSel.options.length<=1){
+    cats.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);});
+  }
+
+  // Filter
+  var q = (document.getElementById('lib-search')||{}).value||'';
+  var catF = (document.getElementById('lib-cat-filter')||{}).value||'';
+  var stF  = (document.getElementById('lib-status-filter')||{}).value||'';
+  var filtered = BOOKS.filter(function(b){
+    var matchQ = !q || b.title.toLowerCase().includes(q.toLowerCase()) || b.cat.toLowerCase().includes(q.toLowerCase());
+    var matchC = !catF || b.cat===catF;
+    var matchS = !stF  || b.status===stF;
+    return matchQ&&matchC&&matchS;
+  });
+
+  var statusCol={'Overdue':'var(--red)','Due soon':'var(--amber)','On time':'var(--teal)','Issued':'var(--teal)','Available':'var(--ink5)','Returned':'var(--ink5)'};
+  var rows = filtered.map(function(b){
+    var sc2 = statusCol[b.status]||'var(--ink5)';
+    var returnBtn = (b.status==='Issued'||b.status==='Overdue')
+      ? '<button class="btn bo bsm" onclick="returnBook(\''+b.id+'\')" style="font-size:11px;">Return</button>'
+      : '';
+    return '<tr><td class="fw">'+b.title+'</td>'
+      +'<td><span class="badge bg-s">'+b.cat+'</span></td>'
+      +'<td>'+b.stu+'</td>'
+      +'<td>'+b.cls+'</td>'
+      +'<td style="font-family:monospace;font-size:12px;">'+b.due+'</td>'
+      +'<td><span class="badge" style="background:'+sc2+'18;color:'+sc2+';">'+b.status+'</span></td>'
+      +'<td>'+returnBtn+'</td></tr>';
+  }).join('');
+  var libTbl = document.getElementById('libTable');
+  if(libTbl) libTbl.innerHTML = rows||'<tr><td colspan="7" style="text-align:center;color:var(--ink5);padding:24px;">No books match filter</td></tr>';
+
+  // KPI
+  var total = BOOKS.length;
+  var issued = BOOKS.filter(function(b){return b.status==='Issued'||b.status==='Overdue';}).length;
+  var overdue = BOOKS.filter(function(b){return b.status==='Overdue';}).length;
+  var cats2 = [...new Set(BOOKS.map(function(b){return b.cat;}))];
+  var kpi = document.getElementById('lib-kpi');
+  if(kpi) kpi.innerHTML = [
+    {l:'Total Books',v:total,n:cats2.length+' categories'},
+    {l:'Currently Issued',v:issued,n:'Active loans',c:'var(--violet)'},
+    {l:'Overdue Returns',v:overdue,n:'Past due date',c:'var(--red)'},
+    {l:'Most-Read Category',v:BOOKS.length?cats2[0]:'—',n:'This term',c:'var(--teal)'},
+  ].map(function(s){return '<div class="stat"><div class="stat-l">'+s.l+'</div><div class="stat-v" style="'+(s.c?'color:'+s.c+';font-size:'+(typeof s.v==='string'?'14px':'22px'):'')+'">'+s.v+'</div><div class="stat-n">'+s.n+'</div></div>';}).join('');
+}
+
+function returnBook(bookId){
+  if(!db||!db.books) return;
+  var b = db.books.find(function(x){return x.id===bookId;});
+  if(!b) return;
+  b.status='Available'; b.issuedTo=null; b.dueDate=null;
+  SHAPE_DB.save(db);
+  toast('Book returned - '+b.title,'s');
+  renderLibrary();
+}
+
+function renderLibAnalytics(){
+  renderCategoryAnalytics();
+  renderIssuedChart();
+  renderStudentDropdown();
+  renderOverdueList();
+  renderTopReaders();
+}
+
+function renderCategoryAnalytics(){
+  var history = getBookHistory();
+  var filterCat = (document.getElementById('lib-ana-filter')||{}).value||'all';
+
+  // Populate filter dropdown
+  var allCats = [...new Set(history.map(function(b){return b.cat;}))].sort();
+  var anaFilter = document.getElementById('lib-ana-filter');
+  if(anaFilter && anaFilter.options.length<=1){
+    allCats.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;anaFilter.appendChild(o);});
+  }
+
+  var filtered = filterCat==='all' ? history : history.filter(function(b){return b.cat===filterCat;});
+  var catCounts = {};
+  filtered.forEach(function(b){ catCounts[b.cat] = (catCounts[b.cat]||0)+1; });
+  var sorted = Object.entries(catCounts).sort(function(a,b){return b[1]-a[1];});
+  var max = sorted.length ? sorted[0][1] : 1;
+
+  var colors = ['#0B7B6B','#1A5FB4','#5B21B6','#C05A00','#B91C1C','#0B5A6B','#6B2BA3','#0B6B2B'];
+  var html = sorted.map(function(entry, i){
+    var cat=entry[0], cnt=entry[1];
+    var pct = Math.round(cnt/max*100);
+    var col = colors[i%colors.length];
+    return '<div style="margin-bottom:12px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">'
+      +'<span style="font-size:13px;font-weight:600;color:var(--ink2);">'+cat+'</span>'
+      +'<span style="font-size:12px;font-weight:700;color:'+col+';">'+cnt+' issues</span>'
+      +'</div>'
+      +'<div style="height:10px;background:var(--s4);border-radius:5px;overflow:hidden;">'
+      +'<div style="width:'+pct+'%;height:100%;background:'+col+';border-radius:5px;transition:width .4s;"></div></div>'
+      +'</div>';
+  }).join('');
+
+  var el = document.getElementById('lib-cat-breakdown');
+  if(el) el.innerHTML = html || '<div style="color:var(--ink5);padding:16px;">No data for selected category</div>';
+}
+
+function renderIssuedChart(){
+  var history = getBookHistory().filter(function(b){return b.status==='Issued'||b.status==='Overdue';});
+  var catCounts = {};
+  history.forEach(function(b){ catCounts[b.cat]=(catCounts[b.cat]||0)+1; });
+  var total = history.length || 1;
+  var sorted = Object.entries(catCounts).sort(function(a,b){return b[1]-a[1];});
+  var colors = ['#0B7B6B','#1A5FB4','#5B21B6','#C05A00','#B91C1C','#0B5A6B'];
+
+  var html = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">';
+  sorted.forEach(function(entry, i){
+    var pct = Math.round(entry[1]/total*100);
+    html += '<div style="flex:'+entry[1]+';min-width:20px;height:20px;background:'+colors[i%colors.length]+';border-radius:3px;" title="'+entry[0]+': '+entry[1]+'"></div>';
+  });
+  html += '</div><div style="display:flex;flex-direction:column;gap:6px;">';
+  sorted.forEach(function(entry, i){
+    html += '<div style="display:flex;align-items:center;gap:8px;">'
+      +'<div style="width:10px;height:10px;border-radius:2px;background:'+colors[i%colors.length]+';flex-shrink:0;"></div>'
+      +'<span style="font-size:12.5px;color:var(--ink2);flex:1;">'+entry[0]+'</span>'
+      +'<span style="font-size:12px;font-weight:700;color:var(--ink3);">'+entry[1]+'</span>'
+      +'<span style="font-size:11px;color:var(--ink5);">'+Math.round(entry[1]/total*100)+'%</span>'
+      +'</div>';
+  });
+  html += '</div>';
+  if(!sorted.length) html = '<div style="color:var(--ink5);padding:16px;">No books currently issued</div>';
+  var el = document.getElementById('lib-issued-chart');
+  if(el) el.innerHTML = html;
+}
+
+function renderStudentDropdown(){
+  var sel = document.getElementById('lib-stu-select');
+  if(!sel||sel.options.length>1) return;
+  if(!db||!db.students) return;
+  db.students.forEach(function(s){
+    var o=document.createElement('option');
+    o.value=s.id;
+    o.textContent=s.name+' - '+s.cls+' '+s.section;
+    sel.appendChild(o);
+  });
+}
+
+function renderStudentReading(){
+  var stuId = (document.getElementById('lib-stu-select')||{}).value;
+  var el = document.getElementById('lib-stu-profile');
+  if(!el) return;
+  if(!stuId){ el.innerHTML='<div style="text-align:center;padding:32px;color:var(--ink5);">Select a student above to view their reading profile</div>'; return; }
+
+  var s = SHAPE_DB.getStudent(db, stuId);
+  if(!s){ el.innerHTML='<div style="color:var(--ink5);padding:16px;">Student not found</div>'; return; }
+
+  var history = getBookHistory().filter(function(b){return b.studentId===stuId;});
+  var current = history.filter(function(b){return b.status==='Issued'||b.status==='Overdue';});
+  var returned = history.filter(function(b){return b.status==='Returned';});
+
+  // Category counts for interest inference
+  var catCounts = {};
+  history.forEach(function(b){ catCounts[b.cat]=(catCounts[b.cat]||0)+1; });
+  var sortedCats = Object.entries(catCounts).sort(function(a,b){return b[1]-a[1];});
+  var topInterest = sortedCats.length ? sortedCats[0][0] : null;
+
+  // Interest tags — infer from categories + student profile
+  var interestTags = sortedCats.map(function(e){return e[0];});
+  // Add from hobbies
+  if(s.hobbies){s.hobbies.split(',').forEach(function(h2){var t=h2.trim();if(t&&!interestTags.includes(t))interestTags.push(t);});}
+
+  // Reading level infer
+  var readingLevel = history.length>=5?'Avid Reader':history.length>=3?'Regular Reader':history.length>=1?'Occasional Reader':'No records';
+  var levelCol = history.length>=5?'var(--teal)':history.length>=3?'var(--bl)':history.length>=1?'var(--am)':'var(--ink5)';
+
+  // Recommendations based on top category
+  var recommendations = {
+    'Fiction':    ['The Giver','A Wrinkle in Time','Chronicles of Narnia'],
+    'Science':    ['The Gene: An Intimate History','Astrophysics for People in a Hurry','The Hidden Life of Trees'],
+    'Biography':  ['Long Walk to Freedom','Steve Jobs by Isaacson','Shoe Dog'],
+    'Textbook':   ['Conceptual Physics','Mathematics: Its Content','The Art of Problem Solving'],
+    'History':    ['Guns Germs and Steel','The Story of Civilizations','India After Gandhi'],
+    'Sports':     ['Open by Andre Agassi','The Test of My Life','Playing It My Way'],
+  };
+  var recs = recommendations[topInterest] || recommendations['Fiction'];
+
+  var html = '<div style="display:grid;grid-template-columns:280px 1fr;gap:20px;">';
+
+  // Left: student card
+  var initials = s.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+  html += '<div style="background:var(--s2);border-radius:var(--r3);padding:18px;">'
+    +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">'
+    +'<div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+initials+'</div>'
+    +'<div><div style="font-size:16px;font-weight:800;color:var(--ink);">'+s.name+'</div>'
+    +'<div style="font-size:12px;color:var(--ink-m);">'+s.cls+' '+s.section+'</div></div></div>'
+
+    +'<div style="margin-bottom:12px;padding:10px;background:var(--surf);border-radius:8px;text-align:center;">'
+    +'<div style="font-size:24px;font-weight:800;color:'+levelCol+';">'+history.length+'</div>'
+    +'<div style="font-size:11px;color:var(--ink-m);">Books Read / In Progress</div>'
+    +'<div style="font-size:12px;font-weight:600;color:'+levelCol+';margin-top:4px;">'+readingLevel+'</div></div>'
+
+    +'<div style="font-size:10.5px;font-weight:700;color:var(--ink-m);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Reading Interests</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">'
+    +interestTags.slice(0,6).map(function(t){return '<span style="padding:3px 10px;background:var(--teal)18;color:var(--teal);border:1px solid var(--teal)44;border-radius:20px;font-size:11.5px;font-weight:600;">'+t+'</span>';}).join('')
+    +'</div>'
+
+    +'<div style="font-size:10.5px;font-weight:700;color:var(--ink-m);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Recommended Next</div>'
+    +recs.map(function(r){return '<div style="font-size:12.5px;color:var(--ink2);padding:4px 0;border-bottom:1px solid var(--s4);">📖 '+r+'</div>';}).join('')
+    +'</div>';
+
+  // Right: reading history
+  html += '<div>'
+    +'<div style="font-size:10.5px;font-weight:700;color:var(--ink-m);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;">Reading History ('+history.length+' records)</div>';
+
+  if(current.length){
+    html += '<div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;margin-bottom:6px;">Currently Issued</div>';
+    current.forEach(function(b){
+      var overdueCol = b.status==='Overdue'?'var(--red)':'var(--teal)';
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--s2);border-radius:8px;margin-bottom:6px;">'
+        +'<div style="width:36px;height:36px;border-radius:6px;background:'+overdueCol+'18;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📖</div>'
+        +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+b.title+'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink-m);">'+b.cat+' &middot; Due: '+b.dueDate+'</div></div>'
+        +'<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+overdueCol+'18;color:'+overdueCol+';">'+b.status+'</span>'
+        +'</div>';
+    });
+  }
+
+  if(returned.length){
+    html += '<div style="font-size:11px;font-weight:700;color:var(--ink-m);text-transform:uppercase;margin:12px 0 6px;">Previously Read</div>';
+    returned.forEach(function(b){
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--s4);">'
+        +'<div style="width:8px;height:8px;border-radius:50%;background:var(--ink5);flex-shrink:0;"></div>'
+        +'<div style="flex:1;"><div style="font-size:13px;color:var(--ink2);">'+b.title+'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink5);">'+b.cat+'</div></div>'
+        +'<span style="font-size:11px;color:var(--ink5);">'+b.dueDate+'</span>'
+        +'</div>';
+    });
+  }
+
+  if(!history.length){
+    html += '<div style="text-align:center;padding:32px;color:var(--ink5);">No reading records found for this student</div>';
+  }
+
+  html += '</div></div>';
+  el.innerHTML = html;
+}
+
+function renderOverdueList(){
+  var history = getBookHistory().filter(function(b){return b.status==='Overdue';});
+  var el = document.getElementById('lib-overdue-list');
+  if(!el) return;
+  if(!history.length){el.innerHTML='<div style="padding:16px;color:var(--ink5);font-size:13px;">No overdue books</div>';return;}
+  el.innerHTML = history.map(function(b){
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--s4);">'
+      +'<div style="width:36px;height:36px;border-radius:6px;background:var(--red)18;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⚠</div>'
+      +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+b.title+'</div>'
+      +'<div style="font-size:11.5px;color:var(--ink-m);">'+b.studentName+' &middot; '+b.cls+'</div></div>'
+      +'<div style="text-align:right;"><div style="font-size:12px;font-weight:700;color:var(--red);">Due: '+b.dueDate+'</div></div>'
+      +'</div>';
+  }).join('');
+}
+
+function renderTopReaders(){
+  var history = getBookHistory();
+  var byCounts = {};
+  history.forEach(function(b){
+    if(!byCounts[b.studentId]) byCounts[b.studentId]={name:b.studentName,cls:b.cls,count:0,cats:[]};
+    byCounts[b.studentId].count++;
+    if(!byCounts[b.studentId].cats.includes(b.cat)) byCounts[b.studentId].cats.push(b.cat);
+  });
+  var sorted = Object.values(byCounts).sort(function(a,b){return b.count-a.count;}).slice(0,5);
+  var el = document.getElementById('lib-top-readers');
+  if(!el) return;
+  var colors = ['#FFD700','#C0C0C0','#CD7F32','#0B7B6B','#1A5FB4'];
+  el.innerHTML = sorted.map(function(r,i){
+    var initials=r.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--s4);">'
+      +'<div style="width:22px;height:22px;border-radius:50%;background:'+colors[i]+';color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>'
+      +'<div style="width:34px;height:34px;border-radius:50%;background:var(--s3);color:var(--ink2);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+initials+'</div>'
+      +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+r.name+'</div>'
+      +'<div style="font-size:11.5px;color:var(--ink-m);">'+r.cats.slice(0,3).join(', ')+'</div></div>'
+      +'<span style="font-size:15px;font-weight:800;color:var(--teal);">'+r.count+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+function showLibAnalytics(){
+  switchLibTab('analytics');
+}
+
+
+
+function scheduleEvent(){
+  var title = (document.querySelector('#ovMeeting input')||{}).value||'';
+  var type  = (document.querySelectorAll('#ovMeeting select')[0]||{}).value||'Academic';
+  var seats = parseInt((document.querySelector('#ovMeeting input[type=number]')||{}).value||50);
+  var venue = (document.querySelectorAll('#ovMeeting select')[1]||{}).value||'Main Hall';
+  var dt = (document.querySelectorAll('#ovMeeting input[type=datetime-local]')[0]||{}).value||'';
+  if(!title){toast('Enter an event title','e');return;}
+  var parts = dt ? dt.split('T') : ['', ''];
+  var dateStr = parts[0] ? new Date(parts[0]).getDate().toString() : '-';
+  var monthStr = parts[0] ? new Date(parts[0]).toLocaleString('en-IN',{month:'short'}) : '-';
+  EVENTS.push({title:title,type:type,date:dateStr,month:monthStr,time:parts[1]||'TBC',venue:venue,seats:seats||50,alloc:0,resources:[]});
+  document.getElementById('ovMeeting').classList.remove('open');
+  toast('Event scheduled - '+title,'s');
+  renderMeetings();
+}
+
+function editEvent(title){
+  var e = EVENTS.find(x=>x.title===title);
+  if(!e) return;
+  document.getElementById('ovSeats').classList.add('open');
+  document.getElementById('seats_event_name').textContent = title;
+  document.getElementById('seats_count').value = e.alloc||'';
+}
+
+function allocateSeats(title){
+  document.getElementById('seats_event_name').textContent = title;
+  document.getElementById('ovSeats').classList.add('open');
+}
+
+function confirmSeats(){
+  var n = parseInt((document.getElementById('seats_count')||{}).value||0);
+  var title = document.getElementById('seats_event_name').textContent;
+  var e = EVENTS.find(x=>x.title===title);
+  if(e) e.alloc = n;
+  document.getElementById('ovSeats').classList.remove('open');
+  toast(n+' seats allocated for '+title,'s');
+  renderMeetings();
+}
+
+function addAsset(){
+  var name=(document.getElementById('ast_name')||{}).value||'';
+  if(!name){toast('Enter an asset name','e');return;}
+  var count=parseInt((document.getElementById('ast_count')||{}).value||1);
+  var value=parseInt((document.getElementById('ast_value')||{}).value||0);
+  var cat=(document.getElementById('ast_cat')||{}).value||'Other';
+  if(typeof db!=='undefined'&&db&&db.inventory){
+    db.inventory.push({id:'INV'+Date.now().toString().slice(-6),name:name,cat:cat,total:count,working:count,repair:0,value:value,added:new Date().toISOString().slice(0,10)});
+    SHAPE_DB.save(db);
+  }
+  INV.push({icon:'',name:name,cat:cat,total:count,working:count,repair:0,value:'Rs '+value.toLocaleString('en-IN'),added:new Date().toLocaleDateString('en-IN')});
+  INV_LOG.unshift({date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short'}),asset:name,action:'Added',qty:count,by:'Muhd Zahal'});
+  document.getElementById('ovAsset').classList.remove('open');
+  var ane=document.getElementById('ast_name');if(ane)ane.value='';
+  toast('Asset saved - '+name+' ('+count+' units)','s');
+  renderInventory();
+}
+
+function addBook(){
+  var title=(document.getElementById('bk_title')||{}).value||'';
+  var cat=(document.getElementById('bk_cat')||{}).value||'General';
+  if(!title){toast('Enter the book title','e');return;}
+  if(typeof db!=='undefined'&&db&&db.books){
+    db.books.unshift({id:'BK'+Date.now().toString().slice(-6),title:title,cat:cat,issuedTo:null,dueDate:null,status:'Available'});
+    SHAPE_DB.save(db);
+  }
+  BOOKS.unshift({title:title,cat:cat,stu:'-',cls:'-',due:'-',status:'Available'});
+  document.getElementById('ovBook').classList.remove('open');
+  var bte=document.getElementById('bk_title');if(bte)bte.value='';
+  toast('Book saved - '+title,'s');
+  renderLibrary();
+}
+
+function logComplaint(){
+  var who=(document.querySelector('#ovComplaint .fc-who')||{}).value||'';
+  var type=(document.querySelector('#ovComplaint select')||{}).value||'General';
+  var subj=(document.querySelector('#ovComplaint textarea')||{}).value||'';
+  if(!subj){toast('Enter a complaint description','e');return;}
+  var newId='CP'+String(Date.now()).slice(-5);
+  var today=new Date();
+  var dateStr=today.getDate()+' '+today.toLocaleString('en-IN',{month:'short'});
+  COMPLAINTS_OPEN.unshift({id:newId,date:dateStr,who:who||'Anonymous',type:type,subj:subj,action:'Logged — awaiting review',days:0});
+  if(typeof db!=='undefined'&&db&&db.complaints){
+    db.complaints.push({id:newId,date:today.toISOString().slice(0,10),who:who||'Anonymous',type:type,subj:subj,description:subj,status:'Open',action:'Logged'});
+    SHAPE_DB.save(db);
+  }
+  document.getElementById('ovComplaint').classList.remove('open');
+  var ta=document.querySelector('#ovComplaint textarea');if(ta)ta.value='';
+  var wi=document.querySelector('#ovComplaint .fc-who');if(wi)wi.value='';
+  toast('Complaint logged — '+newId+' · Visible in SMS dashboard','s');
+  renderComplaints();
+}
+
+function resolveComplaint(id){
+  var idx=COMPLAINTS_OPEN.findIndex(function(c){return c.id===id;});
+  if(idx>-1){
+    var c=COMPLAINTS_OPEN.splice(idx,1)[0];
+    COMPLAINTS_RES.unshift({id:c.id,subj:c.subj.substring(0,60),type:c.type,resolved:c.days+' days'});
+  }
+  if(typeof db!=='undefined'&&db&&db.complaints){
+    var dc=db.complaints.find(function(x){return x.id===id;});
+    if(dc){dc.status='Resolved';}
+    SHAPE_DB.save(db);
+  }
+  toast('Complaint '+id+' resolved — removed from SMS pending approvals','s');
+  renderComplaints();
+}
+
+function saveNote(){
+  var note=(document.getElementById('note_text')||{}).value||'';
+  if(!note){toast('Enter a note','e');return;}
+  document.getElementById('ovNote').classList.remove('open');
+  var nte=document.getElementById('note_text');if(nte)nte.value='';
+  toast('Note saved','s');
+}
+
+function renderFinance(){
+  if(!db) return;
+  var q=(document.getElementById('fin-search')||{}).value||'';
+  // KPI
+  var total=db.students.length;
+  var collected=db.payments.reduce(function(a,p){return a+(p.amount||0);},0);
+  var due=db.students.reduce(function(a,s){return a+(s.fees.term+s.fees.transport+s.fees.hostel+s.fees.activity);},0);
+  var outstanding=Math.max(0,due-collected);
+  var kpi=document.getElementById('fin-kpi');
+  if(kpi)kpi.innerHTML=[
+    {l:'Total Billed',v:'Rs '+Math.round(due/100000*10)/10+'L',n:total+' students'},
+    {l:'Collected',v:'Rs '+Math.round(collected/100000*10)/10+'L',n:Math.round(collected/due*100||0)+'% of annual',c:'var(--teal)'},
+    {l:'Outstanding',v:'Rs '+Math.round(outstanding/100000*10)/10+'L',n:'Pending collection',c:'var(--red)'},
+    {l:'Staff on Payroll',v:db.staff.length,n:'Monthly: Rs '+Math.round(db.staff.reduce(function(a,s){return a+s.salary;},0)/1000)+'K',c:'var(--pri)'},
+  ].map(function(s){return '<div class="stat"><div class="stat-l">'+s.l+'</div><div class="stat-v" style="'+(s.c?'color:'+s.c+';font-size:18px;':'')+'">'+s.v+'</div><div class="stat-n">'+s.n+'</div></div>';}).join('');
+
+  // Fee table
+  var stuList=db.students.filter(function(s){return !q||s.name.toLowerCase().includes(q.toLowerCase());}).slice(0,15);
+  var feeBody=document.getElementById('fin-fee-body');
+  if(feeBody)feeBody.innerHTML=stuList.map(function(s){
+    var due2=s.fees.term+s.fees.transport+s.fees.hostel+s.fees.activity;
+    var paid=db.payments.filter(function(p){return p.studentId===s.id;}).reduce(function(a,p){return a+(p.amount||0);},0);
+    var bal=Math.max(0,due2-paid);
+    var pct=due2>0?Math.round(paid/due2*100):0;
+    var col=bal===0?'var(--teal)':pct>50?'var(--amber)':'var(--red)';
+    var badge=bal===0?'Paid':pct>0?'Partial':'Pending';
+    return '<tr><td class="fw">'+s.name+'</td><td>'+s.cls+' '+s.section+'</td>'
+      +'<td style="font-family:monospace;">Rs '+due2.toLocaleString('en-IN')+'</td>'
+      +'<td style="font-family:monospace;color:var(--teal);">Rs '+paid.toLocaleString('en-IN')+'</td>'
+      +'<td style="font-family:monospace;color:'+col+';">Rs '+bal.toLocaleString('en-IN')+'</td>'
+      +'<td><span class="badge" style="background:'+col+'18;color:'+col+';">'+badge+'</span></td></tr>';
+  }).join('');
+
+  // Payroll
+  var payBody=document.getElementById('fin-payroll-body');
+  var totalPay=0;
+  if(payBody)payBody.innerHTML=db.staff.map(function(s){
+    totalPay+=s.salary;
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);">'
+      +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+s.name+'</div>'
+      +'<div style="font-size:11.5px;color:var(--ink4);">'+s.subj+'</div></div>'
+      +'<div style="font-size:13px;font-weight:700;color:var(--pri);">Rs '+s.salary.toLocaleString('en-IN')+'</div>'
+      +'</div>';
+  }).join('');
+  var pt=document.getElementById('fin-payroll-total');
+  if(pt)pt.textContent='Rs '+totalPay.toLocaleString('en-IN');
+
+  // Recent payments
+  var pb=document.getElementById('fin-payments-body');
+  if(pb)pb.innerHTML=db.payments.slice(0,10).map(function(p){
+    var sName=SHAPE_DB.getStudentName(db,p.studentId)||p.studentId||'—';
+    return '<tr><td style="font-family:monospace;font-size:11px;">'+p.id+'</td>'
+      +'<td class="fw">'+sName+'</td>'
+      +'<td>'+p.category+'</td>'
+      +'<td style="font-weight:700;color:var(--teal);">Rs '+(p.amount||0).toLocaleString('en-IN')+'</td>'
+      +'<td>'+p.date+'</td>'
+      +'<td>'+p.mode+'</td></tr>';
+  }).join('');
+}
+
+function openIssueModal(){
+  // Populate books dropdown with available books only
+  var sel=document.getElementById('issue_book');
+  if(sel){
+    sel.innerHTML=BOOKS.filter(function(b){return b.status==='Available';}).map(function(b){
+      return '<option value="'+b.id+'">'+b.title+' ('+b.cat+')</option>';
+    }).join('');
+  }
+  // Populate students dropdown
+  var stu=document.getElementById('issue_student');
+  if(stu&&db&&db.students){
+    stu.innerHTML=db.students.map(function(s){
+      return '<option value="'+s.id+'">'+s.name+' - '+s.cls+'</option>';
+    }).join('');
+  }
+  // Set due date to 2 weeks from now
+  var due=document.getElementById('issue_due');
+  if(due){
+    var d=new Date(); d.setDate(d.getDate()+14);
+    due.value=d.toISOString().slice(0,10);
+  }
+  document.getElementById('ovIssue').classList.add('open');
+}
+
+function issueBook(){
+  var bookId=(document.getElementById('issue_book')||{}).value||'';
+  var stuId=(document.getElementById('issue_student')||{}).value||'';
+  var due=(document.getElementById('issue_due')||{}).value||'';
+  if(!bookId||!stuId){toast('Select a book and student','e');return;}
+  // Update in BOOKS array
+  var book=BOOKS.find(function(b){return b.id===bookId;});
+  if(!book){toast('Book not found','e');return;}
+  var stu=db&&db.students?db.students.find(function(s){return s.id===stuId;}):null;
+  book.status='Issued';
+  book.stu=stu?stu.name:stuId;
+  book.cls=stu?stu.cls+' '+(stu.section||''):'—';
+  book.due=due;
+  // Update in db.books
+  if(db&&db.books){
+    var dbBook=db.books.find(function(b){return b.id===bookId;});
+    if(dbBook){dbBook.status='Issued';dbBook.issuedTo=stuId;dbBook.dueDate=due;}
+    else{db.books.push({id:bookId,title:book.title,cat:book.cat,status:'Issued',issuedTo:stuId,dueDate:due});}
+    SHAPE_DB.save(db);
+  }
+  document.getElementById('ovIssue').classList.remove('open');
+  toast('Book issued to '+(stu?stu.name:stuId)+' - due '+due,'s');
+  renderLibrary();
+}
+</script>
+
+
+<!-- Add Asset Modal -->
+<div class="ov" id="ovAsset">
+  <div class="modal">
+    <div class="mh">
+      <div><h3>Add Asset</h3><div class="mh-sub">Log a new school asset to the inventory</div></div>
+      <button class="cx" onclick="document.getElementById('ovAsset').classList.remove('open')">×</button>
+    </div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Asset Name</label><input class="fc" id="ast_name" placeholder="e.g. Smartboards"></div>
+        <div class="fg"><label class="fl">Category</label><select class="fc" id="ast_cat"><option>IT Equipment</option><option>Furniture</option><option>Lab Equipment</option><option>Classroom</option><option>Safety</option><option>Sports</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Total Count</label><input type="number" class="fc" id="ast_count" placeholder="e.g. 6" min="1"></div>
+        <div class="fg"><label class="fl">Estimated Value (₹)</label><input type="number" class="fc" id="ast_value" placeholder="Total replacement value"></div>
+      </div>
+      <div class="fg"><label class="fl">Notes</label><input class="fc" id="ast_note" placeholder="Supplier, warranty date, location..."></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovAsset').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="addAsset()">Add Asset</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Book Modal -->
+<div class="ov" id="ovBook">
+  <div class="modal">
+    <div class="mh">
+      <div><h3>Add Book to Library</h3><div class="mh-sub">Add to the library catalogue</div></div>
+      <button class="cx" onclick="document.getElementById('ovBook').classList.remove('open')">×</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Book Title</label><input class="fc" id="bk_title" placeholder="Full title"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Author</label><input class="fc" id="bk_author" placeholder="Author name"></div>
+        <div class="fg"><label class="fl">Category</label><select class="fc" id="bk_cat"><option>Fiction</option><option>Textbook</option><option>Science</option><option>Biography</option><option>History</option><option>Mathematics</option><option>Language</option><option>Reference</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">ISBN</label><input class="fc" id="bk_isbn" placeholder="Optional"></div>
+        <div class="fg"><label class="fl">Copies Available</label><input type="number" class="fc" id="bk_copies" value="1" min="1"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovBook').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="addBook()">Add to Library</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Note Modal -->
+<div class="ov" id="ovNote">
+  <div class="modal" style="max-width:460px;">
+    <div class="mh">
+      <div><h3>Add Note to Complaint</h3><div class="mh-sub">Internal note — visible to admin only</div></div>
+      <button class="cx" onclick="document.getElementById('ovNote').classList.remove('open')">×</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Note</label><textarea class="fc" id="note_text" rows="4" placeholder="Action taken, update, follow-up required..."></textarea></div>
+      <div class="fg"><label class="fl">Follow-up Date</label><input type="date" class="fc" id="note_followup"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovNote').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- Allocate Seats Modal -->
+<div class="ov" id="ovSeats">
+  <div class="modal" style="max-width:460px;">
+    <div class="mh">
+      <div><h3>Seat Allocation</h3><div class="mh-sub" id="seats_event_name">Event</div></div>
+      <button class="cx" onclick="document.getElementById('ovSeats').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Seats to Allocate</label><input type="number" class="fc" id="seats_count" placeholder="Number of confirmed attendees"></div>
+      <div class="fg"><label class="fl">Allocated To</label><input class="fc" id="seats_to" placeholder="e.g. Grade 10 parents, Staff members..."></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovSeats').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="confirmSeats()">Allocate Seats</button>
+    </div>
+  </div>
+</div>
+
+<div id="tw"></div>
+
+
+<!-- Log Complaint Modal -->
+<div class="ov" id="ovComplaint">
+  <div class="modal">
+    <div class="mh">
+      <div><h3>Log Complaint</h3><div class="mh-sub">Record a complaint from a parent or staff member</div></div>
+      <button class="cx" onclick="document.getElementById('ovComplaint').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">From (Name)</label><input class="fc fc-who" placeholder="e.g. Parent - Mrs. Suma R."></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Type</label><select class="fc"><option>Academic</option><option>Facility</option><option>Transport</option><option>Behavioural</option><option>Administrative</option><option>General</option></select></div>
+        <div class="fg"><label class="fl">Date</label><input type="date" class="fc" value=""></div>
+      </div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fc" rows="4" placeholder="Describe the complaint in detail..."></textarea></div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovComplaint').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="logComplaint()">Log Complaint</button>
+    </div>
+  </div>
+</div>
+
+<!-- Schedule Meeting/Event Modal -->
+<div class="ov" id="ovMeeting">
+  <div class="modal">
+    <div class="mh">
+      <div><h3>Schedule Event</h3><div class="mh-sub">Add a meeting, event or school function</div></div>
+      <button class="cx" onclick="document.getElementById('ovMeeting').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Event Title</label><input class="fc" placeholder="e.g. Parent-Teacher Meeting Grade 8"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Type</label><select class="fc"><option>Parent Meeting</option><option>Staff Meeting</option><option>School Event</option><option>Committee</option><option>Academic</option><option>Sports</option><option>Cultural</option></select></div>
+        <div class="fg"><label class="fl">Venue</label><select class="fc"><option>Main Hall</option><option>Staff Room</option><option>Principal's Office</option><option>Classroom</option><option>Grounds</option><option>Library</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Date &amp; Time</label><input type="datetime-local" class="fc"></div>
+        <div class="fg"><label class="fl">Total Seats</label><input type="number" class="fc" placeholder="e.g. 120" min="1"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovMeeting').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="scheduleEvent()">Schedule Event</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Issue Book Modal -->
+<div class="ov" id="ovIssue">
+  <div class="modal" style="max-width:460px;">
+    <div class="mh">
+      <div><h3>Issue Book</h3><div class="mh-sub">Lend a book to a student</div></div>
+      <button class="cx" onclick="document.getElementById('ovIssue').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="mc">
+      <div class="fg"><label class="fl">Book</label>
+        <select class="fc" id="issue_book"></select>
+      </div>
+      <div class="fg"><label class="fl">Student</label>
+        <select class="fc" id="issue_student"></select>
+      </div>
+      <div class="fg"><label class="fl">Due Date</label>
+        <input type="date" class="fc" id="issue_due">
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovIssue').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="issueBook()">Issue Book</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="ov" id="ovVisitor">
+  <div class="modal" style="max-width:500px;">
+    <div class="mh">
+      <div><h3>Log Visitor</h3><div class="mh-sub">Record visitor entry and purpose</div></div>
+      <button class="cx" onclick="document.getElementById('ovVisitor').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="mc">
+      <div class="fr">
+        <div class="fg"><label class="fl">Visitor Name</label><input class="fc" id="vis_name" placeholder="Full name"></div>
+        <div class="fg"><label class="fl">Phone</label><input class="fc" id="vis_phone" placeholder="+91 ..."></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Purpose</label>
+          <select class="fc" id="vis_purpose">
+            <option>Parent Meeting</option><option>Admission Enquiry</option>
+            <option>Staff Visit</option><option>Delivery</option>
+            <option>Official / Inspection</option><option>Maintenance</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Meeting With</label><input class="fc" id="vis_meeting" placeholder="e.g. Principal, Ms. Latha R."></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Date</label><input type="date" class="fc" id="vis_date"></div>
+        <div class="fg"><label class="fl">Time In</label><input type="time" class="fc" id="vis_in"></div>
+      </div>
+      <div class="fg"><label class="fl">ID Proof</label>
+        <select class="fc" id="vis_id"><option>Aadhaar</option><option>Voter ID</option><option>Driving Licence</option><option>Passport</option><option>Other</option></select>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovVisitor').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="logVisitor()">Log Entry</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="ov" id="ovEditAsset">
+  <div class="modal">
+    <div class="mh">
+      <div>
+        <h3 id="ea_modal_ttl">Update Asset</h3>
+        <div class="mh-sub">Update working count, repair status, and value</div>
+      </div>
+      <button class="cx" onclick="document.getElementById('ovEditAsset').classList.remove('open')">×</button>
+    </div>
+    <div class="mc">
+      <div id="ea_repair_warn" style="display:none;padding:10px 14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;margin-bottom:14px;font-size:12.5px;color:#B91C1C;">
+        ⚠ This asset has items currently under repair — update the count below after repairs are completed.
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Asset Name</label>
+          <input class="fc" id="ea_name" placeholder="Asset name">
+        </div>
+        <div class="fg">
+          <label class="fl">Category</label>
+          <select class="fc" id="ea_cat">
+            <option>IT Equipment</option>
+            <option>Furniture</option>
+            <option>Lab Equipment</option>
+            <option>Classroom</option>
+            <option>Safety</option>
+            <option>Sports</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Total Units</label>
+          <input type="number" class="fc" id="ea_total" min="0">
+        </div>
+        <div class="fg">
+          <label class="fl" style="color:var(--teal);">✓ Working</label>
+          <input type="number" class="fc" id="ea_working" min="0" style="border-color:var(--teal);">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl" style="color:#B91C1C;">⚠ Under Repair / Damaged</label>
+          <input type="number" class="fc" id="ea_repair" min="0" style="border-color:#FECACA;">
+        </div>
+        <div class="fg">
+          <label class="fl">Estimated Value (₹ or ₹xL)</label>
+          <input class="fc" id="ea_value" placeholder="e.g. ₹21.0L or ₹45,000">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Action / Reason <span style="font-weight:400;color:var(--ink5);">(for activity log)</span></label>
+          <select class="fc" id="ea_action">
+            <option value="">— Select action —</option>
+            <option>Sent for repair</option>
+            <option>Returned from repair</option>
+            <option>Written off / Condemned</option>
+            <option>New units added</option>
+            <option>Issued to department</option>
+            <option>Annual inspection update</option>
+            <option>Value reassessed</option>
+            <option>Other update</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Notes</label>
+          <input class="fc" id="ea_note" placeholder="Vendor, ticket no., location...">
+        </div>
+    </div>
+    <div class="mf">
+      <button class="btn bo" onclick="document.getElementById('ovEditAsset').classList.remove('open')">Cancel</button>
+      <button class="btn bp" onclick="saveAssetEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
