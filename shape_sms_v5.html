@@ -4,35 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHAPE SMS — Arete Model School</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#16213A;--ink-m:#5C6B8A;--ink-f:#9BA8C0;--bg:#F4F6FB;--surf:#fff;--surf2:#EEF1F8;--bdr:#DDE2EE;--pri:#2E5CE6;--pri-l:#EBF0FD;--pri-d:#1E45C4;--acc:#0EA47A;--acc-l:#E6F8F3;--warn:#D97706;--warn-l:#FEF3E2;--dan:#DC2626;--dan-l:#FEE2E2;--pur:#7C3AED;--pur-l:#EDE9FE;--sw:248px;--hh:58px;--r:10px;}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>:root{
+  --ink:#111111;--ink-m:#555555;--ink-f:#999999;
+  --bg:#F8F8F8;--surf:#FFFFFF;--surf2:#F2F2F2;--bdr:#E4E4E4;
+  --pri:#C8202E;--pri-l:#FEF4F4;--pri-d:#9A1822;
+  --acc:#CC3060;--acc-l:#FFF0F4;
+  --warn:#C8202E;--warn-l:#FEF5E6;
+  --dan:#C8202E;--dan-l:#FEF4F4;
+  --pur:#8B1A1E;--pur-l:#FEF4F4;
+  --sw:240px;--hh:54px;--r:8px;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column;}
-.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sw);background:var(--ink);display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
+body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
+.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sw);background:#fff;border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
 .sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07);}
 .sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:2px;}
 .sb-lm{width:34px;height:34px;background:var(--pri);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;}
-.sb-ln{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
-.sb-ls{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.5px;margin-top:3px;}
-.sb-yr{display:inline-flex;background:rgba(255,255,255,.07);border-radius:4px;padding:3px 8px;font-size:10px;color:rgba(255,255,255,.4);margin-top:6px;}
-.sb-sec{padding:16px 12px 4px;font-size:9.5px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1.2px;}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;margin:1px 8px;border-radius:7px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s;font-size:13px;user-select:none;}
-.ni:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
-.ni.active{background:var(--pri);color:#fff;}
+.sb-ln{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.3px;}
+.sb-ls{font-size:10px;color:var(--ink-f);letter-spacing:.5px;margin-top:3px;}
+.sb-yr{display:inline-flex;background:var(--pri-l);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--pri);margin-top:6px;}
+.sb-sec{padding:16px 12px 4px;font-size:9.5px;font-weight:700;color:var(--ink-f);text-transform:uppercase;letter-spacing:1.2px;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;margin:1px 8px;border-radius:7px;color:var(--ink-m);cursor:pointer;transition:all .15s;font-size:13px;user-select:none;}
+.ni:hover{background:var(--pri-l);color:var(--pri);}
+.ni.active{background:var(--pri);color:#fff;font-weight:600;}
 .ni .ic{width:17px;text-align:center;font-size:14px;flex-shrink:0;}
-.nb{margin-left:auto;background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;}
-.ni.active .nb{background:rgba(255,255,255,.25);}
+.nb{margin-left:auto;background:var(--surf2);color:var(--ink-m);font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;}
+.ni.active .nb{background:rgba(255,255,255,.3);}
 .nb.al{background:var(--dan);color:#fff;}
-.sb-foot{margin-top:auto;padding:10px 8px;border-top:1px solid rgba(255,255,255,.07);}
+.sb-foot{margin-top:auto;padding:10px 8px;border-top:1px solid var(--bdr);}
 .uc{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;transition:background .15s;}
-.uc:hover{background:rgba(255,255,255,.07);}
+.uc:hover{background:var(--pri-l);}
 .ua{width:32px;height:32px;border-radius:50%;background:var(--pri);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;}
-.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;}
-.topbar{height:var(--hh);background:var(--surf);border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 24px;gap:14px;position:sticky;top:0;z-index:100;}
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:var(--hh);background:#fff;border-bottom:2px solid var(--pri);box-shadow:0 1px 0 var(--pri);display:flex;align-items:center;padding:0 24px;gap:14px;position:sticky;top:0;z-index:100;}
 .tp-l{flex:1;}
-.tp-title{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.3px;}
+.tp-title{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
 .tp-bc{font-size:11.5px;color:var(--ink-f);margin-top:1px;}
+#tp-r{display:flex;}#tp-l{display:none;}
 .tp-r{display:flex;align-items:center;gap:10px;margin-left:auto;}
 .sbox{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:6px 12px;width:220px;position:relative;transition:border-color .15s;}
 .sbox:focus-within{border-color:var(--pri);}
@@ -47,30 +56,29 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .ib:hover{background:var(--bg);color:var(--pri);}
 .ib .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--dan);border:2px solid var(--surf);}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;font-family:inherit;}
-.bp{background:var(--pri);color:#fff;}.bp:hover{background:var(--pri-d);}
+.bp{background:var(--pri);color:#fff;font-weight:600;letter-spacing:-.1px;}.bp:hover{background:var(--pri-d);}
 .bo{background:var(--surf);color:var(--ink);border:1.5px solid var(--bdr);}.bo:hover{background:var(--bg);}
 .bg{background:var(--acc);color:#fff;}.bg:hover{background:#0b8a66;}
 .br{background:var(--dan);color:#fff;}.br:hover{background:#b91c1c;}
-.bw{background:var(--warn);color:#fff;}.bw:hover{background:#b45309;}
+.bw{background:var(--pri);color:#fff;}.bw:hover{background:var(--pri-d);}
 .bsm{padding:5px 10px;font-size:12px;}
 .content{padding:22px 24px;flex:1;}
-.view{display:none;}.view.active{display:block;}
+.view{display:none;}.view.active{display:block;min-height:calc(100vh - var(--hh));}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 .g3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px;}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
-.card{background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 3px rgba(22,33,58,.06);margin-bottom:16px;}
+.card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 4px rgba(17,17,17,.06);margin-bottom:16px;}
 .ch{padding:14px 20px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .ct{font-size:14px;font-weight:700;color:var(--ink);}
 .cs{font-size:12px;color:var(--ink-m);margin-top:2px;}
 .cb{padding:18px 20px;}
-.sc{background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r);padding:18px 20px;box-shadow:0 1px 3px rgba(22,33,58,.06);}
+.sc{transition:box-shadow .18s;cursor:default;}
 .sc:hover{box-shadow:0 4px 16px rgba(46,92,230,.12);transform:translateY(-1px);transition:all .15s;}
-.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.sc-top{display:flex;justify-content:space-between;align-items:center;}
 .sc-lbl{font-size:12px;font-weight:500;color:var(--ink-m);}
-.sc-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.ib-b{background:var(--pri-l);color:var(--pri);}.ib-g{background:var(--acc-l);color:var(--acc);}.ib-o{background:var(--warn-l);color:var(--warn);}.ib-r{background:var(--dan-l);color:var(--dan);}.ib-p{background:var(--pur-l);color:var(--pur);}
-.sc-val{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-1.5px;line-height:1;}
-.sc-sub{font-size:11.5px;color:var(--ink-f);margin-top:5px;}
+.sc-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}.ib-r{background:linear-gradient(135deg,#C8202E,#8B1A1E);}.ib-p{background:var(--pur-l);color:var(--pur);}
+.sc-val{font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;margin-top:8px;}
+.sc-sub{font-size:11.5px;color:#aaa;margin-top:5px;}
 .dt{width:100%;border-collapse:collapse;}
 .dt th{text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:var(--ink-m);text-transform:uppercase;letter-spacing:.5px;background:var(--bg);border-bottom:1.5px solid var(--bdr);white-space:nowrap;}
 .dt td{padding:11px 16px;font-size:13px;color:var(--ink);border-bottom:1px solid var(--bdr);vertical-align:middle;}
@@ -78,9 +86,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .dt tbody tr.clickable:hover td{background:#FAFBFE;cursor:pointer;}
 .an{display:flex;align-items:center;gap:10px;}
 .av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
-.av.bl{background:var(--pri);}.av.gr{background:var(--acc);}.av.pu{background:var(--pur);}.av.or{background:var(--warn);}.av.te{background:#0891B2;}.av.pi{background:#DB2777;}
+.av.bl{background:#C8202E;}.av.gr{background:#9A1822;}.av.pu{background:#E8404E;}.av.or{background:#C8202E;}.av.te{background:#9A1822;}.av.pi{background:#E8404E;}
 .bge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
-.bg-g{background:var(--acc-l);color:#065F46;}.bg-b{background:var(--pri-l);color:var(--pri-d);}.bg-o{background:var(--warn-l);color:#92400E;}.bg-r{background:var(--dan-l);color:var(--dan);}.bg-gr{background:var(--surf2);color:var(--ink-m);}.bg-p{background:var(--pur-l);color:var(--pur);}
+.bg-g{background:#F0FDF4;color:#166534;}.bg-b{background:var(--pri-l);color:var(--pri-d);}.bg-o{background:#F3F4F6;color:#374151;}.bg-r{background:var(--dan-l);color:var(--dan);}.bg-gr{background:var(--surf2);color:var(--ink-m);}.bg-p{background:var(--pri-l);color:var(--pri-d);}
 .fg{margin-bottom:14px;}
 .fl{display:block;font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:5px;}
 .fc{width:100%;padding:8px 11px;border:1.5px solid var(--bdr);border-radius:7px;font-size:13px;color:var(--ink);background:var(--surf);outline:none;transition:all .15s;font-family:inherit;}
@@ -92,17 +100,17 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap;}
 .ph-l .ph-title{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
 .ph-l .ph-sub{font-size:12.5px;color:var(--ink-m);margin-top:3px;}
-.ph-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.ph-r{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .pb{height:6px;border-radius:3px;background:var(--surf2);overflow:hidden;margin-top:6px;}
 .pf{height:100%;border-radius:3px;background:var(--pri);transition:width .4s ease;}
-.pf.g{background:var(--acc);}.pf.o{background:var(--warn);}.pf.r{background:var(--dan);}
+.pf.g{background:var(--acc);}.pf.o{background:var(--pri);}.pf.r{background:var(--dan);}
 .tw{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
-.toast{pointer-events:all;background:#16213A;color:#fff;padding:12px 16px;border-radius:9px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(22,33,58,.2);animation:tIn .2s ease;min-width:260px;max-width:360px;line-height:1.4;}
+.toast{pointer-events:all;background:#16213A;color:#fff;padding:12px 16px;border-radius:9px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(17,17,17,.15);animation:tIn .2s ease;min-width:260px;max-width:360px;line-height:1.4;}
 .toast.s{border-left:3px solid var(--acc);}.toast.e{border-left:3px solid var(--dan);}.toast.i{border-left:3px solid var(--pri);}
 @keyframes tIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
-.ov{display:none;position:fixed;inset:0;background:rgba(22,33,58,.5);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
+.ov{display:none;position:fixed;inset:0;background:rgba(26,6,8,.5);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
 .ov.open{display:flex;}
-.modal{background:var(--surf);border-radius:14px;width:92%;max-width:580px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(22,33,58,.2);}
+.modal{background:var(--surf);border-radius:14px;width:92%;max-width:580px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(17,17,17,.16);}
 .modal.wide{max-width:760px;}
 .mh{padding:18px 24px 14px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:var(--surf);z-index:10;}
 .mh h3{font-size:16px;font-weight:700;color:var(--ink);}
@@ -113,9 +121,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .cx:hover{background:var(--surf2);}
 .ss{background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:14px 16px;margin-bottom:12px;}
 .ss-t{font-size:11px;font-weight:700;color:var(--ink-m);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
-.conf-ov{display:none;position:fixed;inset:0;background:rgba(22,33,58,.5);z-index:1200;align-items:center;justify-content:center;}
+.conf-ov{display:none;position:fixed;inset:0;background:rgba(17,17,17,.6);z-index:1200;align-items:center;justify-content:center;}
 .conf-ov.open{display:flex;}
-.conf-box{background:var(--surf);border-radius:12px;padding:28px;width:360px;box-shadow:0 20px 60px rgba(22,33,58,.2);}
+.conf-box{background:var(--surf);border-radius:12px;padding:28px;width:360px;box-shadow:0 24px 64px rgba(17,17,17,.16);}
 .conf-box h4{font-size:16px;font-weight:700;margin-bottom:8px;}
 .conf-box p{font-size:13px;color:var(--ink-m);margin-bottom:22px;line-height:1.5;}
 .conf-acts{display:flex;gap:10px;justify-content:flex-end;}
@@ -129,7 +137,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .ir .lbl{color:var(--ink-m);font-size:12px;flex-shrink:0;}.ir .val{font-weight:500;text-align:right;}
 .alert{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:8px;margin-bottom:14px;font-size:13px;line-height:1.5;}
 .al-b{background:var(--pri-l);color:var(--pri-d);border-left:3px solid var(--pri);}
-.al-o{background:var(--warn-l);color:#92400E;border-left:3px solid var(--warn);}
+.al-o{background:#FFF1F2;color:#9F1239;border-left:3px solid #C8202E;}
 .al-g{background:var(--acc-l);color:#065F46;border-left:3px solid var(--acc);}
 .cl-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .1s;}
 .cl-item:last-child{border-bottom:none;}
@@ -143,17 +151,22 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 .tg .tcol{padding:8px 10px;background:var(--bg);font-weight:600;color:var(--ink-m);font-size:11.5px;text-align:center;width:78px;}
 .tc-cell{padding:5px;cursor:pointer;min-height:54px;text-align:center;transition:background .1s;}
 .tc-cell:hover{background:var(--pri-l);}
-.lc{border-radius:6px;padding:5px 6px;font-weight:500;font-size:11px;line-height:1.35;display:block;}
-.lm{background:var(--pri-l);color:var(--pri-d);}.ls{background:var(--acc-l);color:#065F46;}.le{background:#FEF3C7;color:#92400E;}.lss{background:#FCE7F3;color:#9D174D;}.la{background:#EDE9FE;color:#5B21B6;}.lp{background:#D1FAE5;color:#064E3B;}.lfr{background:var(--surf2);color:var(--ink-f);}.lsub{background:var(--warn-l);color:#92400E;border:2px solid var(--warn);}
+.lc{border-radius:7px;padding:9px 10px;font-weight:600;font-size:12.5px;line-height:1.25;display:flex;flex-direction:column;gap:3px;text-align:left;transition:box-shadow .15s;min-height:58px;cursor:pointer;}
+.lc:hover{box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.lteacher{font-size:10.5px;font-weight:500;color:#888888;margin-top:1px;}
+.lonleave{font-size:9px;font-weight:700;letter-spacing:.4px;color:#9F1239;background:#FFE4E6;border-radius:3px;padding:1px 5px;width:fit-content;margin-top:1px;}
+.lm{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}.ls{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}.le{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}.lss{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}.la{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}.lp{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}
+.lb{background:#FFFFFF;color:#111111;border:1px solid #E8E8E8;border-left:3px solid #C8202E;}
+.lsub-leave{background:#FFF1F2;color:#9F1239;border:1px solid #FECDD3;border-left:3px solid #C8202E;}.lfr{background:#F7F7F7;color:#CCCCCC;border:1px solid #F0F0F0;border-left:3px solid #E5E5E5;font-style:italic;}.lsub{background:#FFF1F2;color:#9F1239;border:1px solid #FECDD3;border-left:3px solid #C8202E;}
 .tc-break{padding:8px;text-align:center;color:var(--ink-f);font-size:11.5px;background:var(--bg);}
 .ag{display:flex;gap:3px;flex-wrap:wrap;}
 .ado{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:transform .1s;user-select:none;}
 .ado:hover{transform:scale(1.15);}
-.ap{background:var(--acc-l);color:var(--acc);}.aa{background:var(--dan-l);color:var(--dan);}.al2{background:var(--warn-l);color:var(--warn);}.ah{background:var(--surf2);color:var(--ink-f);}
+.ap{background:var(--acc-l);color:var(--acc);}.aa{background:var(--dan-l);color:var(--dan);}.al2{background:var(--pri-l);color:var(--pri);}.ah{background:var(--surf2);color:var(--ink-f);}
 .ai{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--bdr);}
 .ai:last-child{border-bottom:none;}
 .adot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
-.adot.b{background:var(--pri);}.adot.g{background:var(--acc);}.adot.o{background:var(--warn);}.adot.r{background:var(--dan);}
+.adot.b{background:var(--pri);}.adot.g{background:var(--acc);}.adot.o{background:var(--pri);}.adot.r{background:var(--dan);}
 .np{position:fixed;top:58px;right:16px;width:320px;background:var(--surf);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 8px 32px rgba(22,33,58,.12);z-index:400;display:none;}
 .np.open{display:block;}
 .np-h{padding:14px 18px;border-bottom:1.5px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;}
@@ -182,278 +195,145 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13.5px;color:var(--ink);
 /* STAGE SECTION: content per step */
 .stage-section{display:none;}
 .stage-section.active{display:block;}
+
+/* ── Areté brand additions ── */
+.sb-arete-logo{display:flex;flex-direction:column;line-height:1;}
+.sb-arete-name{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px;}
+.sb-arete-tagline{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.8px;text-transform:uppercase;margin-top:1px;}
+.arete-wordmark{display:flex;align-items:center;gap:10px;}
+.arete-icon{width:36px;height:36px;background:#D42B3A;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.arete-icon svg{width:22px;height:22px;}
+.ph-title{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
+/* Red accent on stat cards */
+.stat-card{border-top:3px solid var(--pri) !important;}
+/* Table header accent */
+.dt thead th{background:var(--pri-l);color:var(--pri);border-bottom:2px solid var(--pri);}
+/* Primary buttons */
+.bp{background:var(--pri) !important;color:#fff !important;}
+.bp:hover{background:var(--pri-d) !important;}
+/* Badges */
+.badge-pri{background:var(--pri-l);color:var(--pri);font-weight:700;}
+
+/* ── Areté dashboard accents ── */
+.module-card:hover,.view-card:hover{border-color:var(--pri) !important;box-shadow:0 4px 20px rgba(192,40,46,.1) !important;}
+.ch .ct{font-weight:700;color:var(--ink);}
+/* Section headers with red accent bar */
+.ph-ttl::before,.ph-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--pri);border-radius:2px;margin-right:8px;vertical-align:middle;}
+/* Active sidebar item — red glow */
+.ni.active{background:var(--pri);box-shadow:0 2px 12px rgba(192,40,46,.35);}
+/* Table striping with brand tint */
+tr:nth-child(even) td{background:#FDF8F8;}
+/* Search box focus ring */
+.sbox input:focus,.fc:focus{border-color:var(--pri) !important;box-shadow:0 0 0 3px rgba(192,40,46,.1) !important;}
+/* Badge pill updates */
+.badge-red,.bg-r{background:#FCEAEA;color:#D42B3A;}
+.badge-green,.bg-g{background:#E6F5EF;color:#0B7B6B;}
+
+/* ══ Areté Brand System ══════════════════════════════════════ */
+
+/* Logo SVG mark in sidebar */
+.sb-arete-logo{display:flex;flex-direction:column;line-height:1.2;}
+.sb-arete-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.4px;}
+.sb-arete-tagline{font-size:9px;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.arete-wordmark{display:flex;align-items:center;gap:11px;}
+.arete-icon{width:38px;height:38px;flex-shrink:0;position:relative;}
+
+/* Sidebar section divider */
+.sb-divider{height:1px;background:var(--bdr);margin:4px 16px;}
+
+/* Topbar title */
+.tp-title{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
+.tp-bc{font-size:11px;color:var(--ink-f);margin-top:1px;}
+
+/* Page header accent bar */
+
+
+/* Stat/KPI cards */
+.stat-card{border-top:3px solid var(--pri) !important;border-radius:var(--r);background:#fff;}
+
+/* Dashboard hero — crimson gradient */
+.dash-hero{background:linear-gradient(135deg,#9A1822 0%,#C8202E 60%,#D94050 100%) !important;box-shadow:0 4px 24px rgba(155,24,34,.18);}
+
+/* Table striping */
+tr:nth-child(even) td{background:#FAFCFF;}
+.dt thead th{background:#F5F5F5;color:var(--ink-m);border-bottom:1px solid var(--bdr);font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;}
+
+/* Badges */
+.bg-g{background:#E8F8F2;color:#0A6B5D;}
+.bg-r{background:var(--pri-l);color:var(--pri);}
+.bg-o{background:#F3F4F6;color:#374151;}
+.bg-b{background:#EFF5FF;color:#2058D4;}
+.bg-p{background:var(--acc-l);color:var(--acc);}
+.bg-s{background:var(--surf2);color:var(--ink-m);}
+.bg-i{background:var(--pri-l);color:var(--pri);}
+
+/* Focus ring */
+input:focus,.fc:focus,.sbox input:focus{
+  border-color:var(--pri) !important;
+  box-shadow:0 0 0 3px var(--pri-l) !important;
+  outline:none;
+}
+
+/* Active nav glow */
+.ni.active{box-shadow:0 2px 12px rgba(212,43,58,.4);}
+
+/* Section headers */
+.ss-t{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-f);padding-bottom:8px;border-bottom:1.5px solid var(--bdr);margin-bottom:10px;}
+
+/* Side panel */
+.sp-body .ss{margin-bottom:14px;background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:14px 16px;}
+
+/* Portal switcher button */
+
+/* Dev bar */
+.devb{background:#111;color:rgba(255,255,255,.35);border-top:1px solid #222;}
+.db{background:var(--pri);color:#fff;border-radius:3px;padding:1px 7px;font-weight:700;font-size:10px;}
+
+/* Module cards hover */
+.module-card:hover,.view-card:hover{border-color:var(--pri) !important;box-shadow:0 4px 20px rgba(212,43,58,.1) !important;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:#CCCCCC;}
+
+/* User card at sidebar bottom */
+.uc:hover{background:var(--pri-l);}
+.ua{background:var(--pri) !important;}
+
+/* Table row hover */
+tr:hover td{background:#F8F8F8;}
+
+/* Modal header */
+.mh{border-bottom:1.5px solid var(--bdr);padding:18px 22px 14px;}
+.mh h3,.mh-t{font-weight:800;letter-spacing:-.3px;}
+.mf{background:#FAFAFA;border-top:1px solid var(--bdr);padding:12px 22px;display:flex;gap:8px;justify-content:flex-end;}
+
+/* Search box */
+.sbox{background:#F5F5F5;border:1px solid var(--bdr);border-radius:8px;}
+.sbox:focus-within{border-color:var(--pri);background:#fff;}
+
+
+/* ── Sidebar collapsible groups ── */
+.sb-brand{padding:16px 14px 14px;border-bottom:1px solid var(--bdr);}
+.sb-nav{padding:6px 0;overflow-y:auto;flex:1;}
+.sb-grp{margin:1px 0;}
+.sb-grp-hdr{display:flex;align-items:center;gap:7px;padding:8px 14px;cursor:pointer;font-size:11.5px;font-weight:700;color:#888;letter-spacing:.5px;text-transform:uppercase;user-select:none;transition:color .12s;}
+.sb-grp-hdr:hover{color:var(--pri);}
+.grp-arrow{font-size:14px;color:#ccc;transition:transform .18s;line-height:1;display:inline-block;}
+.sb-grp-hdr.open .grp-arrow{transform:rotate(90deg);color:var(--pri);}
+.sb-grp-body{display:none;padding-bottom:2px;}
+.ni-sub{padding-left:22px !important;font-size:12.5px;}
+.ni-ext{opacity:.75;}
+.ni-ext:hover{opacity:1;color:var(--pri) !important;}
+.sb-divider{height:1px;background:var(--bdr);margin:4px 12px;}
+
+.sc:hover{box-shadow:0 4px 20px rgba(200,32,46,.12) !important;transform:translateY(-1px);}
 </style>
 </head>
 <body>
-<script>
-// ═══════════════════════════════════════════════════════════════════════
-// SHAPE UNIFIED DATA LAYER  — shape_db.js
-// Shared across all SHAPE portals via localStorage('SHAPE_DB')
-// Every portal reads from and writes back to this store.
-// ═══════════════════════════════════════════════════════════════════════
 
-var SHAPE_DB = (function(){
-
-  var KEY = 'SHAPE_DB_v4';
-
-  // ── Default seed data ──────────────────────────────────────────────
-  var SEED = {
-
-    // ── Students ──────────────────────────────────────────────────────
-    students: [
-      {id:'S001',name:'Ananya Krishnan',  dob:'2012-03-14',cls:'Grade 8',  section:'A',
-       adm:'2024-06-01',learningStyle:'Visual',   diet:'Vegetarian',
-       health:'Mild asthma — inhaler with teacher',needs:'None',
-       hobbies:'Drawing, Chess',langs:'Malayalam, English, Hindi',
-       travel:'Bus',busRoute:'R001',boarding:false,
-       parentName:'Krishnan P.',parentPhone:'+91 94470 11111',
-       parentOcc:'Engineer / Teacher',siblings:1,
-       behav:'Social, confident, leadership qualities',
-       expPref:'Outdoor projects, visual demonstrations',
-       fees:{term:24500,transport:2800,hostel:0,activity:1800},
-       status:'Active'},
-
-      {id:'S002',name:'Mohammed Ashiq',   dob:'2013-07-22',cls:'Grade 7',  section:'B',
-       adm:'2024-06-01',learningStyle:'Auditory',  diet:'Non-Vegetarian',
-       health:'None',needs:'None',
-       hobbies:'Cricket, Reading',langs:'Malayalam, English',
-       travel:'Bus',busRoute:'R002',boarding:false,
-       parentName:'Ashiq K.',parentPhone:'+91 94471 22222',
-       parentOcc:'Business / Homemaker',siblings:2,
-       behav:'Reserved, focused, good at group tasks',
-       expPref:'Group discussions, storytelling',
-       fees:{term:24500,transport:2800,hostel:0,activity:1800},
-       status:'Active'},
-
-      {id:'S003',name:'Devika Nair',       dob:'2010-11-05',cls:'Grade 10', section:'A',
-       adm:'2022-06-01',learningStyle:'Kinaesthetic',diet:'Vegetarian',
-       health:'None',needs:'None',
-       hobbies:'Dance, Art, Swimming',langs:'Malayalam, English, Tamil',
-       travel:'Bus',busRoute:'R001',boarding:true,
-       parentName:'Nair R.',parentPhone:'+91 94472 33333',
-       parentOcc:'Doctor / Teacher',siblings:0,
-       behav:'Creative, independent, self-motivated',
-       expPref:'Hands-on lab, project-based learning, field trips',
-       fees:{term:24500,transport:2800,hostel:3500,activity:1800},
-       status:'Active'},
-
-      {id:'S004',name:'Rahul P.',           dob:'2011-05-18',cls:'Grade 9',  section:'C',
-       adm:'2023-06-01',learningStyle:'Reading/Writing',diet:'Non-Vegetarian',
-       health:'Under specialist support for dyslexia',needs:'Mild dyslexia — support plan active',
-       hobbies:'Football, Music, Coding',langs:'Malayalam, English',
-       travel:'Bus',busRoute:'R003',boarding:false,
-       parentName:'Pradeep K.',parentPhone:'+91 94473 44444',
-       parentOcc:'Engineer / Nurse',siblings:1,
-       behav:'Determined, sometimes frustrated with text-heavy tasks',
-       expPref:'Audio content, peer explanation, visual aids',
-       fees:{term:24500,transport:2800,hostel:0,activity:1800},
-       status:'Active'},
-
-      {id:'S005',name:'Sreelakshmi K.',    dob:'2014-02-28',cls:'Grade 6',  section:'B',
-       adm:'2025-06-01',learningStyle:'Visual',   diet:'Vegetarian',
-       health:'None',needs:'None',
-       hobbies:'Drawing, Gardening, Cooking',langs:'Malayalam, English',
-       travel:'Bus',busRoute:'R002',boarding:false,
-       parentName:'Krishnan V.',parentPhone:'+91 94474 55555',
-       parentOcc:'Farmer / Homemaker',siblings:3,
-       behav:'Shy at first, blooms with encouragement',
-       expPref:'Nature-based, Living Learning Park activities',
-       fees:{term:22000,transport:2800,hostel:0,activity:1800},
-       status:'Active'},
-
-      {id:'S006',name:'Arjun Menon',        dob:'2011-09-12',cls:'Grade 9',  section:'A',
-       adm:'2023-06-01',learningStyle:'Kinaesthetic',diet:'Non-Vegetarian',
-       health:'None',needs:'None',
-       hobbies:'Football, Gaming',langs:'Malayalam, English',
-       travel:'Bus',busRoute:'R001',boarding:true,
-       parentName:'Menon A.',parentPhone:'+91 94475 66666',
-       parentOcc:'Police / Homemaker',siblings:1,
-       behav:'High energy, needs structured tasks',
-       expPref:'Active projects, physical activities',
-       fees:{term:24500,transport:2800,hostel:3500,activity:1800},
-       status:'Active'},
-    ],
-
-    // ── Staff ─────────────────────────────────────────────────────────
-    staff: [
-      {id:'T001',name:'Ms. Latha R.',     subj:'Mathematics',   joined:'2019-06-01',phone:'+91 94470 91001',email:'latha@aretemodel.edu',salary:55000,status:'Active',ratings:[4.1,4.2,4.5,4.6,4.7],trainings:14,concerns:0},
-      {id:'T002',name:'Ms. Divya K.',     subj:'Science',       joined:'2020-08-01',phone:'+91 94470 91002',email:'divya@aretemodel.edu',salary:50000,status:'Active',ratings:[4.0,4.1,4.0,4.2,4.3],trainings:11,concerns:1},
-      {id:'T003',name:'Mr. Paul T.',      subj:'English',       joined:'2018-06-01',phone:'+91 94470 91003',email:'paul@aretemodel.edu',salary:58000,status:'Active',ratings:[4.4,4.5,4.6,4.7,4.8],trainings:17,concerns:0},
-      {id:'T004',name:'Mr. Arun P.',      subj:'Social Studies',joined:'2021-06-01',phone:'+91 94470 91004',email:'arun@aretemodel.edu',salary:48000,status:'Active',ratings:[3.7,3.9,3.8,4.0,4.1],trainings:8,concerns:1},
-      {id:'T005',name:'Ms. Rani S.',      subj:'Malayalam',     joined:'2022-06-01',phone:'+91 94470 91005',email:'rani@aretemodel.edu',salary:46000,status:'Active',ratings:[4.2,4.3,4.4,4.5],trainings:7,concerns:0},
-    ],
-
-    // ── Bus Routes ───────────────────────────────────────────────────
-    routes: [
-      {id:'R001',name:'Route 1 — KL Bus',    vehicle:'KL 11 AB 1234',type:'Bus (52 seats)',driver:'Rajan P.',  phone:'+91 94470 12345',dept:'07:05',arr:'07:45',status:'Active'},
-      {id:'R002',name:'Route 2 — Koyilandy', vehicle:'KL 11 CD 5678',type:'Bus (52 seats)',driver:'Suresh Kumar',phone:'+91 94471 56789',dept:'07:15',arr:'07:55',status:'Active'},
-      {id:'R003',name:'Route 3 — Vatakara',  vehicle:'KL 11 EF 9012',type:'Van (15 seats)',driver:'Krishnan K.',phone:'+91 94472 98765',dept:'07:20',arr:'08:00',status:'Active'},
-      {id:'R004',name:'Route 4 — Peringathur',vehicle:'KL 11 GH 3456',type:'Bus (52 seats)',driver:'Sunil M.',  phone:'+91 94473 11111',dept:'07:00',arr:'07:50',status:'Active'},
-    ],
-
-    // ── Hostel Rooms ─────────────────────────────────────────────────
-    rooms: [
-      {id:'RM-A01',block:'A',num:1, cap:4},
-      {id:'RM-A02',block:'A',num:2, cap:4},
-      {id:'RM-A03',block:'A',num:12,cap:4},
-      {id:'RM-A04',block:'A',num:15,cap:4},
-      {id:'RM-B01',block:'B',num:3, cap:4},
-      {id:'RM-B02',block:'B',num:7, cap:4},
-    ],
-
-    // ── Fee Payments ─────────────────────────────────────────────────
-    payments: [
-      {id:'RC-001',studentId:'S001',category:'Term Fee',  amount:24500,date:'2026-10-14',mode:'Online',month:'Oct 2026'},
-      {id:'RC-002',studentId:'S002',category:'Term Fee',  amount:24500,date:'2026-10-13',mode:'Cash',  month:'Oct 2026'},
-      {id:'RC-003',studentId:'S003',category:'Hostel Fee',amount:3500, date:'2026-10-12',mode:'Online',month:'Oct 2026'},
-      {id:'RC-004',studentId:'S004',category:'Term Fee',  amount:24500,date:'2026-10-11',mode:'Online',month:'Oct 2026'},
-      {id:'RC-005',studentId:'S005',category:'Term Fee',  amount:22000,date:'2026-10-10',mode:'Cheque',month:'Oct 2026'},
-    ],
-
-    // ── Complaints ───────────────────────────────────────────────────
-    complaints: [
-      {id:'CP001',date:'2026-10-10',from:'Parent',who:'Mrs. Suma R.',studentId:'S005',type:'Academic',  subj:'Assignment load too heavy for Grade 5',action:'Referred to HOD',status:'Open'},
-      {id:'CP002',date:'2026-10-08',from:'Parent',who:'Mr. Rahul',   studentId:'S004',type:'Transport', subj:'Bus arriving late consistently',action:'Driver counselled',status:'Resolved',resolved:'2026-10-09'},
-      {id:'CP003',date:'2026-10-14',from:'Staff', who:'Mr. Arun P.', staffId:'T004',  type:'Facility',  subj:'Projector in Room 12 not working',action:'IT notified',status:'Open'},
-    ],
-
-    // ── Events ───────────────────────────────────────────────────────
-    events: [
-      {id:'EV001',title:'Parent-Teacher Meeting — Grade 8',type:'Parent Meeting',date:'2026-10-20',time:'10:00',venue:'Main Hall',seats:120,alloc:98,organiser:'T001'},
-      {id:'EV002',title:'Monthly Staff Meeting',type:'Staff Meeting',date:'2026-10-25',time:'16:00',venue:'Staff Room',seats:40,alloc:38,organiser:'T003'},
-      {id:'EV003',title:'Science Fair — Grades 6–10',type:'School Event',date:'2026-11-08',time:'09:00',venue:'Main Hall + Grounds',seats:600,alloc:540,organiser:'T002'},
-    ],
-
-    // ── Early Departures ─────────────────────────────────────────────
-    departures: [
-      {id:'DEP001',studentId:'S004',reason:'Medical appointment',time:'13:30',date:'2026-10-14',smsSent:true},
-      {id:'DEP002',studentId:'S002',reason:'Family function',    time:'14:00',date:'2026-10-12',smsSent:true},
-    ],
-
-    // ── HR Vacancies & Candidates ────────────────────────────────────
-    vacancies: [
-      {id:'V001',subj:'Mathematics', qual:'M.Sc Maths + B.Ed',exp:'3+ years',posted:'2026-09-01',status:'Active'},
-      {id:'V002',subj:'English',     qual:'MA English + B.Ed', exp:'2+ years',posted:'2026-09-10',status:'Active'},
-    ],
-    candidates: [
-      {id:'C001',name:'Priya Suresh', vacId:'V001',qual:'M.Sc Maths, B.Ed',exp:'5 yrs',score:88,status:'Shortlisted',interviewDate:'2026-10-05'},
-      {id:'C002',name:'Anoop Varma',  vacId:'V001',qual:'M.Sc Maths, B.Ed',exp:'3 yrs',score:76,status:'Shortlisted',interviewDate:'2026-10-05'},
-      {id:'C003',name:'Reshma K.',    vacId:'V002',qual:'MA English, B.Ed', exp:'6 yrs',score:91,status:'Recommended',interviewDate:'2026-09-28'},
-    ],
-    interviews: [],
-    training: [
-      {id:'TR001',title:'NEP 2020 — Competency Based Education',date:'2026-08-15',trainer:'Dr. Anitha Raj',duration:'Full day',topics:['CBE Framework','Portfolio Learning','Outcome Mapping'],attendees:['T001','T002','T003','T004','T005']},
-      {id:'TR002',title:'SHAPE DLSS — Digital Classroom Tools',  date:'2026-09-02',trainer:'Muhd Zahal',    duration:'Half day',topics:['DLSS Overview','Resource Library','Lesson Planning'],attendees:['T001','T002','T003','T004']},
-    ],
-
-    // ── Inventory ────────────────────────────────────────────────────
-    inventory: [
-      {id:'INV001',name:'Laptops',           cat:'IT Equipment',total:42,working:39,repair:3,value:2100000},
-      {id:'INV002',name:'Projectors',        cat:'IT Equipment',total:18,working:16,repair:2,value:540000},
-      {id:'INV003',name:'Science Lab Sets',  cat:'Lab Equipment',total:12,working:12,repair:0,value:360000},
-      {id:'INV004',name:'Student Desks',     cat:'Furniture',    total:420,working:414,repair:6,value:840000},
-    ],
-
-    // ── Books ────────────────────────────────────────────────────────
-    books: [
-      {id:'BK001',title:'Mathematics for Grade 8',cat:'Textbook', issuedTo:'S001',dueDate:'2026-10-20',status:'Issued'},
-      {id:'BK002',title:'The Secret Garden',       cat:'Fiction',  issuedTo:'S005',dueDate:'2026-10-18',status:'Overdue'},
-      {id:'BK003',title:'A Brief History of Time', cat:'Science',  issuedTo:'S004',dueDate:'2026-10-25',status:'Issued'},
-      {id:'BK004',title:'Wings of Fire (Kalam)',   cat:'Biography',issuedTo:'S003',dueDate:'2026-10-28',status:'Issued'},
-      {id:'BK005',title:'NCERT Science Grade 9',   cat:'Textbook', issuedTo:'S006',dueDate:'2026-10-16',status:'Overdue'},
-    ],
-
-    // ── Mess Stock ───────────────────────────────────────────────────
-    messStock: [
-      {item:'Rice (Ponni)',    unit:'kg',    qty:280,max:400,low:80,cost:58,  cat:'Staples'},
-      {item:'Cooking Oil',    unit:'L',     qty:38, max:60, low:15,cost:145, cat:'Staples'},
-      {item:'Dal (Mixed)',    unit:'kg',    qty:45, max:80, low:15,cost:98,  cat:'Staples'},
-      {item:'Fresh Vegetables',unit:'kg',   qty:35, max:80, low:20,cost:40,  cat:'Fresh'},
-      {item:'Eggs',           unit:'dozen', qty:18, max:40, low:10,cost:95,  cat:'Protein'},
-    ],
-
-    // ── Budget ───────────────────────────────────────────────────────
-    budget: [
-      {cat:'Teacher Salaries',     dept:'HR',       budgeted:18000000,actual:18000000},
-      {cat:'Non-Teaching Salaries',dept:'HR',       budgeted:6000000, actual:5800000},
-      {cat:'Transport — Total',    dept:'Transport',budgeted:4600000, actual:4820000},
-      {cat:'Infrastructure',       dept:'Ops',      budgeted:2500000, actual:1900000},
-      {cat:'Hostel & Mess',        dept:'Hostel',   budgeted:1600000, actual:1480000},
-      {cat:'Library & Materials',  dept:'Academic', budgeted:450000,  actual:320000},
-    ],
-
-    // ── Audit Log ────────────────────────────────────────────────────
-    auditLog: []
-  };
-
-  // ── Load / Save ───────────────────────────────────────────────────
-  function load(){
-    try {
-      var raw = localStorage.getItem(KEY);
-      if(raw){ 
-        var parsed = JSON.parse(raw);
-        // Merge: keep seed structure but overlay saved data
-        return Object.assign({}, SEED, parsed);
-      }
-    } catch(e){}
-    return JSON.parse(JSON.stringify(SEED)); // deep clone seed
-  }
-
-  function save(db){
-    try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){}
-  }
-
-  // ── Audit ─────────────────────────────────────────────────────────
-  function audit(db, action, detail){
-    db.auditLog.unshift({
-      ts: new Date().toISOString(),
-      action: action,
-      detail: detail,
-      user: 'Muhd Zahal'
-    });
-    if(db.auditLog.length > 200) db.auditLog.length = 200;
-  }
-
-  // ── Helpers ───────────────────────────────────────────────────────
-  function genId(prefix){
-    return prefix + Date.now().toString().slice(-6);
-  }
-  function fmt(n){ return '₹'+(n||0).toLocaleString('en-IN'); }
-  function fmtL(n){ return '₹'+((n||0)/100000).toFixed(1)+'L'; }
-
-  // ── Public API ────────────────────────────────────────────────────
-  return {
-    load: load,
-    save: save,
-    audit: audit,
-    genId: genId,
-    fmt: fmt,
-    fmtL: fmtL,
-
-    // Student helpers
-    getStudent: function(db,id){ return db.students.find(function(s){return s.id===id;}); },
-    getStudentName: function(db,id){ var s=db.students.find(function(x){return x.id===id;}); return s?s.name:'Unknown'; },
-    getBoarders: function(db){ return db.students.filter(function(s){return s.boarding&&s.status==='Active';}); },
-    getBusStudents: function(db,routeId){ return db.students.filter(function(s){return s.busRoute===routeId&&s.status==='Active';}); },
-
-    // Staff helpers  
-    getStaff: function(db,id){ return db.staff.find(function(s){return s.id===id;}); },
-    getStaffName: function(db,id){ var s=db.staff.find(function(x){return x.id===id;}); return s?s.name:'Unknown'; },
-
-    // Route helpers
-    getRoute: function(db,id){ return db.routes.find(function(r){return r.id===id;}); },
-    getRouteName: function(db,id){ var r=db.routes.find(function(x){return x.id===id;}); return r?r.name:'Unknown'; },
-
-    // Fee helpers
-    getStudentPayments: function(db,studentId){ return db.payments.filter(function(p){return p.studentId===studentId;}); },
-    getTotalCollected: function(db){ return db.payments.reduce(function(a,p){return a+p.amount;},0); },
-
-    // Reset (dev use)
-    reset: function(){ localStorage.removeItem(KEY); location.reload(); }
-  };
-})();
-
-</script>
 
 
 <!-- Toast wrapper -->
@@ -817,54 +697,101 @@ var SHAPE_DB = (function(){
 <!-- ══ SIDEBAR ══ -->
 <aside class="sb">
   <div class="sb-brand">
-    <div class="sb-logo"><div class="sb-lm">S</div><div class="sb-ln">SHAPE SMS</div></div>
-    <div class="sb-ls">Arete Model School · Nadapuram</div>
-    <div class="sb-yr">AY 2026–27</div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <img src="arete_logo.png" alt="Areté" style="width:38px;height:38px;object-fit:contain;flex-shrink:0;">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Areté</div>
+        <div style="font-size:10px;color:#aaa;letter-spacing:.3px;text-transform:uppercase;margin-top:1px;">Principal Dashboard</div>
+      </div>
+    </div>
   </div>
-  <div class="sb-sec">Overview</div>
-  <div class="ni active" data-view="dashboard"><span class="ic">◈</span> Dashboard</div>
-  <div class="sb-sec">Admissions &amp; Students</div>
-  <div class="ni" data-view="admissions"><span class="ic">📋</span> Admissions <span class="nb al" id="nb-adm">5</span></div>
-  <div class="ni" data-view="students"><span class="ic">👤</span> Student Records <span class="nb" id="nb-stu">842</span></div>
-  <div class="sb-sec">Academic</div>
-  <div class="ni" data-view="timetable"><span class="ic">📅</span> Timetable</div>
-  <div class="ni" data-view="attendance"><span class="ic">✓</span> Attendance <span class="nb al" id="nb-att">3</span></div>
-  <div class="sb-sec">Staff &amp; Finance</div>
-  <div class="ni" data-view="staff"><span class="ic">👥</span> Staff & HR</div>
-  <div class="ni" data-view="payroll"><span class="ic">₹</span> Payroll</div>
-  <div class="ni" data-view="fees"><span class="ic">💳</span> Fee Collection</div>
-  <div class="sb-sec">Operations</div>
-  <div class="ni" data-view="communication"><span class="ic">💬</span> Communication <span class="nb" id="nb-comm">3</span></div>
-  
-  
-  <div class="ni" data-view="health"><span class="ic">❤️</span> Health &amp; Safety</div>
-  <div class="sb-sec">Learning</div>
-  <div class="ni" data-view="lms"><span class="ic">🎓</span> Digital Learning <span class="nb bg-p" id="nb-lms">NEW</span></div>
-  <div class="sb-sec">Connected Portals</div>
-  <div class="ni" onclick="window.open('shape_hr.html','_blank')"><span class="ic">&#128101;</span> HR &amp; Recruitment</div>
-  <div class="ni" onclick="window.open('shape_finance.html','_blank')"><span class="ic">&#8377;</span> Finance Portal</div>
-  <div class="ni" onclick="window.open('shape_hostel.html','_blank')"><span class="ic">&#127968;</span> Hostel</div>
-  <div class="ni" onclick="window.open('shape_campus.html','_blank')"><span class="ic">&#127979;</span> Campus Admin</div>
-  <div class="ni" onclick="window.open('shape_transport.html','_blank')"><span class="ic">&#128652;</span> Transport</div>
-  <div class="ni" onclick="window.open('shape_careers.html','_blank')"><span class="ic">&#128203;</span> Careers Page</div>
-  <div class="sb-sec">Reports</div>
-  <div class="ni" data-view="reports"><span class="ic">📊</span> Compliance &amp; Reports</div>
+
+  <nav class="sb-nav">
+
+    <div class="ni active" data-view="dashboard"><span class="ic">⊞</span>Dashboard</div>
+
+    <!-- Admissions & Students -->
+    <div class="sb-grp" id="grp-adm">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-adm')">
+        <span class="grp-arrow" id="arr-grp-adm">›</span>Admissions &amp; Students
+      </div>
+      <div class="sb-grp-body" id="body-grp-adm">
+        <div class="ni ni-sub" data-view="admissions">Admissions<span class="nb al" id="nb-adm">5</span></div>
+        <div class="ni ni-sub" data-view="students">Student Records<span class="nb" id="nb-stu">842</span></div>
+      </div>
+    </div>
+
+    <!-- Academic -->
+    <div class="sb-grp" id="grp-aca">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-aca')">
+        <span class="grp-arrow" id="arr-grp-aca">›</span>Academic
+      </div>
+      <div class="sb-grp-body" id="body-grp-aca">
+        <div class="ni ni-sub" data-view="timetable">Timetable</div>
+        <div class="ni ni-sub" data-view="attendance">Attendance<span class="nb al" id="nb-att">3</span></div>
+        <div class="ni ni-sub" data-view="lms">Digital Learning</div>
+      </div>
+    </div>
+
+    <!-- Staff & Finance -->
+    <div class="sb-grp" id="grp-fin">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-fin')">
+        <span class="grp-arrow" id="arr-grp-fin">›</span>Staff &amp; Finance
+      </div>
+      <div class="sb-grp-body" id="body-grp-fin">
+        <div class="ni ni-sub" data-view="staff">Staff &amp; HR</div>
+        <div class="ni ni-sub" data-view="payroll">Payroll</div>
+        <div class="ni ni-sub" data-view="fees">Fee Collection</div>
+      </div>
+    </div>
+
+    <!-- Operations -->
+    <div class="sb-grp" id="grp-ops">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-ops')">
+        <span class="grp-arrow" id="arr-grp-ops">›</span>Operations
+      </div>
+      <div class="sb-grp-body" id="body-grp-ops">
+        <div class="ni ni-sub" data-view="communication">Communication<span class="nb" id="nb-comm">3</span></div>
+        <div class="ni ni-sub" data-view="health">Health</div>
+        <div class="ni ni-sub" data-view="reports">Reports</div>
+      </div>
+    </div>
+
+    <!-- Connected Portals -->
+    <div class="sb-grp" id="grp-por">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-por')">
+        <span class="grp-arrow" id="arr-grp-por">›</span>Connected Portals
+      </div>
+      <div class="sb-grp-body" id="body-grp-por">
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_hr.html','_blank')">HR &amp; Recruitment ↗</div>
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_finance.html','_blank')">Finance ↗</div>
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_hostel.html','_blank')">Hostel ↗</div>
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_campus.html','_blank')">Campus ↗</div>
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_transport.html','_blank')">Transport ↗</div>
+        <div class="ni ni-sub ni-ext" onclick="window.open('shape_careers.html','_blank')">Careers ↗</div>
+      </div>
+    </div>
+
+  </nav>
+
   <div class="sb-foot">
     <div class="uc" id="ucBtn">
-      <div class="ua">MZ</div>
-      <div><div style="font-size:13px;font-weight:500;color:#fff;">Muhd Zahal</div><div style="font-size:10.5px;color:rgba(255,255,255,.35);">Principal</div></div>
+      <div class="ua" style="background:var(--pri);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">MZ</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:#111;">Muhd Zahal</div><div style="font-size:10px;color:#999;">Principal</div></div>
     </div>
   </div>
 </aside>
 
+
+
 <!-- ══ MAIN ══ -->
 <div class="main">
-<header class="topbar">
-  <div class="tp-l">
+<header class="topbar" id="topbar">
+  <div class="tp-l" id="tp-l">
     <div class="tp-title" id="pgTitle">Dashboard</div>
     <div class="tp-bc" id="pgBC">SHAPE › Overview</div>
   </div>
-  <div class="tp-r">
+  <div class="tp-r" id="tp-r">
     <div class="sbox"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#9BA8C0" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#9BA8C0" stroke-width="1.5" stroke-linecap="round"/></svg><input type="text" placeholder="Search students, staff…" id="gsearch"><div class="sdrop" id="sdrop"></div></div>
     <div class="ib" id="notifBtn"><span>🔔</span><span class="dot"></span></div>
     <div class="ib" id="settingsBtn">⚙</div>
@@ -875,74 +802,38 @@ var SHAPE_DB = (function(){
 
 <!-- DASHBOARD -->
 <div class="view active" id="view-dashboard">
-  <div class="alert al-b">&#9432; <strong>SHAPE SMS v5 &mdash; Principal Dashboard</strong> — All 12 modules live. Add records, advance admission stages, edit any record.</div>
-  <div style="background:linear-gradient(135deg,#16213A,#1E3A5F);border-radius:14px;padding:20px 24px;margin-bottom:18px;color:#fff;box-shadow:0 4px 24px rgba(0,0,0,.12);">
+  
+  <div style="background:linear-gradient(135deg,#C8202E 0%,#E8404E 100%);border-radius:14px;padding:20px 24px;margin-bottom:18px;color:#fff;box-shadow:0 4px 24px rgba(0,0,0,.12);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <div>
-        <div style="font-size:10.5px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Arete Model School, Nadapuram &middot; AY 2026&ndash;27</div>
-        <div style="font-size:20px;font-weight:800;letter-spacing:-.3px;">School Management Overview</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Areté Model School · Nadapuram &middot; AY 2026&ndash;27</div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.5px;color:#fff;">School Management Overview</div>
       </div>
-      <div style="font-size:12px;color:rgba(255,255,255,.4);" id="dash-timestamp"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.65);" id="dash-timestamp"></div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;">
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#60CFBE;">842</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Students</div></div>
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#6EE7B7;" id="p-staff">5</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Staff</div></div>
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#93C5FD;" id="p-boarders">2</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Boarders</div></div>
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#FDE68A;" id="p-routes">4</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Bus Routes</div></div>
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#F9A8D4;" id="p-events">3</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Events</div></div>
-      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:24px;font-weight:800;color:#FDA4AF;" id="p-complaints">2</div><div style="font-size:11px;color:rgba(255,255,255,.5);">Complaints</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;">842</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Students</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;" id="p-staff">5</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Staff</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;" id="p-boarders">2</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Boarders</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;" id="p-routes">4</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Bus Routes</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;" id="p-events">3</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Events</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);"><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;" id="p-complaints">2</div><div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:500;letter-spacing:.2px;">Complaints</div></div>
     </div>
   </div>
   <div id="dash-portals" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;"></div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px;background:var(--surf);border-radius:var(--r);border:1px solid var(--bdr);">
-    <span style="font-size:11px;font-weight:700;color:var(--ink-f);text-transform:uppercase;letter-spacing:.8px;margin-right:4px;align-self:center;">Quick Actions</span>
-    <button class="btn bp bsm" onclick="showView('admissions')">+ New Admission</button>
-    <button class="btn bo bsm" onclick="showView('fees')">&#8377; Record Payment</button>
-    <button class="btn bo bsm" onclick="showView('staff')">&#128197; Leave Request</button>
-    <button class="btn bo bsm" onclick="showView('communication')">&#128226; Announcement</button>
-    <button class="btn bo bsm" onclick="showView('health')">&#128137; Health Record</button>
-    <button class="btn bo bsm" onclick="showView('reports')">&#128202; Run Report</button>
-  </div>
-  <div class="card" style="margin-bottom:18px;">
-    <div class="ch"><div class="ct">&#128197; Academic Calendar &mdash; AY 2026&ndash;27</div></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 18px 14px;">
-      <div style="background:var(--acc-l);border:1px solid var(--acc);border-radius:8px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Term 1</div>
-        <div style="font-size:13px;font-weight:700;">Jun 2 &ndash; Sep 30, 2026</div>
-        <div style="font-size:11.5px;color:var(--acc);margin-top:4px;">&#10003; Completed</div>
-      </div>
-      <div style="background:var(--pri-l);border:2px solid var(--pri);border-radius:8px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;color:var(--pri);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Term 2 &mdash; Current</div>
-        <div style="font-size:13px;font-weight:700;">Oct 1 &ndash; Dec 31, 2026</div>
-        <div style="font-size:11.5px;color:var(--pri);margin-top:4px;font-weight:600;">&#9679; In Progress</div>
-      </div>
-      <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;color:var(--ink-f);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Term 3</div>
-        <div style="font-size:13px;font-weight:700;">Jan 5 &ndash; Mar 31, 2027</div>
-        <div style="font-size:11.5px;color:var(--ink-f);margin-top:4px;">Upcoming</div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 18px 14px;">
-      <div style="padding:8px 12px;background:var(--warn-l);border-radius:6px;font-size:12px;"><div style="font-weight:700;color:var(--warn);">Oct 2&ndash;5</div><div>Onam Holidays</div></div>
-      <div style="padding:8px 12px;background:var(--warn-l);border-radius:6px;font-size:12px;"><div style="font-weight:700;color:var(--warn);">Nov 1</div><div>Kerala Piravi</div></div>
-      <div style="padding:8px 12px;background:var(--warn-l);border-radius:6px;font-size:12px;"><div style="font-weight:700;color:var(--warn);">Nov 10&ndash;14</div><div>Term 2 Exams</div></div>
-      <div style="padding:8px 12px;background:var(--warn-l);border-radius:6px;font-size:12px;"><div style="font-weight:700;color:var(--warn);">Dec 25&ndash;Jan 4</div><div>Christmas Break</div></div>
-    </div>
-  </div>
+  
+  
   <div class="card" style="margin-bottom:14px;">
     <div class="ch">
       <div class="ct">&#9203; Pending Approvals</div>
-      <span id="pending-badge" style="font-size:11px;color:var(--warn);font-weight:700;"></span>
+      <span id="pending-badge" style="font-size:11px;color:var(--pri);font-weight:700;"></span>
     </div>
     <div id="pending-list" style="padding:0 18px 12px;"></div>
   </div>
   <div class="g4" id="dash-stats"></div>
   <div class="g3">
     <div>
-      <div class="card">
-        <div class="ch"><div><div class="ct">Recent Enrolments</div><div class="cs" id="dash-esub">Last 7 days</div></div><button class="btn bo bsm" data-view="students">View all →</button></div>
-        <table class="dt"><thead><tr><th>Student</th><th>Grade</th><th>Status</th><th>Enrolled</th></tr></thead><tbody id="dashStuB"></tbody></table>
-      </div>
+      
       <div class="card">
         <div class="ch"><div class="ct">Fee Collection — Term 1</div><span class="bge bg-g">On track</span></div>
         <div class="cb">
@@ -977,8 +868,8 @@ var SHAPE_DB = (function(){
 <!-- ADMISSIONS -->
 <div class="view" id="view-admissions">
   <div class="ph">
-    <div class="ph-l"><div class="ph-title">Admissions &amp; Enrolment</div><div class="ph-sub">Every family's complete journey — tracked in one place</div></div>
-    <div class="ph-r"><button class="btn bo" id="admExportBtn">⬇ Export</button><button class="btn bo" data-modal="ovStudent">Enrol Directly</button><button class="btn bp" id="newAdmBtn">+ New Application</button></div>
+    
+    <div class="ph-l"><div class="ph-title">Admissions &amp; Enrolment</div><div class="ph-sub">Every family's complete journey — tracked in one place</div></div><div class="ph-r"><button class="btn bo" id="admExportBtn">⬇ Export</button><button class="btn bo" data-modal="ovStudent">Enrol Directly</button><button class="btn bp" id="newAdmBtn">+ New Application</button></div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;" id="adm-pipeline"></div>
   <div class="tabs" id="admTabs">
@@ -1006,8 +897,8 @@ var SHAPE_DB = (function(){
 
 <!-- STUDENTS -->
 <div class="view" id="view-students">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Student Records</div><div class="ph-sub">Longitudinal record per student</div></div>
-  <div class="ph-r"><button class="btn bo" id="exportBtn">⬇ Export CSV</button><button class="btn bp" data-modal="ovStudent">+ Enrol Student</button></div></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Student Records</div><div class="ph-sub">Longitudinal record per student</div></div><div class="ph-r"><button class="btn bo" id="exportBtn">⬇ Export CSV</button><button class="btn bp" data-modal="ovStudent">+ Enrol Student</button></div></div>
   <div class="tabs" id="stuTabs">
     <div class="tab active" data-stuf="all">All Students</div>
     <div class="tab" data-stuf="Active">Active</div>
@@ -1029,16 +920,16 @@ var SHAPE_DB = (function(){
 
 <!-- TIMETABLE -->
 <div class="view" id="view-timetable">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Timetable &amp; Scheduling</div></div>
-  <div class="ph-r"><select class="fc" style="width:190px;" id="ttClass"><option value="8A">Grade 8 — Section A</option><option value="6A">Grade 6 — Section A</option><option value="9B">Grade 9 — Section B</option><option value="11A">Grade 11 — Section A</option></select><button class="btn bo" id="ttHowBtn">ℹ How to edit</button></div></div>
-  <div class="alert al-o" id="ttLeaveAlert" style="display:none;"></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Timetable &amp; Scheduling</div></div><div class="ph-r"><select class="fc" style="width:190px;" id="ttClass"><option value="8A">Grade 8 — Section A</option><option value="6A">Grade 6 — Section A</option><option value="9B">Grade 9 — Section B</option><option value="11A">Grade 11 — Section A</option></select><button class="btn bo" id="ttHowBtn">ℹ How to edit</button></div></div>
+  <div id="ttLeaveAlert" style="display:none;"></div>
   <div class="card">
     <div class="ch"><div><div class="ct" id="ttCardTitle">Weekly Schedule</div><div class="cs">Click any cell to edit</div></div><div class="flex fic g8"><span class="bge bg-b" id="ttStu">38 Students</span><span class="bge bg-g" id="ttRoom">Room 204</span></div></div>
     <div style="overflow-x:auto;padding:4px;"><table class="tg" id="ttTable"></table></div>
   </div>
   <div class="g2">
     <div class="card mb0">
-      <div class="ch"><div class="ct">Staff on Leave</div><button class="btn bw bsm" data-modal="ovLeave">+ Apply Leave</button></div>
+      <div class="ch"><div class="ct">Staff on Leave</div><button class="btn bp bsm" data-modal="ovLeave">+ Apply Leave</button></div>
       <table class="dt"><thead><tr><th>Staff</th><th>Leave</th><th>Dates</th><th>Subject</th><th>Action</th></tr></thead><tbody id="leaveAlertB"></tbody></table>
     </div>
     <div class="card mb0">
@@ -1050,8 +941,8 @@ var SHAPE_DB = (function(){
 
 <!-- ATTENDANCE -->
 <div class="view" id="view-attendance">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Attendance</div></div>
-  <div class="ph-r"><select class="fc" style="width:190px;" id="attClass"><option value="8A">Grade 8 — Section A</option><option value="6A">Grade 6 — Section A</option><option value="9B">Grade 9 — Section B</option><option value="11A">Grade 11 — Section A</option></select><button class="btn bp" id="markAllBtn">✓ Mark All Present</button></div></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Attendance</div></div><div class="ph-r"><select class="fc" style="width:190px;" id="attClass"><option value="8A">Grade 8 — Section A</option><option value="6A">Grade 6 — Section A</option><option value="9B">Grade 9 — Section B</option><option value="11A">Grade 11 — Section A</option></select><button class="btn bp" id="markAllBtn">✓ Mark All Present</button></div></div>
   <div class="g4" id="att-stats"></div>
   <div class="g3">
     <div class="card mb0">
@@ -1087,8 +978,8 @@ var SHAPE_DB = (function(){
 
 <!-- STAFF -->
 <div class="view" id="view-staff">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Staff &amp; HR Management</div></div>
-  <div class="ph-r"><a href="shape_hr.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open HR Portal ↗</a><button class="btn bo" data-modal="ovLeave">📅 Apply Leave</button><button class="btn bp" data-modal="ovStaff">+ Add Staff</button></div></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Staff &amp; HR</div></div><div class="ph-r"><a href="shape_hr.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open HR Portal ↗</a><button class="btn bo" data-modal="ovLeave">📅 Apply Leave</button><button class="btn bp" data-modal="ovStaff">+ Add Staff</button></div></div>
   <div class="g4" id="staff-stats"></div>
   <div class="tabs" id="staffTabs">
     <div class="tab active" data-staf="all">All Staff</div>
@@ -1117,8 +1008,8 @@ var SHAPE_DB = (function(){
 
 <!-- PAYROLL -->
 <div class="view" id="view-payroll">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Payroll &amp; Financial Management</div></div>
-  <div class="ph-r"><a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open Finance Portal ↗</a><button class="btn bo" id="exportPayBtn">⬇ Export</button><button class="btn bp" id="processAllBtn">Process All Payroll</button></div></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Payroll</div></div><div class="ph-r"><a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open Finance Portal ↗</a><button class="btn bo" id="exportPayBtn">⬇ Export</button><button class="btn bp" id="processAllBtn">Process All Payroll</button></div></div>
   <div class="g4" id="payroll-stats"></div>
   <div class="card">
     <div class="ch flex fwrap g8" style="justify-content:space-between;">
@@ -1152,8 +1043,8 @@ var SHAPE_DB = (function(){
 
 <!-- FEES -->
 <div class="view" id="view-fees">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Fee Collection &amp; Management</div></div>
-  <div class="ph-r"><a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open Finance Portal ↗</a><button class="btn bo" id="exportFeeBtn">⬇ Statement</button><button class="btn bo" id="feeStructBtn">⚙ Fee Structure</button><button class="btn bp" data-modal="ovPayment2">+ Record Payment</button></div></div>
+  <div class="ph">
+  <div class="ph-l"><div class="ph-title">Fee Collection</div></div><div class="ph-r"><a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open Finance Portal ↗</a><button class="btn bo" id="exportFeeBtn">⬇ Statement</button><button class="btn bo" id="feeStructBtn">⚙ Fee Structure</button><button class="btn bp" data-modal="ovPayment2">+ Record Payment</button></div></div>
   <div class="g4" id="fee-stats"></div>
   <div class="g3" style="margin-bottom:16px;">
     <div class="card mb0"><div class="ch"><div class="ct">Collection Progress</div></div><div class="cb"><div style="display:flex;flex-direction:column;gap:14px;" id="termProgress"></div></div></div>
@@ -1204,7 +1095,7 @@ var SHAPE_DB = (function(){
 
 <!-- HEALTH -->
 <div class="view" id="view-health">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Health &amp; Safety</div></div><div class="ph-r"><button class="btn bp" data-modal="ovInc">+ Log Incident</button></div></div>
+  <div class="ph"><div class="ph-l"><div class="ph-title">Health &amp; Incidents</div></div><div class="ph-r"><button class="btn bp" data-modal="ovInc">+ Log Incident</button></div></div>
   <div class="g2">
     <div>
       <div class="card"><div class="ch"><div class="ct">Health Incidents</div></div><table class="dt"><thead><tr><th>Student</th><th>Date</th><th>Incident</th><th>Action</th><th>Parent</th><th></th></tr></thead><tbody id="healthBody"></tbody></table></div>
@@ -1219,8 +1110,8 @@ var SHAPE_DB = (function(){
 
 <!-- REPORTS -->
 <div class="view" id="view-reports">
-  <div class="ph"><div class="ph-l"><div class="ph-title">Compliance &amp; Reports</div></div></div>
-  <div class="g3">
+  <div class="ph"><div class="ph-l"><div class="ph-title">Reports</div></div></div>
+<div class="g3">
     <div class="card mb0"><div class="ch"><div class="ct">Available Reports</div></div>
       <table class="dt"><thead><tr><th>Report</th><th>Module</th><th>Last Run</th><th>Action</th></tr></thead><tbody>
         <tr><td>Monthly Attendance Summary</td><td><span class="bge bg-b">Attendance</span></td><td class="tf">1 Sep</td><td><button class="btn bo bsm" data-rpt="Monthly Attendance Summary">Run</button></td></tr>
@@ -1245,13 +1136,10 @@ var SHAPE_DB = (function(){
 
 
 <!-- ══ DIGITAL LEARNING SUPPORT SYSTEM (SHAPE Doc §3) ══ -->
-<div class="view" id="view-lms">
+</div><div class="view" id="view-lms">
   <div class="ph">
-    <div class="ph-l">
-      <div class="ph-title">Digital Learning Support</div>
-      <div class="ph-sub">Video &amp; animation · Curated resources · Interactive activities · AR/VR · Educator tools</div>
-    </div>
-    <div class="ph-r">
+    
+    <div class="ph-l"><div class="ph-title">Digital Learning</div></div><div class="ph-r">
       <button class="btn bo" id="lmsCreateBtn">✏ Create Content</button>
       <button class="btn bo" id="lmsAssignBtn">+ Assign Resource</button>
       <button class="btn bp" id="lmsUploadBtn">⬆ Upload Material</button>
@@ -1374,40 +1262,8 @@ var SHAPE_DB = (function(){
 </div>
 
 </div><!-- /content -->
-<div class="devb"><span class="db">Dev Demo</span> SHAPE SMS · 12 modules · React + Node/Python target<span style="margin-left:auto;" id="liveClk"></span></div>
 
-<div style="position:relative;margin-left:8px;" id="portal-switcher">
-  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
-    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
-    &#9783; All Portals &#9660;
-  </button>
-  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
-    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
-    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
-    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
-    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
-    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
-    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
-    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
-    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
-    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
-    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
-  </div>
-</div>
-<style>
-#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
-#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
-</style>
-<script>
-(function(){
-  document.addEventListener('click',function(e){
-    var sw=document.getElementById('portal-switcher');
-    var m=document.getElementById('ps-menu');
-    if(sw&&m&&!sw.contains(e.target))m.style.display='none';
-  });
-})();
-</script>
-</div><!-- /main -->
+
 
 
 <script>
@@ -1698,7 +1554,41 @@ function refreshDBStaff(){
   });
 }
 
+
+// ── SIDEBAR GROUP TOGGLE ─────────────────────────────────────
+var _GRP_MAP = {
+  dashboard:null,
+  admissions:'grp-adm', students:'grp-adm',
+  timetable:'grp-aca', attendance:'grp-aca', lms:'grp-aca',
+  staff:'grp-fin', payroll:'grp-fin', fees:'grp-fin',
+  communication:'grp-ops', health:'grp-ops', reports:'grp-ops'
+};
+function toggleGrp(id){
+  var body=document.getElementById('body-'+id);
+  var hdr=document.querySelector('#'+id+' .sb-grp-hdr');
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(hdr)hdr.classList.toggle('open',!open);
+}
+function maybeExpandGrp(view){
+  var grp=_GRP_MAP[view];
+  if(!grp)return;
+  var body=document.getElementById('body-'+grp);
+  var hdr=document.querySelector('#'+grp+' .sb-grp-hdr');
+  if(body)body.style.display='block';
+  if(hdr)hdr.classList.add('open');
+}
+
+// Auto-expand Admissions group if on admissions/students view
+
+
 function showView(id){
+  maybeExpandGrp(id);
+  var tpr=document.getElementById('tp-r');
+  if(tpr) tpr.style.display=(id==='dashboard')?'flex':'none';
+  var tpl=document.getElementById('tp-l'); if(tpl) tpl.style.display=(id==='dashboard')?'block':'none';
+  var tb=document.getElementById('topbar'); if(tb) tb.style.display=(id==='dashboard')?'':'none';
   S.currentView=id;
   // Refresh staff/payroll data from shared db on relevant tabs
   if(id==='staff'||id==='payroll'||id==='hr') refreshDBStaff();
@@ -1786,9 +1676,57 @@ function openStuSP(s){
     '<div style="display:flex;flex-direction:column;gap:8px;">'+
     '<button class="btn bo w100" data-spaction="editstu" data-sid="'+s.id+'">✎ Edit Record</button>'+
     '<button class="btn bp w100" data-spaction="remindfee" data-sid="'+s.id+'" data-name="'+s.fn+' '+s.ln+'" data-gd="'+s.gd+'">📱 Send Fee Reminder</button>'+
-    '<button class="btn br w100" data-spaction="archivestu" data-sid="'+s.id+'" data-name="'+s.fn+' '+s.ln+'">🗑 Archive Record</button></div>'
+    '<button class="btn br w100" data-spaction="archivestu" data-sid="'+s.id+'" data-name="'+s.fn+' '+s.ln+'">🗑 Archive Record</button></div>'+
+    buildStuDevSection(s.fn+' '+s.ln, s.id)
   );
   // SP buttons wired via delegation (see document click handler below)
+}
+
+function buildStuDevSection(stuName, stuId){
+  // Load milestones from db.students
+  var dbStu = _db && _db.students ? _db.students.find(function(x){
+    return x.id===stuId || x.name===(stuName);
+  }) : null;
+  var milestones = dbStu ? (dbStu.milestones||[]) : [];
+  // Load session logs from teacher localStorage key
+  var sessionLogs = [];
+  try{ sessionLogs = JSON.parse(localStorage.getItem('SHAPE_TEACHER_SESSIONS')||'[]'); }catch(e){}
+  var stuLogs = sessionLogs.filter(function(l){ return l.stuId===stuId || l.stuName===stuName; });
+  if(!milestones.length && !stuLogs.length) return '';
+  var typeColors={'AR Experience':'#5B21B6','VR Experience':'#5B21B6','Interactive Activity':'#0B7B6B','Video':'#1A5FB4','Simulation':'#0B7B6B','Hands-on Lab':'#C05A00','Quiz / Assessment':'#B91C1C','Other':'#6B7E94'};
+  var html = '<div class="ss" style="margin-bottom:12px;"><div class="ss-t">Development & Session History</div>';
+  // Session logs first (most recent)
+  if(stuLogs.length){
+    html += stuLogs.slice().reverse().slice(0,5).map(function(l){
+      var stars='★'.repeat(l.engagement||0)+'☆'.repeat(5-(l.engagement||0));
+      return '<div style="padding:7px 0;border-bottom:1px solid var(--s4);">'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">'
+        +'<span style="font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:3px;background:'+(typeColors[l.type]||'#6B7E94')+'22;color:'+(typeColors[l.type]||'#6B7E94')+';border:1px solid '+(typeColors[l.type]||'#6B7E94')+'44;">'+l.type+'</span>'
+        +'<span style="font-size:12px;font-weight:600;">'+l.topic+'</span>'
+        +'<span style="margin-left:auto;font-size:10px;color:var(--ink5);font-family:monospace;">'+l.date+'</span>'
+        +'</div>'
+        +'<div style="font-size:11.5px;color:var(--ink4);line-height:1.45;">'+l.observation+'</div>'
+        +(l.engagement?'<div style="font-size:11px;color:#C8202E;margin-top:2px;">'+stars+' &nbsp;'+l.teacher+'</div>':'')
+        +(l.followUp?'<div style="font-size:11px;color:var(--am);margin-top:2px;">⚡ '+l.followUp+'</div>':'')
+        +'</div>';
+    }).join('');
+    if(stuLogs.length>5) html+='<div style="font-size:11px;color:var(--ink5);padding:4px 0;">+' +(stuLogs.length-5)+' more sessions</div>';
+  }
+  // Milestones (non-session ones)
+  var nonSessionMilestones = milestones.filter(function(m){
+    return !m.text.startsWith('[');  // session logs start with [Type]
+  });
+  if(nonSessionMilestones.length){
+    html += '<div style="font-size:10px;font-weight:700;color:var(--ink5);text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px;">Milestones</div>';
+    html += nonSessionMilestones.slice().reverse().map(function(m){
+      return '<div style="display:flex;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px solid var(--s4);">'
+        +'<span style="font-family:monospace;color:var(--ink5);white-space:nowrap;font-size:11px;">'+m.date+'</span>'
+        +'<span style="color:var(--ink3);">'+m.text+'</span>'
+        +'</div>';
+    }).join('');
+  }
+  html += '</div>';
+  return html;
 }
 function openStaffSP(s){
   openSP(s.fn+' '+s.ln,
@@ -1840,36 +1778,41 @@ document.addEventListener('click',e=>{
 
 // ══ DASHBOARD ══
 function renderDash(){
+  var _dbx=_db||{staff:[],students:[],routes:[],events:[],complaints:[],applications:[],vacancies:[],messStock:[],outings:[],maintenanceJobs:[],notifications:[]};
 
-  // ── School Pulse from shape_db.js ──
-  if(_db){
+  // ── School Pulse from shape_dbx.js ──
+  if(true){
+
     var _pe;
-    _pe=$('p-staff');    if(_pe)_pe.textContent=_db.staff.length;
-    _pe=$('p-boarders'); if(_pe)_pe.textContent=_db.students.filter(function(s){return s.boarding;}).length;
-    _pe=$('p-routes');   if(_pe)_pe.textContent=_db.routes.length;
-    _pe=$('p-events');   if(_pe)_pe.textContent=(_db.events||[]).filter(function(e){return new Date(e.date)>=new Date();}).length;
-    _pe=$('p-complaints');if(_pe)_pe.textContent=(_db.complaints||[]).filter(function(c){return c.status==='Open';}).length;
+    _pe=$('p-staff');    if(_pe)_pe.textContent=_dbx.staff.length;
+    _pe=$('p-boarders'); if(_pe)_pe.textContent=_dbx.students.filter(function(s){return s.boarding;}).length;
+    _pe=$('p-routes');   if(_pe)_pe.textContent=_dbx.routes.length;
+    _pe=$('p-events');   if(_pe)_pe.textContent=(_dbx.events||[]).filter(function(e){return new Date(e.date)>=new Date();}).length;
+    _pe=$('p-complaints');if(_pe)_pe.textContent=(_dbx.complaints||[]).filter(function(c){return c.status==='Open';}).length;
     var _ts=$('dash-timestamp');if(_ts)_ts.textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     // Portal metric row
     var _pr=$('dash-portals');
     if(_pr){
-      var _pApps=(_db.applications||[]).filter(function(a){return a.hrStatus==='Pending Review';}).length;
-      var _pVacs=(_db.vacancies||[]).filter(function(v){return v.status==='Active';}).length;
-      var _pLow=(_db.messStock||[]).filter(function(s){return s.qty<=s.low;}).length;
-      var _pEv=(_db.events||[]).filter(function(e){return new Date(e.date)>=new Date();}).length;
-      var _pCo=(_db.complaints||[]).filter(function(c){return c.status==='Open';}).length;
-      var _pBd=_db.students.filter(function(s){return s.boarding;}).length;
+      var _dbx=_db||{applications:[],vacancies:[],messStock:[],events:[],complaints:[],students:S.students||[]};
+      var _pApps=(_dbx.applications||[]).filter(function(a){return a.hrStatus==='Pending Review';}).length;
+      var _pVacs=(_dbx.vacancies||[]).filter(function(v){return v.status==='Active';}).length;
+      var _pLow=(_dbx.messStock||[]).filter(function(s){return s.qty<=s.low;}).length;
+      var _pEv=(_dbx.events||[]).filter(function(e){return new Date(e.date)>=new Date();}).length;
+      var _pCo=(_dbx.complaints||[]).filter(function(c){return c.status==='Open';}).length;
+      var _pBd=(_dbx.students||[]).filter(function(s){return s.boarding;}).length;
       _pr.innerHTML=[
-        {l:'HR Pipeline',v:_pApps+' pending CVs',sub:_pVacs+' open vacancies',col:'#7C3AED',bg:'#EDE9FE',ic:'\uD83D\uDC65',link:'shape_hr.html'},
-        {l:'Hostel',v:_pBd+' boarders',sub:_pLow+' stock items low',col:'#0EA47A',bg:'#E6F8F3',ic:'\uD83C\uDFE0',link:'shape_hostel.html'},
-        {l:'Complaints',v:_pCo+' open',sub:'From staff & parents',col:'#D97706',bg:'#FEF3E2',ic:'\uD83D\uDCE3',link:'shape_campus.html'},
-        {l:'Events',v:_pEv+' upcoming',sub:'Next 30 days',col:'#2E5CE6',bg:'#EBF0FD',ic:'\uD83D\uDCC5',link:'shape_campus.html'},
+        {l:'HR Pipeline',v:_pApps+' CVs pending',sub:_pVacs+' open vacancies',col:'#C8202E',col2:'#8B1A1E',ic:'👥',link:'shape_hr.html'},
+        {l:'Hostel',v:_pBd+' boarders',sub:_pLow+' stock items low',col:'#A01F29',col2:'#CC3060',ic:'🏠',link:'shape_hostel.html'},
+        {l:'Complaints',v:_pCo+' open',sub:'From staff & parents',col:'#CC3060',col2:'#A01F29',ic:'💬',link:'shape_campus.html'},
+        {l:'Events',v:_pEv+' upcoming',sub:'Next 30 days',col:'#8B1A1E',col2:'#C8202E',ic:'📅',link:'shape_campus.html'},
       ].map(function(p){
-        return '<a href="'+p.link+'" target="_blank" style="display:block;text-decoration:none;background:'+p.bg+';border:1.5px solid '+p.col+'44;border-radius:10px;padding:14px 16px;">'
-          +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:18px;">'+p.ic+'</span>'
-          +'<span style="font-size:10px;font-weight:700;color:'+p.col+';text-transform:uppercase;letter-spacing:.6px;">'+p.l+'</span></div>'
-          +'<div style="font-size:17px;font-weight:800;color:'+p.col+';">'+p.v+'</div>'
-          +'<div style="font-size:11px;color:'+p.col+';opacity:.7;margin-top:2px;">'+p.sub+'</div>'
+        return '<a href="'+p.link+'" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,.05);">'
+          +'<div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,'+p.col+','+p.col2+');display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">'+p.ic+'</div>'
+          +'<div>'
+          +'<div style="font-size:15px;font-weight:600;color:#111;line-height:1.2;">'+p.v+'</div>'
+          +'<div style="font-size:11px;font-weight:600;color:#888;margin-top:2px;">'+p.l+'</div>'
+          +'<div style="font-size:10.5px;color:#bbb;margin-top:1px;">'+p.sub+'</div>'
+          +'</div>'
           +'</a>';
       }).join('');
     }
@@ -1887,7 +1830,7 @@ function renderDash(){
     {l:'Present Today',v:796,s:'94.5% attendance rate',ic:'✓',c:'ib-g'},
     {l:'Fees Overdue',v:'₹2.4L',s:overdue+' families pending',ic:'₹',c:'ib-o'},
     {l:'Open Admissions',v:S.admissions.filter(a=>a.stage!=='Seat Allocated').length,s:'Applications pending',ic:'📋',c:'ib-r'},
-  ].map(x=>'<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>').join('');
+  ].map(x=>'<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">' +x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>').join('');
   const rec=S.students.slice(-6).reverse();
   var _el_dashStuB=$('dashStuB');if(_el_dashStuB)_el_dashStuB.innerHTML=rec.map(s=>'<tr class="clickable" data-stuid="'+s.id+'"><td><div class="an"><div class="av '+s.color+'">'+ini(s.fn,s.ln)+'</div>'+s.fn+' '+s.ln+'</div></td><td>'+s.gr+'</td><td>'+stBadge(s.status)+'</td><td class="tf">'+s.joined+'</td></tr>').join('');
   var _el_dash_esub=$('dash-esub');if(_el_dash_esub)_el_dash_esub.textContent='Last 7 days · '+rec.length+' students';
@@ -1901,26 +1844,26 @@ function renderDash(){
   // ── Pending Approvals (live from db) ──
   var _pendItems=[];
   if(_db){
-    (_db.complaints||[]).filter(function(c){return c.status==='Open';}).slice(0,3).forEach(function(c){
+    (_dbx.complaints||[]).filter(function(c){return c.status==='Open';}).slice(0,3).forEach(function(c){
       _pendItems.push({icon:'C',text:(c.subj||c.description||'Complaint').substring(0,55),sub:'Complaint · '+c.type,link:'shape_campus.html'});
     });
     (S.leaves||[]).filter(function(l){return l.status==='Pending';}).slice(0,2).forEach(function(l){
       _pendItems.push({icon:'L',text:l.name+' — Leave Request',sub:l.from+' to '+l.to,link:'#'});
     });
-    (_db.applications||[]).filter(function(a){return a.hrStatus==='Pending Review';}).slice(0,2).forEach(function(a){
+    (_dbx.applications||[]).filter(function(a){return a.hrStatus==='Pending Review';}).slice(0,2).forEach(function(a){
       _pendItems.push({icon:'H',text:(a.name||'Applicant')+' — Job Application',sub:'HR Review needed',link:'shape_hr.html'});
     });
   }
   var _pb=document.getElementById('pending-badge');
   if(_pb)_pb.textContent=_pendItems.length?_pendItems.length+' item'+ (_pendItems.length>1?'s':'')+' pending':'All clear ✓';
-  if(_pb)_pb.style.color=_pendItems.length?'var(--warn)':'var(--acc)';
+  if(_pb)_pb.style.color=_pendItems.length?'var(--pri)':'#166534';
   var _pl=document.getElementById('pending-list');
   if(_pl){
     if(!_pendItems.length){
       _pl.innerHTML='<div style="padding:10px 0;color:var(--ink-f);font-size:13px;">✓ No pending approvals — everything is up to date</div>';
     } else {
       _pl.innerHTML=_pendItems.map(function(p){
-        var ic={'C':'var(--dan)','L':'var(--warn)','H':'var(--pri)'}[p.icon]||'var(--warn)';
+        var ic={'C':'var(--dan)','L':'var(--pri)','H':'var(--pri)'}[p.icon]||'var(--pri)';
         return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bdr);">'
           +'<div style="width:28px;height:28px;border-radius:50%;background:'+ic+'18;color:'+ic+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+p.icon+'</div>'
           +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--ink);">'+p.text+'</div>'
@@ -1953,12 +1896,12 @@ function renderAdmStats(){
   stages.forEach(function(sg,i){
     var cnt=S.admissions.filter(function(a){return a.stage===sg;}).length;
     var div=document.createElement('div');
-    div.className='sc'; div.style.cursor='pointer';
+    div.style.cssText='background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);cursor:pointer;transition:box-shadow .18s;';
     div.dataset.admstage=sg;
-    div.innerHTML='<div class="sc-top"><div class="sc-lbl" style="font-size:11px;">'
-      +sg+'</div><div class="sc-ic '+cols[i]+'">'+icons[i]+'</div></div>'
-      +'<div class="sc-val" style="font-size:22px;">'+cnt+'</div>'
-      +'<div class="sc-sub" style="font-size:11px;">Click to filter</div>';
+    div.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">'+sg+'</div>'
+      +'<div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+icons[i]+'</div></div>'
+      +'<div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+cnt+'</div>'
+      +'<div style="font-size:11.5px;color:#aaa;margin-top:6px;">Click to filter</div>';
     pipe.appendChild(div);
   });
 }
@@ -2031,7 +1974,7 @@ function renderAdm(){
       +'<td class="tf" style="font-size:12px;">'+a.applied+'</td>'
       +'<td class="tf" style="font-size:12px;">'+a.assigned+'</td>'
       +'<td><div style="display:flex;align-items:center;gap:6px;">'
-      +'<div style="width:60px;height:5px;border-radius:3px;background:var(--surf2);overflow:hidden;"><div style="width:'+(dd/dt*100)+'%;height:100%;background:'+(dd===dt?'var(--acc)':dd>0?'var(--warn)':'var(--dan)')+'"></div></div>'
+      +'<div style="width:60px;height:5px;border-radius:3px;background:var(--surf2);overflow:hidden;"><div style="width:'+(dd/dt*100)+'%;height:100%;background:'+(dd===dt?'#166534':dd>0?'var(--pri)':'var(--dan)')+'"></div></div>'
       +'<span style="font-size:11px;">'+(dd===dt?'<span class="bge bg-g">'+dd+'/'+dt+'</span>':'<span class="bge bg-o">'+dd+'/'+dt+'</span>')+'</span></div></td>'
       +'<td>'+admFeeStatus(a)+'</td>'
       +'<td><button class="btn bo bsm" data-admopen="'+idx+'">Open →</button>'
@@ -2232,7 +2175,7 @@ function renderAdmJourney(a, idx) {
   var totalAvail = seatInfo.reduce(function(s,x){return s+x.avail;},0);
   var seatGrid = '<div style="display:flex;gap:10px;margin-bottom:14px;">'
     +seatInfo.map(function(si){
-      var col=si.avail>10?'var(--acc)':si.avail>0?'var(--warn)':'var(--dan)';
+      var col=si.avail>10?'#166534':si.avail>0?'var(--pri)':'var(--dan)';
       return '<div style="flex:1;border:1.5px solid var(--bdr);border-radius:8px;padding:10px 12px;text-align:center;">'
         +'<div style="font-size:11px;color:var(--ink-m);margin-bottom:4px;">'+a.grade+' — Sec '+si.sec+'</div>'
         +'<div style="font-size:20px;font-weight:800;color:'+col+';">'+si.avail+'</div>'
@@ -2648,8 +2591,8 @@ function renderTT(){
   var _el_ttStu=$('ttStu');if(_el_ttStu)_el_ttStu.textContent=d.students+' Students';$('ttRoom').textContent=d.room;
   const la=$('ttLeaveAlert');
   const hl=S.leaves.filter(l=>l.status==='Approved');
-  la.style.display=hl.length?'':'none';
-  if(hl.length)la.innerHTML='⚠ Staff on leave today: '+hl.map(l=>'<strong>'+l.staff+'</strong> ('+l.type+', '+l.from+'–'+l.to+')').join(', ')+'. Click their cells below to assign substitute.';
+  la.style.display='none';
+  if(hl.length)la.innerHTML='<strong style="color:#C8202E;">⚠ Staff on leave</strong>&ensp;'+hl.map(l=>'<strong>'+l.staff+'</strong> <span style="color:#777;font-size:11px;">'+l.type+', '+l.from+'–'+l.to+')</span>').join('&ensp;·&ensp;')+'<span style="color:#777;font-size:11px;">&ensp;— click their cells to assign substitute</span>';
   const leaveNames=hl.map(l=>l.staff.split(' ')[0]);
   var _el_ttTable=$('ttTable');if(_el_ttTable)_el_ttTable.innerHTML='<thead><tr><th>Time</th>'+DAYS.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>'+
     d.slots.map((slot,ri)=>{
@@ -2657,10 +2600,11 @@ function renderTT(){
       return '<tr><td class="tcol">'+slot.time+'<br><span style="font-size:10px;color:var(--ink-f);">'+(slot.time.split(':')[0])+':45</span></td>'+slot.cells.map((c,ci)=>{
         const parts=(c||'').split('|'),subj=parts[0]||'',teacher=parts[1]||'';
         const isLeave=leaveNames.some(n=>teacher.includes(n));
-        return '<td class="tc-cell" data-ttkey="'+key+'" data-ttrow="'+ri+'" data-ttcol="'+ci+'">'+(subj?'<span class="lc '+(SUBJ_CLS[subj]||'lsub')+(isLeave?' lsub':'')+'" style="'+(isLeave?'border:2px solid var(--warn);':'')+'">'+subj+'<br><span style="font-size:10px;opacity:.7;">'+teacher+'</span>'+(isLeave?'<br><span style="font-size:9px;color:var(--warn);font-weight:700;">⚠ ON LEAVE</span>':'')+'</span>':'<span class="lc lfr" style="color:var(--ink-f);">Free</span>')+'</td>';
+        var cellCls=(SUBJ_CLS[subj]||'lb')+(isLeave?' lsub-leave':'');
+        return '<td class="tc-cell" data-ttkey="'+key+'" data-ttrow="'+ri+'" data-ttcol="'+ci+'">'+(subj?'<span class="lc '+cellCls+'"><span style="display:block;">'+subj+'</span><span class="lteacher">'+teacher+'</span>'+(isLeave?'<span class="lonleave">⚠ ON LEAVE</span>':'')+'</span>':'<span class="lc lfr">Free</span>')+'</td>';
       }).join('')+'</tr>';
     }).join('')+'</tbody>';
-  var _el_leaveAlertB=$('leaveAlertB');if(_el_leaveAlertB)_el_leaveAlertB.innerHTML=hl.map((l,i)=>'<tr><td><div class="an"><div class="av or">'+l.staff.split(' ').map(x=>x[0]).join('')+'</div>'+l.staff+'</div></td><td><span class="bge bg-o">'+l.type+'</span></td><td class="tf">'+l.from+'–'+l.to+'</td><td>'+l.sub.split(' ')[0]+' cover</td><td><button class="btn bw bsm" data-assignsub="'+i+'">Assign Substitute</button></td></tr>').join('');
+  var _el_leaveAlertB=$('leaveAlertB');if(_el_leaveAlertB)_el_leaveAlertB.innerHTML=hl.map((l,i)=>'<tr><td><div class="an"><div class="av or">'+l.staff.split(' ').map(x=>x[0]).join('')+'</div>'+l.staff+'</div></td><td><span class="bge bg-o">'+l.type+'</span></td><td class="tf">'+l.from+'–'+l.to+'</td><td>'+l.sub.split(' ')[0]+' cover</td><td><button class="btn bp bsm" data-assignsub="'+i+'">Assign Substitute</button></td></tr>').join('');
 }
 on('ttClass','change',renderTT);
 on('ttHowBtn','click',()=>toast('Click any cell in the timetable to edit subject, teacher or room. Leave covers show in orange.','i'));
@@ -2691,13 +2635,13 @@ on('clearTTCell','click',()=>{const {key,row,col}=S.ttEditPos;S.tt[key].slots[ro
 function renderAttStats(){
   const cls=$('attClass').value,roll=S.rollCall[cls]||S.rollCall['8A'];
   const p=roll.filter(r=>r.s==='Present').length,ab=roll.filter(r=>r.s==='Absent').length,la=roll.filter(r=>r.s==='Late').length;
-  var _el_nb_att=$('nb-att');if(_el_nb_att)_el_nb_att.textContent=ab+28;
+  var _el_nb_att=$('nb-att');if(_el_nb_att)_el_nb_att.textContent=ab;
   var _el_att_stats=$('att-stats');if(_el_att_stats)_el_att_stats.innerHTML=[
-    {l:'Present Today',v:p+756,s:'of '+S.stuCount+' enrolled',ic:'✓',c:'ib-g'},
-    {l:'Absent',v:ab+28,s:'Parent alerts sent',ic:'✕',c:'ib-r'},
-    {l:'Late Arrivals',v:la+12,s:'After 8:10 AM',ic:'⏱',c:'ib-o'},
+    {l:'Present Today',v:p,s:'of '+S.stuCount+' enrolled',ic:'✓',c:'ib-g'},
+    {l:'Absent',v:ab,s:'Parent alerts sent',ic:'✕',c:'ib-r'},
+    {l:'Late Arrivals',v:la,s:'After 8:10 AM',ic:'⏱',c:'ib-o'},
     {l:'Unmarked Classes',v:3,s:'Pending attendance',ic:'?',c:'ib-b'},
-  ].map(x=>'<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>').join('');
+  ].map(x=>'<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">' +x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>').join('');
 }
 function renderRoll(){
   const cls=$('attClass').value,roll=S.rollCall[cls]||S.rollCall['8A'];
@@ -2789,7 +2733,7 @@ function renderStaff(){
     {l:'Active',v:staff2.filter(function(s){return s.status==='Active';}).length,s:'',ic:'✓',c:'ib-g'},
     {l:'On Leave',v:(S.leaves||[]).filter(function(l){return l.status==='Approved';}).length,s:'',ic:'📅',c:'ib-o'},
     {l:'Departments',v:new Set(staff2.map(function(s){return s.dept;})).size,s:'',ic:'🏛',c:'ib-b'},
-  ].map(function(x){return '<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div></div>';}).join('');
+  ].map(function(x){return '<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">'+x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>';}).join('');
   var _g_staffBody=$('staffBody');
   if(_g_staffBody)_g_staffBody.innerHTML=list.map(function(s){
     var name=(s.fn||'')+(s.ln?' '+s.ln:'');
@@ -2875,7 +2819,7 @@ function renderPayroll(){
     {l:'Paid',v:paid,s:'Disbursed this month',ic:'\u2713',c:'ib-g'},
     {l:'Pending',v:pend,s:'Awaiting processing',ic:'\u23f3',c:'ib-o'},
     {l:'Statutory',v:'\u20b9'+fmt(Math.round(total*.14)),s:'PF + PT + ESI + TDS',ic:'\ud83d\udccb',c:'ib-r'},
-  ].map(function(x){return '<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>';}).join('');
+  ].map(function(x){return '<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">'+x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>';}).join('');
 
   var _g_payrollBody=$('payrollBody');
   if(_g_payrollBody)_g_payrollBody.innerHTML=list.map(function(p,i){
@@ -2931,10 +2875,10 @@ function renderFeeStats(){
   const schol=S.fees.filter(f=>f.status==='Scholarship').reduce((s,f)=>s+f.conc,0);
   var _g_fee_stats=$('fee-stats');if(_g_fee_stats)_g_fee_stats.innerHTML=[
     {l:'Total Invoiced',v:'₹'+fmt(total),s:'All students · AY 2026-27',ic:'₹',c:'ib-b'},
-    {l:'Collected',v:'₹'+fmt(collected),s:(collected/Math.max(total,1)*100).toFixed(1)+'% collection rate',ic:'checkmark',c:'ib-g'},
+    {l:'Collected',v:'₹'+fmt(collected),s:(collected/Math.max(total,1)*100).toFixed(1)+'% collection rate',ic:'✓',c:'ib-g'},
     {l:'Overdue + Partial',v:'₹'+fmt(overdue+partial),s:S.fees.filter(f=>f.status==='Overdue'||f.status==='Partial').length+' fee records',ic:'!',c:'ib-o'},
-    {l:'Scholarships',v:'₹'+fmt(schol),s:S.fees.filter(f=>f.status==='Scholarship').length+' waived records',ic:'star',c:'ib-p'},
-  ].map(x=>'<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val" style="font-size:20px;">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>').join('');
+    {l:'Scholarships',v:'₹'+fmt(schol),s:S.fees.filter(f=>f.status==='Scholarship').length+' waived records',ic:'★',c:'ib-p'},
+  ].map(x=>'<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">'+x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>').join('');
   // term progress
   const terms=['Admission Fee','Term 1 Fee','Term 2 Fee','Term 3 Fee'];
   const termColors=['ib-b','ib-g','ib-o','ib-r'];
@@ -2991,7 +2935,7 @@ function renderFees(){
       +'<td class="tf" style="font-size:12px;">'+(f.paid||'—')+'</td>'
       +'<td class="tf" style="font-size:12px;">'+(f.mode||'—')+'</td>'
       +'<td><span class="bge '+(stCls[f.status]||'bg-gr')+'">'+f.status+'</span>'
-      +(f.status==='Partial'?'<br><span style="font-size:10px;color:var(--warn);">Bal: Rs.'+fmt(f.net-f.amt)+'</span>':'')+'</td>'
+      +(f.status==='Partial'?'<br><span style="font-size:10px;color:var(--pri);">Bal: Rs.'+fmt(f.net-f.amt)+'</span>':'')+'</td>'
       +'<td style="white-space:nowrap;">'
       +(isActionable
         ?'<button class="btn bg bsm" data-feepay="'+ri+'">Mark Paid</button> '
@@ -3138,7 +3082,7 @@ function renderTrans(){
     {l:'Total Students',v:S.transport.reduce((s,r)=>s+r.students,0),s:'Using school transport',ic:'👤',c:'ib-g'},
     {l:'On Route Now',v:S.transport.filter(r=>r.status==='On Route').length,s:'Real-time tracking',ic:'📍',c:'ib-o'},
     {l:'Delayed',v:S.transport.filter(r=>r.status.includes('Delayed')).length,s:'Parents notified',ic:'⚠',c:'ib-r'},
-  ].map(x=>'<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>').join('');
+  ].map(x=>'<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">' +x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>').join('');
   var _el_transBody=$('transBody');if(_el_transBody)_el_transBody.innerHTML=S.transport.map((r,i)=>'<tr>'+
     '<td class="fw6">'+r.route+'</td><td>'+r.driver+'</td><td class="tf">'+r.vehicle+'</td>'+
     '<td class="tf">'+r.stops+'</td><td class="tf">'+r.students+'</td><td class="tf">'+r.arrival+'</td>'+
@@ -3149,7 +3093,7 @@ document.addEventListener('click',e=>{
   const tr=e.target.closest('[data-trackroute]');
   if(tr){toast('Live tracking for '+S.transport[parseInt(tr.dataset.trackroute)].route+' — GPS module required','i');return;}
   const dr=e.target.closest('[data-delroute]');
-  if(dr){const i=parseInt(dr.dataset.delroute);conf('Remove route?','This route will be deleted.',()=>{S.transport.splice(i,1);// renderTrans() removed — use shape_transport.html
+  if(dr){const i=parseInt(dr.dataset.delroute);conf('Remove route?','This route will be deleted.',()=>{S.transport.splice(i,1); renderTrans();
 toast('Route removed','s');});}
 });
 on('connectGPSBtn','click',()=>toast('GPS module integration — contact your developer team','i'));
@@ -3161,7 +3105,7 @@ function renderLib(){
     {l:'Issued',v:S.library.length,s:'With students & staff',ic:'📖',c:'ib-o'},
     {l:'Overdue',v:S.library.filter(b=>b.status==='Overdue').length,s:'Beyond 14 days',ic:'⚠',c:'ib-r'},
     {l:'Available',v:4820-S.library.length,s:'Ready to issue',ic:'✓',c:'ib-g'},
-  ].map(x=>'<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div><div class="sc-ic '+x.c+'">'+x.ic+'</div></div><div class="sc-val">'+x.v+'</div><div class="sc-sub">'+x.s+'</div></div>').join('');
+  ].map(x=>'<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">' +x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>').join('');
   var _el_libBody=$('libBody');if(_el_libBody)_el_libBody.innerHTML=S.library.map((b,i)=>'<tr>'+
     '<td class="fw6">'+b.title+'</td><td class="tf">'+b.author+'</td><td>'+b.borrower+'</td>'+
     '<td class="tf">'+b.issued+'</td><td class="tf">'+b.due+'</td>'+
@@ -3170,7 +3114,7 @@ function renderLib(){
 }
 document.addEventListener('click',e=>{
   const rb=e.target.closest('[data-retbook]');
-  if(rb){const i=parseInt(rb.dataset.retbook),b=S.library[i];S.library.splice(i,1);// renderLib() removed — use shape_campus.html
+  if(rb){const i=parseInt(rb.dataset.retbook),b=S.library[i];S.library.splice(i,1); renderLib();
 toast('"'+b.title+'" returned by '+b.borrower,'s');addAct('g','Book returned — <strong>'+b.title+'</strong>');return;}
   const rmb=e.target.closest('[data-remindbook]');
   if(rmb)toast('Reminder sent to '+rmb.dataset.remindbook,'s');
@@ -3513,7 +3457,7 @@ function generatePayslip(name){
     '<div class="sig-block"><div class="sig-line"></div><div class="sig-label">Principal</div></div>'+
     '</div>'+
     '<div class="footer">'+
-    '<span>Arete Model School, Nadapuram · This is a computer-generated payslip</span>'+
+    '<span>Areté Model School · Nadapuram · This is a computer-generated payslip</span>'+
     '<span>Generated: '+new Date().toLocaleDateString('en-IN')+'</span>'+
     '</div>'+
     '</div></body></html>';
@@ -3602,7 +3546,7 @@ function generateFeeReceipt(stuName){
     '</div>'+
     '</div>'+
     '<div class="footer">'+
-    '<span>Arete Model School, Nadapuram</span>'+
+    '<span>Areté Model School · Nadapuram</span>'+
     '<span>Generated: '+new Date().toLocaleDateString('en-IN')+'</span>'+
     '</div>'+
     '</div></body></html>';
@@ -3683,7 +3627,7 @@ function genAttPreview(){
       var total=dots.filter(function(d){return d!=='H';}).length;
       var pct=total?Math.round(p/total*100):100;
       var status=pct>=90?'Good':pct>=80?'At Risk':'ALERT';
-      var sColor=pct>=90?'#065F46':pct>=80?'#92400E':'#DC2626';
+      var sColor=pct>=90?'#166534':pct>=80?'#C8202E':'#DC2626';
       html+='<tr><td style="border:1px solid #ddd;padding:5px 10px;font-weight:500;">'+s.fn+' '+s.ln+'</td>';
       html+='<td style="border:1px solid #ddd;padding:5px 8px;color:#555;">'+s.gr+'</td>';
       html+='<td style="border:1px solid #ddd;padding:5px;text-align:center;color:green;font-weight:600;">'+p+'</td>';
@@ -3767,7 +3711,7 @@ document.addEventListener('click',function(e){
 
 
 // ══ LIVE CLOCK ══
-setInterval(()=>{const d=new Date();$('liveClk').textContent=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · Fri 18 Sep 2026';},1000);
+setInterval(()=>{const el=$('liveClk');if(el){const d=new Date();el.textContent=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}},1000);
 
 // ══ INIT ══
 (function(){
@@ -3803,6 +3747,7 @@ S.lmsAssignments = S.lmsAssignments || [
   {id:'LA004',resId:'R001',title:'Khan Academy: Algebra Basics',to:'Grade 7 — All',teacher:'Ms. Latha R.',due:'2026-09-30',assigned:'19 Sep',engaged:20,total:36,completed:12},
 ];
 renderDash();renderCal();renderAdm();renderStu();renderTT();
+  showView('dashboard');
   renderRoll();renderHistory();renderStaffAtt();
   renderStaff();renderPayroll();renderFees();renderFeeStats();renderComms();// renderTrans() removed — use shape_transport.html
 // renderLib() removed — use shape_campus.html
@@ -3848,10 +3793,7 @@ function renderLMSStats(){
     {l:'Total Engagements',v:totalViews,s:'Across all content',ic:'👁',c:'ib-o'},
   ];
   el.innerHTML=items.map(function(x){
-    return '<div class="sc"><div class="sc-top"><div class="sc-lbl">'+x.l+'</div>'
-      +'<div class="sc-ic '+x.c+'">'+x.ic+'</div></div>'
-      +'<div class="sc-val">'+x.v+'</div>'
-      +'<div class="sc-sub">'+x.s+'</div></div>';
+    return '<div class="sc" style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05);"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;"><div style="font-size:12px;font-weight:600;color:#888;">'+x.l+'</div><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#C8202E,#8B1A1E);display:flex;align-items:center;justify-content:center;font-size:16px;">'+x.ic+'</div></div><div style="font-size:28px;font-weight:800;color:#111;letter-spacing:-.8px;line-height:1;">'+x.v+'</div><div style="font-size:11.5px;color:#aaa;margin-top:6px;">'+x.s+'</div></div>';
   }).join('');
 }
 
@@ -3892,7 +3834,7 @@ function lmsCard(r){
     +'<div style="font-size:11px;color:var(--ink-f);display:flex;gap:12px;flex-wrap:wrap;">'
     +'<span>&#128204; '+r.topic+'</span><span>&#9201; '+r.dur+'</span>'
     +(r.views?'<span>&#128065; '+r.views+' views</span>':'')
-    +'<span style="color:#F59E0B;">'+stars+' '+r.rating+'</span>'
+    +'<span style="color:#C8202E;">'+stars+' '+r.rating+'</span>'
     +'</div>'
     +'<div style="display:flex;gap:6px;margin-top:2px;">'
     +'<button class="btn bo bsm" style="flex:1;" data-lmsassign="'+r.id+'">+ Assign</button>'
