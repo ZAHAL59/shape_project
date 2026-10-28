@@ -5,38 +5,454 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SHAPE Finance</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="shape_db.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// SHAPE UNIFIED DATA LAYER  — shape_db.js
+// Shared across all SHAPE portals via localStorage('SHAPE_DB')
+// Every portal reads from and writes back to this store.
+// ═══════════════════════════════════════════════════════════════════════
+
+var SHAPE_DB = (function(){
+
+  var KEY = 'SHAPE_DB_v5';
+
+  // ── Default seed data ──────────────────────────────────────────────
+  var SEED = {
+
+    // ── Students ──────────────────────────────────────────────────────
+    students: [
+      {id:'S001',name:'Ananya Krishnan',  dob:'2012-03-14',cls:'Grade 8',  section:'A',
+       adm:'2024-06-01',learningStyle:'Visual',   diet:'Vegetarian',
+       health:'Mild asthma — inhaler with teacher',needs:'None',
+       hobbies:'Drawing, Chess',langs:'Malayalam, English, Hindi',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Krishnan P.',parentPhone:'+91 94470 11111',
+       parentOcc:'Engineer / Teacher',siblings:1,
+       behav:'Social, confident, leadership qualities',
+       expPref:'Outdoor projects, visual demonstrations',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},
+       status:'Active'},
+
+      {id:'S002',name:'Mohammed Ashiq',   dob:'2013-07-22',cls:'Grade 7',  section:'B',
+       adm:'2024-06-01',learningStyle:'Auditory',  diet:'Non-Vegetarian',
+       health:'None',needs:'None',
+       hobbies:'Cricket, Reading',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R002',boarding:false,
+       parentName:'Ashiq K.',parentPhone:'+91 94471 22222',
+       parentOcc:'Business / Homemaker',siblings:2,
+       behav:'Reserved, focused, good at group tasks',
+       expPref:'Group discussions, storytelling',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},
+       status:'Active'},
+
+      {id:'S003',name:'Devika Nair',       dob:'2010-11-05',cls:'Grade 10', section:'A',
+       adm:'2022-06-01',learningStyle:'Kinaesthetic',diet:'Vegetarian',
+       health:'None',needs:'None',
+       hobbies:'Dance, Art, Swimming',langs:'Malayalam, English, Tamil',
+       travel:'Bus',busRoute:'R001',boarding:true,
+       parentName:'Nair R.',parentPhone:'+91 94472 33333',
+       parentOcc:'Doctor / Teacher',siblings:0,
+       behav:'Creative, independent, self-motivated',
+       expPref:'Hands-on lab, project-based learning, field trips',
+       fees:{term:24500,transport:2800,hostel:3500,activity:1800},
+       status:'Active'},
+
+      {id:'S004',name:'Rahul P.',           dob:'2011-05-18',cls:'Grade 9',  section:'C',
+       adm:'2023-06-01',learningStyle:'Reading/Writing',diet:'Non-Vegetarian',
+       health:'Under specialist support for dyslexia',needs:'Mild dyslexia — support plan active',
+       hobbies:'Football, Music, Coding',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R003',boarding:false,
+       parentName:'Pradeep K.',parentPhone:'+91 94473 44444',
+       parentOcc:'Engineer / Nurse',siblings:1,
+       behav:'Determined, sometimes frustrated with text-heavy tasks',
+       expPref:'Audio content, peer explanation, visual aids',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},
+       status:'Active'},
+
+      {id:'S005',name:'Sreelakshmi K.',    dob:'2014-02-28',cls:'Grade 6',  section:'B',
+       adm:'2025-06-01',learningStyle:'Visual',   diet:'Vegetarian',
+       health:'None',needs:'None',
+       hobbies:'Drawing, Gardening, Cooking',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R002',boarding:false,
+       parentName:'Krishnan V.',parentPhone:'+91 94474 55555',
+       parentOcc:'Farmer / Homemaker',siblings:3,
+       behav:'Shy at first, blooms with encouragement',
+       expPref:'Nature-based, Living Learning Park activities',
+       fees:{term:22000,transport:2800,hostel:0,activity:1800},
+       status:'Active'},
+
+      {id:'S006',name:'Arjun Menon',        dob:'2011-09-12',cls:'Grade 9',  section:'A',
+       adm:'2023-06-01',learningStyle:'Kinaesthetic',diet:'Non-Vegetarian',
+       health:'None',needs:'None',
+       hobbies:'Football, Gaming',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R001',boarding:true,
+       parentName:'Menon A.',parentPhone:'+91 94475 66666',
+       parentOcc:'Police / Homemaker',siblings:1,
+       behav:'High energy, needs structured tasks',
+       expPref:'Active projects, physical activities',
+       fees:{term:24500,transport:2800,hostel:3500,activity:1800},
+       status:'Active'},
+    ],
+
+    // ── Staff ─────────────────────────────────────────────────────────
+    staff: [
+      {id:'T001',name:'Ms. Latha R.',     subj:'Mathematics',   joined:'2019-06-01',phone:'+91 94470 91001',email:'latha@aretemodel.edu',salary:55000,status:'Active',ratings:[4.1,4.2,4.5,4.6,4.7],trainings:14,concerns:0},
+      {id:'T002',name:'Ms. Divya K.',     subj:'Science',       joined:'2020-08-01',phone:'+91 94470 91002',email:'divya@aretemodel.edu',salary:50000,status:'Active',ratings:[4.0,4.1,4.0,4.2,4.3],trainings:11,concerns:1},
+      {id:'T003',name:'Mr. Paul T.',      subj:'English',       joined:'2018-06-01',phone:'+91 94470 91003',email:'paul@aretemodel.edu',salary:58000,status:'Active',ratings:[4.4,4.5,4.6,4.7,4.8],trainings:17,concerns:0},
+      {id:'T004',name:'Mr. Arun P.',      subj:'Social Studies',joined:'2021-06-01',phone:'+91 94470 91004',email:'arun@aretemodel.edu',salary:48000,status:'Active',ratings:[3.7,3.9,3.8,4.0,4.1],trainings:8,concerns:1},
+      {id:'T005',name:'Ms. Rani S.',      subj:'Malayalam',     joined:'2022-06-01',phone:'+91 94470 91005',email:'rani@aretemodel.edu',salary:46000,status:'Active',ratings:[4.2,4.3,4.4,4.5],trainings:7,concerns:0},
+    ],
+
+    // ── Bus Routes ───────────────────────────────────────────────────
+    routes: [
+      {id:'R001',name:'Route 1 — KL Bus',    vehicle:'KL 11 AB 1234',type:'Bus (52 seats)',driver:'Rajan P.',  phone:'+91 94470 12345',dept:'07:05',arr:'07:45',status:'Active'},
+      {id:'R002',name:'Route 2 — Koyilandy', vehicle:'KL 11 CD 5678',type:'Bus (52 seats)',driver:'Suresh Kumar',phone:'+91 94471 56789',dept:'07:15',arr:'07:55',status:'Active'},
+      {id:'R003',name:'Route 3 — Vatakara',  vehicle:'KL 11 EF 9012',type:'Van (15 seats)',driver:'Krishnan K.',phone:'+91 94472 98765',dept:'07:20',arr:'08:00',status:'Active'},
+      {id:'R004',name:'Route 4 — Peringathur',vehicle:'KL 11 GH 3456',type:'Bus (52 seats)',driver:'Sunil M.',  phone:'+91 94473 11111',dept:'07:00',arr:'07:50',status:'Active'},
+    ],
+
+    // ── Hostel Rooms ─────────────────────────────────────────────────
+    rooms: [
+      {id:'RM-A01',block:'A',num:1, cap:4},
+      {id:'RM-A02',block:'A',num:2, cap:4},
+      {id:'RM-A03',block:'A',num:12,cap:4},
+      {id:'RM-A04',block:'A',num:15,cap:4},
+      {id:'RM-B01',block:'B',num:3, cap:4},
+      {id:'RM-B02',block:'B',num:7, cap:4},
+    ],
+
+    // ── Fee Payments ─────────────────────────────────────────────────
+    payments: [
+      {id:'RC-001',studentId:'S001',category:'Term Fee',  amount:24500,date:'2026-10-14',mode:'Online',month:'Oct 2026'},
+      {id:'RC-002',studentId:'S002',category:'Term Fee',  amount:24500,date:'2026-10-13',mode:'Cash',  month:'Oct 2026'},
+      {id:'RC-003',studentId:'S003',category:'Hostel Fee',amount:3500, date:'2026-10-12',mode:'Online',month:'Oct 2026'},
+      {id:'RC-004',studentId:'S004',category:'Term Fee',  amount:24500,date:'2026-10-11',mode:'Online',month:'Oct 2026'},
+      {id:'RC-005',studentId:'S005',category:'Term Fee',  amount:22000,date:'2026-10-10',mode:'Cheque',month:'Oct 2026'},
+    ],
+
+    // ── Complaints ───────────────────────────────────────────────────
+    feeStructure: {
+      'Grade 1':  {admission:5000, t1:8000,  t2:8000,  t3:8000,  term:24000, transport:6000, hostel:42000, activity:1800, total:31800},
+      'Grade 2':  {admission:5000, t1:8000,  t2:8000,  t3:8000,  term:24000, transport:6000, hostel:42000, activity:1800, total:31800},
+      'Grade 3':  {admission:5000, t1:8500,  t2:8500,  t3:8500,  term:25500, transport:6000, hostel:42000, activity:1800, total:33300},
+      'Grade 4':  {admission:5000, t1:8500,  t2:8500,  t3:8500,  term:25500, transport:6000, hostel:42000, activity:1800, total:33300},
+      'Grade 5':  {admission:5000, t1:9000,  t2:9000,  t3:9000,  term:27000, transport:6000, hostel:42000, activity:2500, total:35500},
+      'Grade 6':  {admission:6000, t1:10000, t2:10000, t3:10000, term:30000, transport:6500, hostel:42000, activity:3000, total:39500},
+      'Grade 7':  {admission:6000, t1:10000, t2:10000, t3:10000, term:30000, transport:6500, hostel:42000, activity:3000, total:39500},
+      'Grade 8':  {admission:6000, t1:11000, t2:11000, t3:11000, term:33000, transport:6500, hostel:42000, activity:3000, total:42500},
+      'Grade 9':  {admission:7000, t1:12000, t2:12000, t3:12000, term:36000, transport:7000, hostel:42000, activity:3500, total:46500},
+      'Grade 10': {admission:7000, t1:12000, t2:12000, t3:12000, term:36000, transport:7000, hostel:42000, activity:3500, total:46500},
+      'Grade 11': {admission:8000, t1:14000, t2:14000, t3:14000, term:42000, transport:7000, hostel:42000, activity:4000, total:53000},
+      'Grade 12': {admission:8000, t1:14000, t2:14000, t3:14000, term:42000, transport:7000, hostel:42000, activity:4000, total:53000},
+      monthly: {hostel:3500, mess:800}
+    },
+
+    complaints: [
+      {id:'CP001',date:'2026-10-10',from:'Parent',who:'Mrs. Suma R.',studentId:'S005',type:'Academic',  subj:'Assignment load too heavy for Grade 5',action:'Referred to HOD',status:'Open'},
+      {id:'CP002',date:'2026-10-08',from:'Parent',who:'Mr. Rahul',   studentId:'S004',type:'Transport', subj:'Bus arriving late consistently',action:'Driver counselled',status:'Resolved',resolved:'2026-10-09'},
+      {id:'CP003',date:'2026-10-14',from:'Staff', who:'Mr. Arun P.', staffId:'T004',  type:'Facility',  subj:'Projector in Room 12 not working',action:'IT notified',status:'Open'},
+    ],
+
+    // ── Events ───────────────────────────────────────────────────────
+    events: [
+      {id:'EV001',title:'Parent-Teacher Meeting — Grade 8',type:'Parent Meeting',date:'2026-10-20',time:'10:00',venue:'Main Hall',seats:120,alloc:98,organiser:'T001'},
+      {id:'EV002',title:'Monthly Staff Meeting',type:'Staff Meeting',date:'2026-10-25',time:'16:00',venue:'Staff Room',seats:40,alloc:38,organiser:'T003'},
+      {id:'EV003',title:'Science Fair — Grades 6–10',type:'School Event',date:'2026-11-08',time:'09:00',venue:'Main Hall + Grounds',seats:600,alloc:540,organiser:'T002'},
+    ],
+
+    // ── Early Departures ─────────────────────────────────────────────
+    departures: [
+      {id:'DEP001',studentId:'S004',reason:'Medical appointment',time:'13:30',date:'2026-10-14',smsSent:true},
+      {id:'DEP002',studentId:'S002',reason:'Family function',    time:'14:00',date:'2026-10-12',smsSent:true},
+    ],
+
+    // ── HR Vacancies & Candidates ────────────────────────────────────
+    vacancies: [
+      {id:'V001',subj:'Mathematics', qual:'M.Sc Maths + B.Ed',exp:'3+ years',posted:'2026-09-01',status:'Active'},
+      {id:'V002',subj:'English',     qual:'MA English + B.Ed', exp:'2+ years',posted:'2026-09-10',status:'Active'},
+
+      {id:'S007',name:'Arjun Suresh',       dob:'2012-05-12',cls:'Grade 8',section:'A',roll:2,
+       adm:'2024-06-01',learningStyle:'Visual',    diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Cricket, Gaming',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Suresh K.',parentPhone:'+91 94470 22201',
+       behav:'Active, competitive, strong in sports',expPref:'Group work, outdoor activities',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S008',name:'Fathima Nousheen',   dob:'2012-09-28',cls:'Grade 8',section:'A',roll:3,
+       adm:'2024-06-01',learningStyle:'Reading',    diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Reading, Calligraphy',langs:'Malayalam, English, Arabic',
+       travel:'Bus',busRoute:'R002',boarding:false,
+       parentName:'Noushad P.',parentPhone:'+91 94471 33301',
+       behav:'Focused, disciplined, top academic performer',expPref:'Individual study, written assignments',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S009',name:'Rohan Vijay',         dob:'2012-03-17',cls:'Grade 8',section:'A',roll:4,
+       adm:'2024-06-01',learningStyle:'Kinaesthetic',diet:'Vegetarian',
+       health:'Mild peanut allergy — carry antihistamine',needs:'None',
+       hobbies:'Football, Robotics',langs:'Malayalam, English, Tamil',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Vijay R.',parentPhone:'+91 94472 44401',
+       behav:'Energetic, hands-on learner, needs movement breaks',expPref:'Lab work, projects, field trips',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S010',name:'Sneha Anil',          dob:'2012-11-04',cls:'Grade 8',section:'A',roll:5,
+       adm:'2024-06-01',learningStyle:'Visual',    diet:'Vegetarian',
+       health:'None',needs:'None',hobbies:'Dance, Art',langs:'Malayalam, English',
+       travel:'Own',busRoute:'',boarding:false,
+       parentName:'Anil M.',parentPhone:'+91 94473 55501',
+       behav:'Creative, expressive, excellent at presentations',expPref:'Visual demonstrations, project-based',
+       fees:{term:33000,transport:0,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S011',name:'Mohammed Riyas',      dob:'2012-07-22',cls:'Grade 8',section:'A',roll:6,
+       adm:'2024-06-01',learningStyle:'Auditory',  diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Music, Debate',langs:'Malayalam, English, Arabic',
+       travel:'Bus',busRoute:'R003',boarding:false,
+       parentName:'Riyas T.',parentPhone:'+91 94474 66601',
+       behav:'Articulate, confident speaker, strong critical thinker',expPref:'Discussions, debates, storytelling',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S012',name:'Aiswarya Pradeep',    dob:'2012-02-14',cls:'Grade 8',section:'A',roll:7,
+       adm:'2024-06-01',learningStyle:'Reading',   diet:'Vegetarian',
+       health:'None',needs:'Mild dyslexia — extra time for written tests',
+       hobbies:'Swimming, Puzzles',langs:'Malayalam, English',
+       travel:'Own',busRoute:'',boarding:false,
+       parentName:'Pradeep S.',parentPhone:'+91 94475 77701',
+       behav:'Thoughtful, creative problem-solver — needs patient support with reading',
+       expPref:'Verbal explanations, diagrams over text',
+       fees:{term:33000,transport:0,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S013',name:'Vishnu Narayanan',    dob:'2012-08-30',cls:'Grade 8',section:'A',roll:8,
+       adm:'2024-06-01',learningStyle:'Visual',    diet:'Vegetarian',
+       health:'None',needs:'None',hobbies:'Chess, Coding',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Narayanan V.',parentPhone:'+91 94476 88801',
+       behav:'Analytical, logical, quiet but highly capable',expPref:'Problem-solving, individual challenge tasks',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S014',name:'Amala Thomas',        dob:'2012-12-20',cls:'Grade 8',section:'A',roll:9,
+       adm:'2024-06-01',learningStyle:'Kinaesthetic',diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Theatre, Volleyball',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R002',boarding:false,
+       parentName:'Thomas C.',parentPhone:'+91 94477 99901',
+       behav:'Enthusiastic, team player, strong communicator',expPref:'Role play, group activities, drama',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S015',name:'Sherin Babu',          dob:'2012-04-09',cls:'Grade 8',section:'A',roll:10,
+       adm:'2024-06-01',learningStyle:'Auditory',  diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Cooking, Reading',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Babu J.',parentPhone:'+91 94478 10101',
+       behav:'Calm, attentive, consistent academic performance',expPref:'Listening, note-taking, clear instructions',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S016',name:'Adithya Krishnamohan',dob:'2012-06-03',cls:'Grade 8',section:'A',roll:11,
+       adm:'2024-06-01',learningStyle:'Visual',    diet:'Vegetarian',
+       health:'Asthma — inhaler in school bag',needs:'None',
+       hobbies:'Sketching, Badminton',langs:'Malayalam, English, Hindi',
+       travel:'Bus',busRoute:'R003',boarding:false,
+       parentName:'Krishnamohan A.',parentPhone:'+91 94479 11201',
+       behav:'Quiet achiever, very detail-oriented, needs encouragement to speak up',
+       expPref:'Diagrams, step-by-step notes, visual examples',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S017',name:'Lakshmi Sunil',        dob:'2012-10-15',cls:'Grade 8',section:'A',roll:12,
+       adm:'2024-06-01',learningStyle:'Reading',   diet:'Vegetarian',
+       health:'None',needs:'None',hobbies:'Piano, Creative writing',langs:'Malayalam, English',
+       travel:'Own',busRoute:'',boarding:false,
+       parentName:'Sunil L.',parentPhone:'+91 94480 12301',
+       behav:'Self-motivated, disciplined, high academic ambition',expPref:'Independent research, in-depth notes',
+       fees:{term:33000,transport:0,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S018',name:'Rahul Rajan',          dob:'2012-01-27',cls:'Grade 8',section:'A',roll:13,
+       adm:'2024-06-01',learningStyle:'Kinaesthetic',diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Football, Basketball',langs:'Malayalam, English',
+       travel:'Bus',busRoute:'R002',boarding:false,
+       parentName:'Rajan M.',parentPhone:'+91 94481 13401',
+       behav:'High energy, competitive, performs better with physical activity breaks',
+       expPref:'Hands-on experiments, movement-based learning',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S019',name:'Noor Fathima',         dob:'2012-09-11',cls:'Grade 8',section:'A',roll:14,
+       adm:'2024-06-01',learningStyle:'Visual',    diet:'Non-Vegetarian',
+       health:'None',needs:'None',hobbies:'Henna art, Photography',langs:'Malayalam, English, Arabic',
+       travel:'Bus',busRoute:'R001',boarding:false,
+       parentName:'Faisal P.',parentPhone:'+91 94482 14501',
+       behav:'Creative, perceptive, strong in arts and humanities',expPref:'Visual aids, colour-coded notes, mind maps',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+
+      {id:'S020',name:'Sreejith Menon',       dob:'2012-03-06',cls:'Grade 8',section:'A',roll:15,
+       adm:'2024-06-01',learningStyle:'Auditory',  diet:'Vegetarian',
+       health:'None',needs:'None',hobbies:'Carnatic music, Carrom',langs:'Malayalam, English, Sanskrit',
+       travel:'Bus',busRoute:'R003',boarding:false,
+       parentName:'Menon G.',parentPhone:'+91 94483 15601',
+       behav:'Attentive, rhythmically inclined, learns well through patterns and repetition',
+       expPref:'Songs, rhythmic patterns, oral recitation',
+       fees:{term:33000,transport:6500,hostel:0,activity:3000},status:'Active'},
+    ],
+    candidates: [
+      {id:'C001',name:'Priya Suresh', vacId:'V001',qual:'M.Sc Maths, B.Ed',exp:'5 yrs',score:88,status:'Shortlisted',interviewDate:'2026-10-05'},
+      {id:'C002',name:'Anoop Varma',  vacId:'V001',qual:'M.Sc Maths, B.Ed',exp:'3 yrs',score:76,status:'Shortlisted',interviewDate:'2026-10-05'},
+      {id:'C003',name:'Reshma K.',    vacId:'V002',qual:'MA English, B.Ed', exp:'6 yrs',score:91,status:'Recommended',interviewDate:'2026-09-28'},
+    ],
+    interviews: [],
+    training: [
+      {id:'TR001',title:'NEP 2020 — Competency Based Education',date:'2026-08-15',trainer:'Dr. Anitha Raj',duration:'Full day',topics:['CBE Framework','Portfolio Learning','Outcome Mapping'],attendees:['T001','T002','T003','T004','T005']},
+      {id:'TR002',title:'SHAPE DLSS — Digital Classroom Tools',  date:'2026-09-02',trainer:'Muhd Zahal',    duration:'Half day',topics:['DLSS Overview','Resource Library','Lesson Planning'],attendees:['T001','T002','T003','T004']},
+    ],
+
+    // ── Inventory ────────────────────────────────────────────────────
+    inventory: [
+      {id:'INV001',name:'Laptops',           cat:'IT Equipment',total:42,working:39,repair:3,value:2100000},
+      {id:'INV002',name:'Projectors',        cat:'IT Equipment',total:18,working:16,repair:2,value:540000},
+      {id:'INV003',name:'Science Lab Sets',  cat:'Lab Equipment',total:12,working:12,repair:0,value:360000},
+      {id:'INV004',name:'Student Desks',     cat:'Furniture',    total:420,working:414,repair:6,value:840000},
+    ],
+
+    // ── Books ────────────────────────────────────────────────────────
+    books: [
+      {id:'BK001',title:'Mathematics for Grade 8',cat:'Textbook', issuedTo:'S001',dueDate:'2026-10-20',status:'Issued'},
+      {id:'BK002',title:'The Secret Garden',       cat:'Fiction',  issuedTo:'S005',dueDate:'2026-10-18',status:'Overdue'},
+      {id:'BK003',title:'A Brief History of Time', cat:'Science',  issuedTo:'S004',dueDate:'2026-10-25',status:'Issued'},
+      {id:'BK004',title:'Wings of Fire (Kalam)',   cat:'Biography',issuedTo:'S003',dueDate:'2026-10-28',status:'Issued'},
+      {id:'BK005',title:'NCERT Science Grade 9',   cat:'Textbook', issuedTo:'S006',dueDate:'2026-10-16',status:'Overdue'},
+    ],
+
+    // ── Mess Stock ───────────────────────────────────────────────────
+    messStock: [
+      {item:'Rice (Ponni)',    unit:'kg',    qty:280,max:400,low:80,cost:58,  cat:'Staples'},
+      {item:'Cooking Oil',    unit:'L',     qty:38, max:60, low:15,cost:145, cat:'Staples'},
+      {item:'Dal (Mixed)',    unit:'kg',    qty:45, max:80, low:15,cost:98,  cat:'Staples'},
+      {item:'Fresh Vegetables',unit:'kg',   qty:35, max:80, low:20,cost:40,  cat:'Fresh'},
+      {item:'Eggs',           unit:'dozen', qty:18, max:40, low:10,cost:95,  cat:'Protein'},
+    ],
+
+    // ── Budget ───────────────────────────────────────────────────────
+    budget: [
+      {id:'B001',cat:'Teacher Salaries',     dept:'HR',       budgeted:18000000,actual:0},
+      {id:'B002',cat:'Non-Teaching Salaries',dept:'HR',       budgeted:6000000, actual:0},
+      {id:'B003',cat:'Transport — Total',    dept:'Transport',budgeted:4600000, actual:0},
+      {id:'B004',cat:'Infrastructure',       dept:'Ops',      budgeted:2500000, actual:0},
+      {id:'B005',cat:'Hostel & Mess',        dept:'Hostel',   budgeted:1600000, actual:0},
+      {id:'B006',cat:'Library & Materials',  dept:'Academic', budgeted:450000,  actual:0},
+    ],
+
+    // ── Audit Log ────────────────────────────────────────────────────
+    auditLog: []
+  };
+
+  // ── Load / Save ───────────────────────────────────────────────────
+  function load(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if(raw){ 
+        var parsed = JSON.parse(raw);
+        // Merge: keep seed structure but overlay saved data
+        return Object.assign({}, SEED, parsed);
+      }
+    } catch(e){}
+    return JSON.parse(JSON.stringify(SEED)); // deep clone seed
+  }
+
+  function save(db){
+    try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){}
+  }
+
+  // ── Audit ─────────────────────────────────────────────────────────
+  function audit(db, action, detail){
+    db.auditLog.unshift({
+      ts: new Date().toISOString(),
+      action: action,
+      detail: detail,
+      user: 'Muhd Zahal'
+    });
+    if(db.auditLog.length > 200) db.auditLog.length = 200;
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────
+  function genId(prefix){
+    return prefix + Date.now().toString().slice(-6);
+  }
+  function fmt(n){ return '₹'+(n||0).toLocaleString('en-IN'); }
+  function fmtL(n){ return '₹'+((n||0)/100000).toFixed(1)+'L'; }
+
+  // ── Public API ────────────────────────────────────────────────────
+  return {
+    load: load,
+    save: save,
+    audit: audit,
+    genId: genId,
+    fmt: fmt,
+    fmtL: fmtL,
+
+    // Student helpers
+    getStudent: function(db,id){ return db.students.find(function(s){return s.id===id;}); },
+    getStudentName: function(db,id){ var s=db.students.find(function(x){return x.id===id;}); return s?s.name:'Unknown'; },
+    getBoarders: function(db){ return db.students.filter(function(s){return s.boarding&&s.status==='Active';}); },
+    getBusStudents: function(db,routeId){ return db.students.filter(function(s){return s.busRoute===routeId&&s.status==='Active';}); },
+
+    // Staff helpers  
+    getStaff: function(db,id){ return db.staff.find(function(s){return s.id===id;}); },
+    getStaffName: function(db,id){ var s=db.staff.find(function(x){return x.id===id;}); return s?s.name:'Unknown'; },
+
+    // Route helpers
+    getRoute: function(db,id){ return db.routes.find(function(r){return r.id===id;}); },
+    getRouteName: function(db,id){ var r=db.routes.find(function(x){return x.id===id;}); return r?r.name:'Unknown'; },
+
+    // Fee helpers
+    getStudentPayments: function(db,studentId){ return db.payments.filter(function(p){return p.studentId===studentId;}); },
+    getTotalCollected: function(db){ return db.payments.reduce(function(a,p){return a+p.amount;},0); },
+
+    // Reset (dev use)
+    reset: function(){ localStorage.removeItem(KEY); location.reload(); }
+  };
+})();
+
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--ink:#0A0E1A;--ink2:#1A2236;--ink3:#3B4D6B;--ink4:#6B7E9A;--ink5:#9BAEC6;--surf:#FFF;--s2:#F4F7FB;--s3:#EAF0F8;--s4:#D8E4F0;--s5:#C0D0E4;--green:#0B6E4F;--green-l:#E6F5EF;--red:#C0170F;--red-l:#FDF0EF;--amber:#8A5000;--amber-l:#FEF5E6;--blue:#1249A6;--blue-l:#EBF1FB;--acc:#0B6E4F;--acc-l:#E6F5EF;--r2:7px;--r3:11px;--r4:15px;--sh1:0 1px 3px rgba(10,14,26,.06);--sh2:0 4px 16px rgba(10,14,26,.09);}
+:root{
+  --ink:#111111;--ink2:#333333;--ink3:#555555;--ink4:#777777;--ink5:#999999;
+  --surf:#FFFFFF;--s2:#F8F8F8;--s3:#F2F2F2;--s4:#E4E4E4;--s5:#CCCCCC;
+  --pri:#C8202E;--pri-l:#FEF4F4;--pri-d:#9A1822;
+  --acc:#C8202E;--acc-l:#FEF4F4;
+  --green:#166534;--green-l:#F0FDF4;
+  --red:#DC2626;--red-l:#FEF2F2;
+  --amber:#C8202E;--amber-l:#FEF4F4;
+  --blue:#9A1822;--blue-l:#FEF4F4;
+  --teal:#C8202E;--teal-l:#FEF4F4;
+  --bdr:#E4E4E4;
+  --r2:7px;--r3:11px;--r4:15px;
+  --sh1:0 1px 3px rgba(0,0,0,.06);--sh2:0 4px 16px rgba(0,0,0,.09);
+}
 html,body{height:100%;background:var(--s2);}
 body{font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
-.shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
-.sidebar{width:224px;flex-shrink:0;background:var(--ink2);overflow-y:auto;display:flex;flex-direction:column;}
+.shell{display:flex;flex:1;height:100vh;overflow:hidden;}
+.sidebar{width:240px;flex-shrink:0;background:#FFFFFF;border-right:1px solid #E4E4E4;overflow-y:auto;display:flex;flex-direction:column;}
 .main{flex:1;overflow-y:auto;}
-.topbar{height:48px;background:var(--ink2);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;}
-.tb-badge{width:30px;height:30px;border-radius:7px;background:var(--green);display:grid;place-items:center;font-size:14px;font-weight:800;color:#fff;}
-.tb-ttl{font-size:13.5px;font-weight:700;color:#fff;}
-.tb-links{margin-left:auto;display:flex;gap:5px;}
-.tb-link{font-size:10.5px;color:rgba(255,255,255,.35);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:3px;}
-.tb-link:hover{color:rgba(255,255,255,.7);}
-.sb-sec{padding:18px 14px 5px;font-size:8.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.4);transition:all .11s;}
-.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
-.ni.active{background:var(--green);color:#fff;font-weight:600;}
+
+
+
+
+
+
+.sb-sec{padding:16px 14px 4px;font-size:8.5px;font-weight:700;color:#BBBBBB;letter-spacing:2px;text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;margin:1px 8px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:500;color:#555555;transition:all .15s;}
+.ni:hover{background:#FEF4F4;color:#C8202E;}
+.ni.active{background:#FEF4F4;color:#C8202E;font-weight:600;border-left:3px solid #C8202E;}
 .ni .ic{font-size:14px;width:18px;flex-shrink:0;}
-.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);}
-.sb-ft{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:12px 14px;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:#FEF4F4;color:#C8202E;}
+.sb-ft{margin-top:auto;border-top:1px solid #E4E4E4;padding:10px 8px;}
 .page{padding:22px 26px 40px;}
 .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
 .ph-ttl{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
 .ph-sub{font-size:12.5px;color:var(--ink4);margin-top:3px;}
 .ph-r{display:flex;gap:8px;flex-shrink:0;}
 .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.kc{background:var(--surf);border:1px solid var(--s4);border-radius:11px;padding:15px 17px;box-shadow:var(--sh1);border-left:3px solid var(--green);}
-.kc.r{border-left-color:var(--red);}
-.kc.a{border-left-color:var(--amber);}
-.kc.b{border-left-color:var(--blue);}
+.kc{background:var(--surf);border:1px solid var(--s4);border-radius:11px;padding:15px 17px;box-shadow:var(--sh1);border-left:3px solid #C8202E;}
+.kc.r{border-left-color:#DC2626;}
+.kc.a{border-left-color:#C8202E;}
+.kc.b{border-left-color:#9A1822;}
 .kl{font-size:10.5px;font-weight:600;color:var(--ink4);margin-bottom:7px;}
 .kv{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1;font-family:'JetBrains Mono',monospace;}
 .kn{font-size:11.5px;color:var(--ink5);margin-top:4px;}
@@ -53,14 +469,14 @@ tr:hover td{background:var(--s2);}
 .fw{font-weight:700;color:var(--ink);}
 .mono{font-family:'JetBrains Mono',monospace;font-size:12px;}
 .badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:700;}
-.bg-g{background:var(--green-l);color:var(--green);}
-.bg-b{background:var(--blue-l);color:var(--blue);}
-.bg-r{background:var(--red-l);color:var(--red);}
-.bg-o{background:var(--amber-l);color:var(--amber);}
+.bg-g{background:#F0FDF4;color:#166534;}
+.bg-b{background:#FEF4F4;color:#9A1822;}
+.bg-r{background:#FEF2F2;color:#DC2626;}
+.bg-o{background:#F3F4F6;color:#374151;}
 .bg-s{background:var(--s3);color:var(--ink4);}
 .btn{padding:7px 14px;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
-.bp{background:var(--green);color:#fff;}
-.bp:hover{background:#0A5E43;transform:translateY(-1px);}
+.bp{background:#C8202E;color:#fff;}
+.bp:hover{background:#9A1822;transform:translateY(-1px);}
 .bo{background:var(--surf);color:var(--ink3);border:1px solid var(--s4);}
 .bo:hover{background:var(--s2);}
 .bsm{padding:5px 10px;font-size:11.5px;}
@@ -72,10 +488,10 @@ tr:hover td{background:var(--s2);}
 .bar-fill{height:100%;border-radius:4px;}
 .bar-note{font-size:11.5px;color:var(--ink4);min-width:160px;text-align:right;font-family:'JetBrains Mono',monospace;}
 .bar-flag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:3px;white-space:nowrap;}
-.flag-ok{background:var(--green-l);color:var(--green);}
-.flag-over{background:var(--red-l);color:var(--red);}
-.flag-warn{background:var(--amber-l);color:var(--amber);}
-.flow-note{background:var(--blue-l);border:1px solid #B0B8F2;border-radius:7px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:var(--blue);}
+.flag-ok{background:#F0FDF4;color:#166534;}
+.flag-over{background:#FEF2F2;color:#DC2626;}
+.flag-warn{background:#FEF4F4;color:#C8202E;}
+.flow-note{background:#FEF4F4;border:1px solid #E8909A;border-radius:7px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:var(--blue);}
 .ov{position:fixed;inset:0;background:rgba(10,14,26,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(3px);}
 .ov.open{display:flex;}
 .modal{background:var(--surf);border-radius:var(--r4);max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2);}
@@ -88,72 +504,94 @@ tr:hover td{background:var(--s2);}
 .fg{margin-bottom:12px;}
 .fl{display:block;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
 .fc{width:100%;padding:8px 10px;border:1.5px solid var(--s4);border-radius:7px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surf);outline:none;transition:border .12s;}
-.fc:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-l);}
+.fc:focus{border-color:#C8202E;box-shadow:0 0 0 3px #FEF4F4;}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .view{display:none;}.view.active{display:block;}
 #tw{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
 .toast{padding:10px 16px;border-radius:7px;font-size:13px;font-weight:600;color:#fff;box-shadow:var(--sh2);pointer-events:all;}
 ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:var(--s5);border-radius:3px;}
-</style>
-</head>
-<body>
-<div class="topbar">
-  <div class="tb-badge">₹</div>
-  <span class="tb-ttl">SHAPE Finance — Fee & Budget Management</span>
-  <div class="tb-links">
-    <a href="shape_admissions.html" class="tb-link">← Admissions</a>
-    <a href="shape_transport.html" class="tb-link">Transport</a>
-    <a href="shape_hostel.html" class="tb-link">Hostel</a>
-    <a href="shape_hr.html" class="tb-link">HR</a>
-  </div>
 
-<div style="position:relative;margin-left:8px;" id="portal-switcher">
-  <button onclick="var m=document.getElementById('ps-menu');m.style.display=m.style.display==='none'?'block':'none';"
-    style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
-    &#9783; All Portals &#9660;
-  </button>
-  <div id="ps-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1C2B3A;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;min-width:230px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);">
-    <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;padding:4px 8px 6px;">SHAPE Portals</div>
-    <a href="shape_sms_v5.html" class="ps-item">&#127979; <span><b>SMS</b> &mdash; Principal Dashboard</span></a>
-    <a href="shape_admissions.html" class="ps-item">&#128203; <span><b>Admissions</b> &mdash; Student Enrolment</span></a>
-    <a href="shape_hr.html" class="ps-item">&#128101; <span><b>HR</b> &mdash; Staff &amp; Recruitment</span></a>
-    <a href="shape_finance.html" class="ps-item">&#8377; <span><b>Finance</b> &mdash; Fees &amp; Payroll</span></a>
-    <a href="shape_transport.html" class="ps-item">&#128652; <span><b>Transport</b> &mdash; Routes &amp; Safety</span></a>
-    <a href="shape_hostel.html" class="ps-item">&#127968; <span><b>Hostel</b> &mdash; Boarding &amp; Mess</span></a>
-    <a href="shape_campus.html" class="ps-item">&#127979; <span><b>Campus</b> &mdash; Admin &amp; Library</span></a>
-    <div style="height:1px;background:rgba(255,255,255,.08);margin:4px 0;"></div>
-    <a href="shape_careers.html" target="_blank" class="ps-item" style="color:rgba(255,255,255,.45)!important;">&#128203; <span>Careers Page (public) &#8599;</span></a>
-  </div>
-</div>
-<style>
-#portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
-#portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+/* Sidebar brand + collapsible groups */
+.sb-brand{padding:16px 14px 14px;border-bottom:1px solid #E4E4E4;}
+.sb-nav{padding:6px 0;overflow-y:auto;flex:1;}
+.sb-grp{margin:1px 0;}
+.sb-grp-hdr{display:flex;align-items:center;gap:7px;padding:8px 14px;cursor:pointer;font-size:11.5px;font-weight:700;color:#888;letter-spacing:.5px;text-transform:uppercase;user-select:none;transition:color .12s;}
+.sb-grp-hdr:hover{color:#C8202E;}
+.grp-arrow{font-size:14px;color:#ccc;transition:transform .18s;line-height:1;display:inline-block;}
+.sb-grp-hdr.open .grp-arrow{transform:rotate(90deg);color:#C8202E;}
+.sb-grp-body{display:none;padding-bottom:2px;}
+.ni-sub{padding-left:22px !important;font-size:12.5px;}
+.sb-divider{height:1px;background:#E4E4E4;margin:4px 12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;transition:background .15s;}
+.uc:hover{background:#FEF4F4;}
+.ua{width:32px;height:32px;border-radius:50%;background:#C8202E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;}
 </style>
 <script>
-(function(){
-  document.addEventListener('click',function(e){
-    var sw=document.getElementById('portal-switcher');
-    var m=document.getElementById('ps-menu');
-    if(sw&&m&&!sw.contains(e.target))m.style.display='none';
-  });
-})();
+function toggleGrp(id){
+  var body=document.getElementById('body-'+id);
+  var hdr=document.querySelector('#'+id+' .sb-grp-hdr');
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(hdr)hdr.classList.toggle('open',!open);
+}
 </script>
-</div>
+</head>
+<body>
+
 <div class="shell">
 <aside class="sidebar">
-  <div class="sb-sec">Fee Management</div>
-  <div class="ni active" data-v="overview"><span class="ic">💳</span>Fee Overview</div>
-  <div class="ni" data-v="students"><span class="ic">👤</span>Per-Student Ledger</div>
-  <div class="ni" data-v="payments"><span class="ic">📋</span>Payment History</div>
-  <div class="sb-sec">Budget</div>
-  <div class="ni" data-v="budget"><span class="ic">📊</span>Budget vs Actual</div>
-  <div class="ni" data-v="payroll"><span class="ic">💼</span>Staff Payroll</div>
-  <div class="sb-sec">Reports</div>
-  <div class="ni" data-v="reports"><span class="ic">📄</span>Generate Reports</div>
+  <div class="sb-brand">
+    <div style="display:flex;align-items:center;gap:11px;">
+      <img src="arete_logo.png" alt="Areté" style="width:38px;height:38px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Arete</div>
+        <div style="font-size:10px;color:#aaa;letter-spacing:.3px;text-transform:uppercase;margin-top:1px;">Finance</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+
+    <div class="sb-grp" id="grp-fees">
+      <div class="sb-grp-hdr open" onclick="toggleGrp('grp-fees')">
+        <span class="grp-arrow" id="arr-grp-fees">›</span>Fee Management
+      </div>
+      <div class="sb-grp-body" id="body-grp-fees" style="display:block;">
+        <div class="ni ni-sub active" data-v="overview">💳 Fee Overview</div>
+        <div class="ni ni-sub" data-v="students">👤 Per-Student Ledger</div>
+        <div class="ni ni-sub" data-v="payments">📋 Payment History</div>
+      </div>
+    </div>
+
+    <div class="sb-grp" id="grp-budget">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-budget')">
+        <span class="grp-arrow" id="arr-grp-budget">›</span>Budget
+      </div>
+      <div class="sb-grp-body" id="body-grp-budget">
+        <div class="ni ni-sub" data-v="budget">📊 Budget vs Actual</div>
+        <div class="ni ni-sub" data-v="payroll">💼 Staff Payroll</div>
+      </div>
+    </div>
+
+    <div class="sb-grp" id="grp-reports">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-reports')">
+        <span class="grp-arrow" id="arr-grp-reports">›</span>Reports
+      </div>
+      <div class="sb-grp-body" id="body-grp-reports">
+        <div class="ni ni-sub" data-v="reports">📄 Generate Reports</div>
+      </div>
+    </div>
+
+  </nav>
+
   <div class="sb-ft">
-    <div style="display:flex;align-items:center;gap:9px;">
-      <div style="width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">MZ</div>
-      <div><div style="font-size:12px;font-weight:600;color:#fff;">Muhd Zahal</div><div style="font-size:10px;color:rgba(255,255,255,.28);">Finance Admin</div></div>
+    <div class="uc">
+      <div class="ua">MZ</div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:#111;">Muhd Zahal</div>
+        <div style="font-size:10px;color:#999;">Finance Admin</div>
+      </div>
     </div>
   </div>
 </aside>
@@ -236,11 +674,38 @@ tr:hover td{background:var(--s2);}
 
 <div id="view-budget" class="view">
   <div class="ph">
-    <div><div class="ph-ttl">Budget vs Actual</div><div class="ph-sub">Live actuals compared against annual budget · AY 2026–27</div></div>
-    <div class="ph-r"><button class="btn bp" onclick="openBudgetEntry()">+ Add Entry</button></div>
+    <div>
+      <div class="ph-ttl">Budget vs Actual</div>
+      <div class="ph-sub">Set your annual planned budget · actuals auto-fill from payments recorded in this portal</div>
+    </div>
+    <div class="ph-r">
+      <select id="bud_period" class="fc" style="width:170px;font-size:12px;padding:5px 9px;" onchange="renderBudget()">
+        <option value="ay">Full Academic Year</option>
+        <option value="t1">Term 1 (Jun–Sep)</option>
+        <option value="t2">Term 2 (Oct–Jan)</option>
+        <option value="t3">Term 3 (Feb–May)</option>
+        <option value="month">This Month</option>
+      </select>
+      <button class="btn bo" onclick="resetBudgetActuals()">&#8635; Reset Actuals</button>
+      <button class="btn bp" onclick="openBudgetEntry()">+ Add Entry</button>
+    </div>
+  </div>
+  <div style="background:#FEF4F4;border:1px solid #E8909A;border-radius:8px;padding:13px 16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;">
+    <div style="font-size:20px;flex-shrink:0;">&#9432;</div>
+    <div style="font-size:12.5px;color:#555;line-height:1.6;">
+      <strong style="color:#111;">Budget</strong> — your planned annual spend, set once at the start of the year. Click <strong>&#9998;</strong> on any row to edit it.<br>
+      <strong style="color:#111;">Actual</strong> — auto-calculated from payments in this portal: staff salaries, transport, hostel, fees etc. Changes when you switch period above.<br>
+      <strong style="color:#111;">&#8635; Reset Actuals</strong> — use at the start of a new term to zero actuals for a fresh count. Budget amounts and all payment records stay untouched.
+    </div>
   </div>
   <div class="kpi" id="bud_kpi"></div>
-  <div class="card"><div class="ch"><div class="ct">Budget Line Items</div></div><div class="cb" id="bud_lines"></div></div>
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Budget Line Items</div>
+      <div style="font-size:12px;color:var(--ink4);font-weight:600;" id="bud_period_label">Academic Year 2026–27</div>
+    </div>
+    <div class="cb" id="bud_lines"></div>
+  </div>
 </div>
 
 <div id="view-payroll" class="view">
@@ -292,28 +757,35 @@ tr:hover td{background:var(--s2);}
 <!-- Budget Entry Modal -->
 <div class="ov" id="ovBudget">
   <div class="modal">
-    <div class="mh"><div><h3>Add Budget Entry</h3><div class="mh-sub">Adds to live budget tracker</div></div><button class="cx" onclick="closeOv('ovBudget')">×</button></div>
+    <div class="mh"><div><h3 id="be_modal_title">Add Budget Entry</h3><div class="mh-sub">Actuals auto-sync from payments · budget amount editable</div></div><button class="cx" onclick="closeOv('ovBudget')">×</button></div>
     <div class="mc">
+      <input type="hidden" id="be_edit_id" value="">
       <div class="fg"><label class="fl">Category</label><input class="fc" id="be_cat" placeholder="e.g. Science Lab Equipment"></div>
       <div class="fr">
         <div class="fg"><label class="fl">Department</label><select class="fc" id="be_dept"><option>HR</option><option>Transport</option><option>Ops</option><option>Academic</option><option>Admin</option><option>Hostel</option></select></div>
         <div class="fg"><label class="fl">Budgeted (₹)</label><input type="number" class="fc" id="be_budgeted"></div>
       </div>
-      <div class="fg"><label class="fl">Actual Spent (₹)</label><input type="number" class="fc" id="be_actual"></div>
     </div>
-    <div class="mf"><button class="btn bo" onclick="closeOv('ovBudget')">Cancel</button><button class="btn bp" onclick="saveBudgetEntry()">Add Entry</button></div>
+    <div class="mf"><button class="btn bo" onclick="closeOv('ovBudget')">Cancel</button><button class="btn bp" id="be_save_btn" onclick="saveBudgetEntry()">Add Entry</button></div>
   </div>
 </div>
 
 <div id="tw"></div>
 <script>
 'use strict';
-var db=SHAPE_DB.load();
+var db;
+try { db=SHAPE_DB.load(); }
+catch(e){ db={students:[],staff:[],payments:[],budget:[],feeStructure:{monthly:{hostel:3500}}}; }
+if(!db.payments) db.payments=[];
+if(!db.budget) db.budget=[];
+if(!db.staff) db.staff=[];
 var $=id=>document.getElementById(id), $$=s=>document.querySelectorAll(s);
 function toast(m,t){var d=document.createElement('div');d.className='toast';d.style.background=t==='s'?'var(--green)':t==='e'?'var(--red)':'var(--blue)';d.textContent=m;$('tw').appendChild(d);setTimeout(()=>d.remove(),3500);}
 function closeOv(id){$(id).classList.remove('open');}
-function switchView(v){$$('.view').forEach(x=>x.classList.remove('active'));$$('.ni').forEach(x=>x.classList.remove('active'));$('view-'+v).classList.add('active');$$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));renderView(v);}
-$$('.ni[data-v]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+function switchView(v){maybeExpandGrp(v);$$('.view').forEach(x=>x.classList.remove('active'));$$('.ni').forEach(x=>x.classList.remove('active'));$('view-'+v).classList.add('active');$$('.ni[data-v="'+v+'"]').forEach(x=>x.classList.add('active'));renderView(v);}
+var _GRP_MAP_F={overview:'grp-fees',students:'grp-fees',payments:'grp-fees',budget:'grp-budget',payroll:'grp-budget',reports:'grp-reports'};
+function maybeExpandGrp(view){var grp=_GRP_MAP_F[view];if(!grp)return;var body=document.getElementById('body-'+grp);var hdr=document.querySelector('#'+grp+' .sb-grp-hdr');if(body)body.style.display='block';if(hdr)hdr.classList.add('open');}
+(function(){$$('.ni[data-v]').forEach(function(n){n.addEventListener('click',function(){switchView(n.dataset.v);});});})();
 
 var _rptData=[];
 
@@ -394,12 +866,31 @@ function recordPayment(){
 }
 
 function saveBudgetEntry(){
-  var cat=($('be_cat')||{}).value||'';
-  if(!cat){toast('Enter a category','e');return;}
-  db.budget.push({cat:cat,dept:($('be_dept')||{}).value,budgeted:parseInt(($('be_budgeted')||{}).value||0),actual:parseInt(($('be_actual')||{}).value||0)});
+  var catEl=$('be_cat'); var cat=catEl?catEl.value.trim():'';
+  if(!cat){toast('Enter a category name','e');return;}
+  var eidEl=$('be_edit_id'); var editId=eidEl?eidEl.value:'';
+  var budEl=$('be_budgeted'); var budgeted=budEl?parseInt(budEl.value)||0:0;
+  var deptEl=$('be_dept'); var dept=deptEl?deptEl.value:'Admin';
+  if(editId){
+    var found=false;
+    for(var i=0;i<db.budget.length;i++){
+      if(db.budget[i].id===editId){
+        db.budget[i].cat=cat;
+        db.budget[i].dept=dept;
+        db.budget[i].budgeted=budgeted;
+        found=true;
+        break;
+      }
+    }
+    if(!found){toast('Item not found — try refreshing','e');return;}
+    toast('Budget item updated','s');
+  } else {
+    db.budget.push({id:'B'+Date.now().toString().slice(-6),cat:cat,dept:dept,budgeted:budgeted,actual:0});
+    toast('Budget entry added','s');
+  }
   SHAPE_DB.save(db);
   closeOv('ovBudget');
-  toast('Budget entry added','s');
+  if(eidEl)eidEl.value='';
   renderBudget();
 }
 
@@ -408,18 +899,18 @@ function openReceipt(id){
   if(!p)return;
   var s=SHAPE_DB.getStudent(db,p.studentId)||{name:'—',cls:'—',section:''};
   var w=window.open('','_blank','width=420,height=500');
-  w.document.write('<html><head><title>Receipt '+id+'</title><style>body{font-family:sans-serif;padding:30px;color:#0A0E1A;}h2{font-size:15px;margin-bottom:20px;}th,td{padding:8px 12px;text-align:left;border-bottom:1px solid #E2E8F0;font-size:13px;}.val{font-weight:700;}.footer{margin-top:24px;font-size:11px;color:#9BAEC6;text-align:center;}</style></head><body>'
+  w.document.write('<html><head><title>Receipt '+id+'</title><style>body{font-family:sans-serif;padding:30px;color:#111111;}h2{font-size:15px;margin-bottom:20px;}th,td{padding:8px 12px;text-align:left;border-bottom:1px solid #E2E8F0;font-size:13px;}.val{font-weight:700;}.footer{margin-top:24px;font-size:11px;color:#999999;text-align:center;}</style></head><body>'
     +'<h2>Fee Receipt — Arete Model School, Nadapuram</h2><table>'
     +'<tr><td>Receipt No.</td><td class="val">'+id+'</td></tr>'
     +'<tr><td>Student</td><td class="val">'+s.name+'</td></tr>'
     +'<tr><td>Class</td><td class="val">'+s.cls+' '+s.section+'</td></tr>'
     +'<tr><td>Category</td><td class="val">'+p.category+'</td></tr>'
-    +'<tr><td>Amount</td><td class="val" style="color:#0B6E4F;">'+fmt(p.amount)+'</td></tr>'
+    +'<tr><td>Amount</td><td class="val" style="color:#C8202E;">'+fmt(p.amount)+'</td></tr>'
     +'<tr><td>Date</td><td class="val">'+p.date+'</td></tr>'
     +'<tr><td>Mode</td><td class="val">'+p.mode+'</td></tr>'
     +(p.ref?'<tr><td>Reference</td><td class="val">'+p.ref+'</td></tr>':'')
     +'</table><div class="footer">Computer-generated receipt · No signature required</div>'
-    +'<div style="text-align:center;margin-top:20px;"><button onclick="window.print()" style="padding:8px 20px;background:#0B6E4F;color:#fff;border:none;border-radius:6px;cursor:pointer;">Print Receipt</button></div>'
+    +'<div style="text-align:center;margin-top:20px;"><button onclick="window.print()" style="padding:8px 20px;background:#C8202E;color:#fff;border:none;border-radius:6px;cursor:pointer;">Print Receipt</button></div>'
     +'</body></html>');
   w.document.close();
 }
@@ -567,28 +1058,174 @@ function renderPayments(){
   $('pay_table').innerHTML=rows||'<tr><td colspan="7" style="text-align:center;color:var(--ink5);padding:24px;">No payments yet</td></tr>';
 }
 
-function renderBudget(){
-  var tot_b=db.budget.reduce((a,b)=>a+b.budgeted,0);
-  var tot_a=db.budget.reduce((a,b)=>a+b.actual,0);
-  var surplus=SHAPE_DB.getTotalCollected(db)-tot_a;
-  $('bud_kpi').innerHTML=[
-    ['Total Budget',fmtL(tot_b),'Annual planned expenditure',''],
-    ['Total Actual',fmtL(tot_a),'Spent so far','r'],
-    ['Net Surplus',fmtL(Math.abs(surplus)),surplus>=0?'Positive':'Needs attention',surplus>=0?'':'r'],
-    ['Utilisation',Math.round(tot_a/tot_b*100)+'%','of planned budget','b']
-  ].map(([l,v,n,c])=>`<div class="kc ${c}"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kn">${n}</div></div>`).join('');
 
-  var lines=db.budget.map(b=>{
+function seedBudget(){
+  // Ensure all existing items have IDs
+  if(db.budget&&db.budget.length){
+    var changed=false;
+    db.budget.forEach(function(b,i){
+      if(!b.id){b.id='B'+String(i+1).padStart(3,'0');changed=true;}
+    });
+    if(changed)SHAPE_DB.save(db);
+    return;
+  }
+  db.budget=[
+    {id:'B001',cat:'Staff Salaries',dept:'HR',budgeted:3600000,actual:0},
+    {id:'B002',cat:'Transport Operations',dept:'Transport',budgeted:240000,actual:0},
+    {id:'B003',cat:'Hostel & Mess',dept:'Hostel',budgeted:420000,actual:0},
+    {id:'B004',cat:'Academic Resources',dept:'Academic',budgeted:180000,actual:0},
+    {id:'B005',cat:'Maintenance & Ops',dept:'Admin',budgeted:120000,actual:0},
+    {id:'B006',cat:'Events & Activities',dept:'Academic',budgeted:60000,actual:0},
+  ];
+  SHAPE_DB.save(db);
+}
+function computeBudgetActuals(){
+  if(!db.budget||!db.budget.length)return;
+  // Filter by selected period
+  var period=($('bud_period')||{}).value||'ay';
+  var now=new Date();
+  var nm=now.getMonth(); var ny=now.getFullYear();
+  function inPeriod(ds){
+    if(!ds)return false;
+    var d=new Date(ds); var m=d.getMonth();
+    if(period==='month') return m===nm && d.getFullYear()===ny;
+    if(period==='t1') return m>=5&&m<=8;
+    if(period==='t2') return m>=9||m===0;
+    if(period==='t3') return m>=1&&m<=4;
+    return true;
+  }
+  // Update period label
+  var lbl=$('bud_period_label');
+  if(lbl){var pl={ay:'Academic Year 2026-27',t1:'Term 1: Jun-Sep',t2:'Term 2: Oct-Jan',t3:'Term 3: Feb-May',month:now.toLocaleString('en-IN',{month:'long',year:'numeric'})};lbl.textContent=pl[period]||'';}
+  var pmt=db.payments.filter(function(p){return inPeriod(p.date);});
+  var salaryTotal=pmt.filter(function(p){return p.category==='Staff Salary';}).reduce(function(a,p){return a+(p.amount||0);},0);
+  var transportTotal=pmt.filter(function(p){return p.category==='Transport Fee';}).reduce(function(a,p){return a+(p.amount||0);},0);
+  var hostelTotal=pmt.filter(function(p){return p.category==='Hostel Fee'||p.category==='Hostel Monthly';}).reduce(function(a,p){return a+(p.amount||0);},0);
+  var termTotal=pmt.filter(function(p){return p.category==='Term 1 Fee'||p.category==='Term 2 Fee'||p.category==='Term 3 Fee';}).reduce(function(a,p){return a+(p.amount||0);},0);
+  var activityTotal=pmt.filter(function(p){return p.category==='Activity Fee';}).reduce(function(a,p){return a+(p.amount||0);},0);
+  // Totals per staff salary breakdown (teaching vs non-teaching)
+  var teachingStaff=db.staff.filter(function(s){return s.dept==='Teaching'||s.role==='Teacher'||!s.dept;});
+  var nonTeachingStaff=db.staff.filter(function(s){return s.dept&&s.dept!=='Teaching'&&s.role!=='Teacher';});
+  var teachingSalTotal=teachingStaff.reduce(function(a,s){return a+(s.salary||0);},0)*12;
+  var nonTeachingSalTotal=nonTeachingStaff.reduce(function(a,s){return a+(s.salary||0);},0)*12;
+  var teachingPaid=salaryTotal>0&&teachingSalTotal+nonTeachingSalTotal>0
+    ?Math.round(salaryTotal*(teachingSalTotal/(teachingSalTotal+nonTeachingSalTotal||1))):salaryTotal;
+  var nonTeachingPaid=salaryTotal-teachingPaid;
+
+  db.budget.forEach(function(b){
+    var dept=(b.dept||'').toLowerCase();
+    var cat=(b.cat||'').toLowerCase();
+    // HR department = salaries
+    if(dept==='hr'){
+      // If category mentions teaching specifically
+      if(cat.indexOf('non-teach')>=0||cat.indexOf('non teach')>=0||cat.indexOf('nonteach')>=0)
+        b.actual=nonTeachingPaid;
+      else if(cat.indexOf('teach')>=0)
+        b.actual=teachingPaid;
+      else
+        b.actual=salaryTotal; // catch-all HR
+    }
+    // Transport
+    else if(dept==='transport'){
+      b.actual=transportTotal;
+    }
+    // Hostel
+    else if(dept==='hostel'){
+      b.actual=hostelTotal;
+    }
+    // Academic — term fees + activity
+    else if(dept==='academic'){
+      if(cat.indexOf('activity')>=0||cat.indexOf('event')>=0)
+        b.actual=activityTotal;
+      else
+        b.actual=termTotal+activityTotal;
+    }
+    // Admin/Ops — everything else that was paid
+    else if(dept==='ops'||dept==='admin'){
+      // No direct payment category maps to ops — leave as manual
+      // (b.actual stays as whatever was manually set or 0)
+    }
+    // Default: leave actual as-is for fully manual categories
+  });
+}
+function openBudgetEntry(){
+  var eid=$('be_edit_id');if(eid)eid.value='';
+  var ttl=$('be_modal_title');if(ttl)ttl.textContent='Add Budget Entry';
+  ['be_cat','be_budgeted'].forEach(function(id){var el=$(id);if(el)el.value='';});
+  var d=$('be_dept');if(d)d.value='Academic';
+  $('ovBudget').classList.add('open');
+}
+function editBudgetItem(id){
+  var b=db.budget.find(function(x){return x.id===id;});if(!b)return;
+  var eid=$('be_edit_id');if(eid)eid.value=b.id;
+  var ttl=$('be_modal_title');if(ttl)ttl.textContent='Edit Budget Item';
+  var sbtn=$('be_save_btn');if(sbtn)sbtn.textContent='Save Changes';
+  var c=$('be_cat');if(c)c.value=b.cat;
+  var d=$('be_dept');if(d)d.value=b.dept||'Admin';
+  var bg=$('be_budgeted');if(bg)bg.value=b.budgeted;
+  $('ovBudget').classList.add('open');
+}
+function deleteBudgetItem(id){
+  if(!confirm('Delete this budget item?'))return;
+  db.budget=db.budget.filter(function(b){return b.id!==id;});
+  SHAPE_DB.save(db);toast('Deleted','s');renderBudget();
+}
+
+function resetBudgetActuals(){
+  var period=($('bud_period')||{}).value||'ay';
+  var labels={ay:'the full academic year',t1:'Term 1',t2:'Term 2',t3:'Term 3',month:'this month'};
+  if(!confirm('Reset actuals for '+( labels[period]||'this period')+'? Budget amounts and payment records are untouched.'))return;
+  db.budget.forEach(function(b){b.actual=0;});
+  SHAPE_DB.save(db);
+  toast('Actuals reset — budgeted amounts kept','s');
+  renderBudget();
+}
+
+function renderBudget(){
+  seedBudget();
+  computeBudgetActuals();
+  var tot_b=db.budget.reduce(function(a,b){return a+b.budgeted;},0);
+  var tot_a=db.budget.reduce(function(a,b){return a+b.actual;},0);
+  var surplus=SHAPE_DB.getTotalCollected(db)-tot_a;
+  var util=tot_b>0?Math.round(tot_a/tot_b*100):0;
+  var kpiEl=$('bud_kpi');
+  if(kpiEl)kpiEl.innerHTML=[
+    {l:'Total Budget',v:fmtL(tot_b),n:'Annual planned',c:''},
+    {l:'Total Actual',v:fmtL(tot_a),n:'Live from payments',c:'r'},
+    {l:'Surplus/Deficit',v:fmtL(Math.abs(surplus)),n:surplus>=0?'Positive':'Overspent',c:surplus>=0?'':'r'},
+    {l:'Utilisation',v:util+'%',n:'of planned budget',c:'b'}
+  ].map(function(s){return '<div class="kc '+s.c+'"><div class="kl">'+s.l+'</div><div class="kv">'+s.v+'</div><div class="kn">'+s.n+'</div></div>';}).join('');
+  var linesEl=$('bud_lines');
+  if(!linesEl)return;
+  if(!db.budget.length){
+    linesEl.innerHTML='<div style="text-align:center;padding:32px;color:var(--ink4);">No budget items. Click &ldquo;+ Add Entry&rdquo;.</div>';
+    return;
+  }
+  var rows=[];
+  db.budget.forEach(function(b){
     var pct=b.budgeted>0?Math.min(Math.round(b.actual/b.budgeted*100),100):0;
     var over=b.actual>b.budgeted;
-    return `<div class="bar-row">
-      <div class="bar-lbl"><strong>${b.cat}</strong><div style="font-size:11px;color:var(--ink5);">${b.dept}</div></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${over?'var(--red)':pct>85?'var(--amber)':'var(--green)'}"></div></div>
-      <div class="bar-note">${fmt(b.actual)} / ${fmt(b.budgeted)}</div>
-      <span class="bar-flag ${over?'flag-over':pct>85?'flag-warn':'flag-ok'}">${over?'Over':''+pct+'%'}</span>
-    </div>`;
-  }).join('');
-  $('bud_lines').innerHTML=lines;
+    var barCol=over?'#DC2626':pct>85?'#C8202E':'#166534';
+    var flagCls=over?'flag-over':pct>85?'flag-warn':'flag-ok';
+    var div=document.createElement('div');
+    div.className='bar-row';
+    div.style.cssText='gap:10px;align-items:center;';
+    div.innerHTML='<div class="bar-lbl"><div style="font-weight:600;">'+b.cat+'</div>'
+      +'<div style="font-size:11px;color:#999;">'+b.dept+'</div></div>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+barCol+';"></div></div>'
+      +'<div class="bar-note">'+fmt(b.actual)+' / '+fmt(b.budgeted)+'</div>'
+      +'<span class="bar-flag '+flagCls+'">'+(over?'Over':pct+'%')+'</span>'
+      +'<div style="display:flex;gap:4px;flex-shrink:0;">'
+      +'<button class="btn bo bsm" style="padding:3px 8px;font-size:11px;" title="Edit">&#9998;</button>'
+      +'<button class="btn bo bsm" style="padding:3px 8px;font-size:11px;color:#DC2626;" title="Delete">&#10005;</button>'
+      +'</div>';
+    var btns=div.querySelectorAll('button');
+    btns[0].addEventListener('click',(function(bid){return function(){editBudgetItem(bid);};})(b.id));
+    btns[1].addEventListener('click',(function(bid){return function(){deleteBudgetItem(bid);};})(b.id));
+    rows.push(div);
+  });
+  linesEl.innerHTML='';
+  rows.forEach(function(r){linesEl.appendChild(r);});
 }
 
 function renderPayroll(){
@@ -637,6 +1274,7 @@ function renderPayroll(){
       var pid='SAL-'+Date.now().toString().slice(-6);
       db.payments.push({id:pid,studentId:null,staffId:s2.id||s2.name,category:'Staff Salary',amount:s2.salary,date:new Date().toISOString().slice(0,10),mode:'Bank Transfer',name:s2.name});
       SHAPE_DB.save(db);
+      computeBudgetActuals();
       renderPayroll();
       toast(s2.name+' — ₹'+fmt(s2.salary)+' marked paid','s');
       return;
@@ -863,6 +1501,7 @@ function processAllPayroll(){
     });
   });
   SHAPE_DB.save(db);
+  computeBudgetActuals();
   renderPayroll();
   toast('All '+unpaid.length+' staff paid \u2014 \u20b9'+fmt(unpaid.reduce(function(a,s){return a+s.salary;},0))+' disbursed','s');
 }
@@ -876,8 +1515,8 @@ function generateSalarySlips(){
     var pt=s.salary>15000?200:0;
     var net=s.salary-pf-pt;
     return '<div style="border:1px solid #ccc;border-radius:8px;padding:24px;margin-bottom:24px;page-break-inside:avoid;">'
-      +'<div style="display:flex;justify-content:space-between;border-bottom:2px solid #0A6B45;padding-bottom:12px;margin-bottom:16px;">'
-      +'<div><div style="font-size:18px;font-weight:800;color:#0A6B45;">Arete Model School</div>'
+      +'<div style="display:flex;justify-content:space-between;border-bottom:2px solid #166534;padding-bottom:12px;margin-bottom:16px;">'
+      +'<div><div style="font-size:18px;font-weight:800;color:#166534;">Arete Model School</div>'
       +'<div style="font-size:12px;color:#666;">Nadapuram, Kozhikode \u00b7 Kerala 673614</div></div>'
       +'<div style="text-align:right;"><div style="font-weight:700;font-size:15px;">SALARY SLIP</div>'
       +'<div style="font-size:12px;color:#666;">'+month+'</div></div></div>'
@@ -904,7 +1543,7 @@ function generateSalarySlips(){
       +'<td style="padding:9px 8px;text-align:right;border-top:2px solid #333;">\u20b9'+fmt(pf+pt)+'</td></tr>'
       +'<tr style="background:#e8f5e9;font-weight:800;font-size:15px;">'
       +'<td colspan="3" style="padding:10px 8px;border:1px solid #ccc;">NET PAY</td>'
-      +'<td style="padding:10px 8px;text-align:right;border:1px solid #ccc;color:#0A6B45;">\u20b9'+fmt(net)+'</td></tr>'
+      +'<td style="padding:10px 8px;text-align:right;border:1px solid #ccc;color:#166534;">\u20b9'+fmt(net)+'</td></tr>'
       +'</table>'
       +'<div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
       +'<div style="border-top:1px solid #ccc;padding-top:8px;font-size:12px;text-align:center;">Employee Signature</div>'
@@ -913,7 +1552,7 @@ function generateSalarySlips(){
   }).join('');
   win.document.write('<!DOCTYPE html><html><head><title>Salary Slips - '+month+'</title>'
     +'<style>body{font-family:Arial,sans-serif;max-width:750px;margin:0 auto;padding:24px;}@media print{.noprint{display:none;}}</style></head><body>'
-    +'<button class="noprint" onclick="window.print()" style="margin-bottom:20px;padding:10px 24px;background:#0A6B45;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">&#128438; Print All Salary Slips</button>'
+    +'<button class="noprint" onclick="window.print()" style="margin-bottom:20px;padding:10px 24px;background:#166534;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">&#128438; Print All Salary Slips</button>'
     +slips+'</body></html>');
   win.document.close();
 }
@@ -954,5 +1593,3 @@ function generateSalarySlips(){
 
 </body>
 </html>
-
-
