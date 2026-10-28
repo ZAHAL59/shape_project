@@ -26,8 +26,8 @@
 html,body{height:100%;background:var(--s2);}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;margin:0;}
 .shell{display:flex;flex:1;height:calc(100vh - 48px);overflow:hidden;}
-.sidebar{width:236px;flex-shrink:0;background:#FFFFFF;border-right:1px solid #E4E4E4;overflow-y:auto;display:flex;flex-direction:column;}
-.sb-brand{padding:16px 14px 12px;border-bottom:1px solid #E4E4E4;flex-shrink:0;}
+
+
 .main{flex:1;overflow-y:auto;background:var(--s2);}
 .topbar{height:48px;background:#C8202E;display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;font-family:'DM Sans',sans-serif;}
 .tb-badge,.tb-logo{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center;}
@@ -35,15 +35,15 @@ body{font-family:'DM Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:an
 .tb-links{margin-left:auto;display:flex;gap:5px;}
 .tb-link{font-size:10.5px;color:rgba(255,255,255,.35);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,.12);border-radius:3px;}
 .tb-link:hover{color:rgba(255,255,255,.7);}
-.sb-sec{padding:16px 14px 4px;font-size:8px;font-weight:700;color:#BBBBBB;letter-spacing:2px;text-transform:uppercase;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:500;color:#555555;transition:all .11s;}
-.ni:hover{background:#FEF4F4;color:#C8202E;}
-.ni.active{background:#FEF4F4;color:#C8202E;font-weight:600;border-left:3px solid #C8202E;}
+
+
+
+
 .ni .ic{font-size:14px;width:18px;flex-shrink:0;text-align:center;}
-.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:#FEF4F4;color:#C8202E;}
-.ni.active .nb{background:#C8202E;color:#fff;}
-.sb-ft{margin-top:auto;border-top:1px solid #E4E4E4;padding:12px 14px;}
-.sb-user{display:flex;align-items:center;gap:10px;}
+
+
+
+
 .page{padding:22px 26px 40px;}
 .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
 .ph-ttl{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px;}
@@ -157,7 +157,7 @@ tr:hover td{background:var(--s2);}
   <div style="display:flex;align-items:center;gap:10px;">
     <img src="arete_logo.png" alt="Areté" style="height:36px;width:auto;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'">
     <div>
-      <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1;">Areté</div>
+      <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1;">Arete</div>
       <div style="font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase;margin-top:1px;">Staff Development Platform</div>
     </div>
   </div>
@@ -189,6 +189,29 @@ tr:hover td{background:var(--s2);}
 <style>
 #portal-switcher .ps-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;color:rgba(255,255,255,.85);font-size:12.5px;text-decoration:none;}
 #portal-switcher .ps-item:hover{background:rgba(255,255,255,.08);}
+
+
+/* ── Sidebar (SMS-exact) ── */
+.sidebar{width:240px;flex-shrink:0;background:#FFFFFF;border-right:1px solid #E4E4E4;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-brand{padding:16px 14px 14px;border-bottom:1px solid #E4E4E4;}
+.sb-nav{padding:6px 0;overflow-y:auto;flex:1;}
+.sb-grp{margin:1px 0;}
+.sb-grp-hdr{display:flex;align-items:center;gap:7px;padding:8px 14px;cursor:pointer;font-size:11.5px;font-weight:700;color:#888;letter-spacing:.5px;text-transform:uppercase;user-select:none;transition:color .12s;}
+.sb-grp-hdr:hover{color:#C8202E;}
+.grp-arrow{font-size:14px;color:#ccc;transition:transform .18s;line-height:1;display:inline-block;}
+.sb-grp-hdr.open .grp-arrow{transform:rotate(90deg);color:#C8202E;}
+.sb-grp-body{display:none;padding-bottom:2px;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;margin:1px 8px;border-radius:7px;color:#555;cursor:pointer;transition:all .15s;font-size:13px;user-select:none;}
+.ni:hover{background:#FEF4F4;color:#C8202E;}
+.ni.active{background:#FEF4F4;color:#C8202E;font-weight:600;}
+.ni-sub{padding-left:22px !important;font-size:12.5px;}
+.nb{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:#FEF4F4;color:#C8202E;}
+.ni.active .nb{background:#C8202E;color:#fff;}
+.sb-divider{height:1px;background:#E4E4E4;margin:4px 12px;}
+.sb-foot{margin-top:auto;padding:10px 8px;border-top:1px solid #E4E4E4;}
+.uc{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;transition:background .15s;}
+.uc:hover{background:#FEF4F4;}
+.ua{width:32px;height:32px;border-radius:50%;background:#C8202E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;}
 </style>
 <script>
 (function(){
@@ -212,21 +235,40 @@ tr:hover td{background:var(--s2);}
       </div>
     </div>
   </div>
-  <div class="sb-sec">Recruitment Pipeline</div>
-  <div class="ni active" data-v="vacancies"><span class="ic">📋</span>Vacancies<span class="nb" id="nb_vac">0</span></div>
-  <div class="ni" data-v="cvs"><span class="ic">📥</span>Applications Inbox<span class="nb" id="nb_cvs">0</span></div>
-  <div class="ni" data-v="interviews"><span class="ic">🎙</span>Interviews<span class="nb" id="nb_int">0</span></div>
-  <div class="sb-sec">Staff Development</div>
-  <div class="ni" data-v="training"><span class="ic">🎓</span>Training Sessions<span class="nb" id="nb_tr">0</span></div>
-  <div class="ni" data-v="growth"><span class="ic">📈</span>Growth Tracker</div>
-  <div class="ni" data-v="staffatt"><span class="ic">&#10003;</span>Staff Attendance</div>
-  <div class="ni" data-v="documents"><span class="ic">&#128196;</span>Staff Documents</div>
-  <div class="sb-ft">
-    <div class="sb-user">
-      <div class="sb-av">MZ</div>
+
+  <nav class="sb-nav">
+
+    <div class="sb-grp" id="grp-recruit">
+      <div class="sb-grp-hdr open" onclick="toggleGrp('grp-recruit')">
+        <span class="grp-arrow" id="arr-grp-recruit">›</span>Recruitment Pipeline
+      </div>
+      <div class="sb-grp-body" id="body-grp-recruit" style="display:block;">
+        <div class="ni ni-sub active" data-v="vacancies">📋 Vacancies<span class="nb" id="nb_vac">0</span></div>
+        <div class="ni ni-sub" data-v="cvs">📥 Applications<span class="nb" id="nb_cvs">0</span></div>
+        <div class="ni ni-sub" data-v="interviews">🎙 Interviews<span class="nb" id="nb_int">0</span></div>
+      </div>
+    </div>
+
+    <div class="sb-grp" id="grp-dev">
+      <div class="sb-grp-hdr" onclick="toggleGrp('grp-dev')">
+        <span class="grp-arrow" id="arr-grp-dev">›</span>Staff Development
+      </div>
+      <div class="sb-grp-body" id="body-grp-dev">
+        <div class="ni ni-sub" data-v="training">🎓 Training<span class="nb" id="nb_tr">0</span></div>
+        <div class="ni ni-sub" data-v="growth">📈 Growth Tracker</div>
+        <div class="ni ni-sub" data-v="staffatt">✓ Staff Attendance</div>
+        <div class="ni ni-sub" data-v="documents">📄 Documents</div>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="sb-foot">
+    <div class="uc">
+      <div class="ua">MZ</div>
       <div>
-        <div style="font-size:12px;font-weight:600;color:#111111;">Muhd Zahal</div>
-        <div style="font-size:10px;color:#999999;">HR Administrator</div>
+        <div style="font-size:12.5px;font-weight:600;color:#111;">Muhd Zahal</div>
+        <div style="font-size:10px;color:#999;">HR Administrator</div>
       </div>
     </div>
   </div>
@@ -1282,7 +1324,30 @@ function getInterview(id){return db.interviews.find(i=>i.id===id);}
 function totalScore(scores){return db.checklist.reduce((a,cl)=>a+(scores[cl.id]||0),0);}
 function maxScore(){return db.checklist.reduce((a,cl)=>a+cl.max,0);}
 
+
+// ── SIDEBAR GROUP TOGGLE ────────────────────────────────
+var _GRP_MAP = {
+  vacancies:'grp-recruit', cvs:'grp-recruit', interviews:'grp-recruit',
+  training:'grp-dev', growth:'grp-dev', staffatt:'grp-dev', documents:'grp-dev'
+};
+function toggleGrp(id){
+  var body=document.getElementById('body-'+id);
+  var hdr=document.querySelector('#'+id+' .sb-grp-hdr');
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(hdr)hdr.classList.toggle('open',!open);
+}
+function maybeExpandGrp(view){
+  var grp=_GRP_MAP[view];
+  if(!grp)return;
+  var body=document.getElementById('body-'+grp);
+  var hdr=document.querySelector('#'+grp+' .sb-grp-hdr');
+  if(body)body.style.display='block';
+  if(hdr)hdr.classList.add('open');
+}
 function switchView(v){
+  maybeExpandGrp(v);
   $$('.view').forEach(x=>x.classList.remove('active'));
   $$('.ni').forEach(x=>x.classList.remove('active'));
   $('view-'+v).classList.add('active');
