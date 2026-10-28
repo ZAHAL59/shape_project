@@ -157,7 +157,7 @@ tr:hover td{background:var(--s2);}
   <div style="display:flex;align-items:center;gap:10px;">
     <img src="arete_logo.png" alt="Areté" style="height:36px;width:auto;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'">
     <div>
-      <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1;">Arete</div>
+      <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1;">Areté</div>
       <div style="font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase;margin-top:1px;">Staff Development Platform</div>
     </div>
   </div>
@@ -230,7 +230,7 @@ tr:hover td{background:var(--s2);}
     <div style="display:flex;align-items:center;gap:11px;">
       <img src="arete_logo.png" alt="Areté" style="width:38px;height:38px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'">
       <div>
-        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Areté</div>
+        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Arete</div>
         <div style="font-size:10px;color:#aaa;letter-spacing:.3px;text-transform:uppercase;margin-top:1px;">HR Portal</div>
       </div>
     </div>
@@ -1243,6 +1243,23 @@ var SHAPE_DB = (function(){
 </div>
 <script>
 'use strict';
+// Force clear corrupt localStorage and reload with fresh seed data
+try {
+  var _chk = SHAPE_DB.load();
+  var _bad = (_chk.vacancies||[]).filter(function(v){ return !v||!v.subj; });
+  if(_bad.length > 0) {
+    // Corrupt entries found — clear vacancies key so seed runs fresh
+    _chk.vacancies = [];
+    SHAPE_DB.save(_chk);
+  }
+} catch(e) {}
+// Clear any corrupt localStorage entries on load
+try {
+  var _raw = SHAPE_DB.load();
+  if(_raw.vacancies) _raw.vacancies = _raw.vacancies.filter(function(v){ return v && v.id && v.subj; });
+  if(_raw.candidates) _raw.candidates = _raw.candidates.filter(function(c){ return c && c.id && c.name; });
+  SHAPE_DB.save(_raw);
+} catch(e) {}
 // Safe DB load — fallback if shape_db.js not available
 var db;
 try {
@@ -1387,6 +1404,8 @@ function renderView(v){
 // VACANCIES
 // ══════════════════════════════════════════════════════
 function renderVacancies(){
+  // Filter out invalid entries
+  db.vacancies = db.vacancies.filter(function(v){ return v && v.id && v.subj; });
   // Pipeline strip
   var stages=[
     ['Vacancies Posted',  db.vacancies.filter(v=>v.status==='Active').length],
@@ -1399,11 +1418,11 @@ function renderVacancies(){
 
   // Vacancy cards
   var html = db.vacancies.map(v=>{
-    var cands=getCandsByVac(v.id);
+    var cands=getCandsByVac(v.id)||[];
     var shortlisted=cands.filter(c=>c.status==='Shortlisted').length;
     var ints=db.interviews.filter(i=>i.vacId===v.id).length;
     var pri=v.priority||'Normal'; var dept=v.dept||'Teaching';
-    var col = pri==='Urgent'?'var(--am)':'var(--tl)';
+    var col = pri==='Urgent'?'var(--pri-d)':'var(--pri)';
     return `<div class="card" style="border-left:4px solid ${col};margin-bottom:12px;">
       <div class="ch">
         <div>
