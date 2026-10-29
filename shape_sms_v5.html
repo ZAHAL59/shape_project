@@ -330,6 +330,12 @@ tr:hover td{background:#F8F8F8;}
 .sb-divider{height:1px;background:var(--bdr);margin:4px 12px;}
 
 .sc:hover{box-shadow:0 4px 20px rgba(200,32,46,.12) !important;transform:translateY(-1px);}
+
+/* ── Collapsible cards ── */
+.cc-hdr{cursor:pointer;user-select:none;}
+.cc-hdr:hover{background:var(--s2);}
+.cc-arrow{font-size:11px;color:var(--ink4);margin-left:8px;transition:transform .2s;display:inline-block;flex-shrink:0;}
+.cc-body{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -700,7 +706,7 @@ tr:hover td{background:#F8F8F8;}
     <div style="display:flex;align-items:center;gap:11px;">
       <img src="arete_logo.png" alt="Areté" style="width:38px;height:38px;object-fit:contain;flex-shrink:0;">
       <div>
-        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Arete</div>
+        <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:-.4px;line-height:1.1;">Areté</div>
         <div style="font-size:10px;color:#aaa;letter-spacing:.3px;text-transform:uppercase;margin-top:1px;">Principal Dashboard</div>
       </div>
     </div>
@@ -789,6 +795,7 @@ tr:hover td{background:#F8F8F8;}
 <header class="topbar" id="topbar">
   <div class="tp-l" id="tp-l">
     <div class="tp-title" id="pgTitle">Dashboard</div>
+    <div class="tp-bc" id="pgBC">SHAPE › Overview</div>
   </div>
   <div class="tp-r" id="tp-r">
     <div class="sbox"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#9BA8C0" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#9BA8C0" stroke-width="1.5" stroke-linecap="round"/></svg><input type="text" placeholder="Search students, staff…" id="gsearch"><div class="sdrop" id="sdrop"></div></div>
@@ -868,7 +875,7 @@ tr:hover td{background:#F8F8F8;}
 <div class="view" id="view-admissions">
   <div class="ph">
     
-    <div class="ph-l"><div class="ph-title">Admissions &amp; Enrolment</div><div class="ph-sub"></div></div><div class="ph-r"><button class="btn bo" id="admExportBtn">⬇ Export</button><button class="btn bo" data-modal="ovStudent">Enrol Directly</button><button class="btn bp" id="newAdmBtn">+ New Application</button></div>
+    <div class="ph-l"><div class="ph-title">Admissions &amp; Enrolment</div><div class="ph-sub">Every family's complete journey — tracked in one place</div></div><div class="ph-r"><button class="btn bo" id="admExportBtn">⬇ Export</button><button class="btn bo" data-modal="ovStudent">Enrol Directly</button><button class="btn bp" id="newAdmBtn">+ New Application</button></div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;" id="adm-pipeline"></div>
   <div class="tabs" id="admTabs">
@@ -897,7 +904,7 @@ tr:hover td{background:#F8F8F8;}
 <!-- STUDENTS -->
 <div class="view" id="view-students">
   <div class="ph">
-  <div class="ph-l"><div class="ph-title">Student Records</div><div class="ph-sub"></div></div><div class="ph-r"><button class="btn bo" id="exportBtn">⬇ Export CSV</button><button class="btn bp" data-modal="ovStudent">+ Enrol Student</button></div></div>
+  <div class="ph-l"><div class="ph-title">Student Records</div><div class="ph-sub">Longitudinal record per student</div></div><div class="ph-r"><button class="btn bo" id="exportBtn">⬇ Export CSV</button><button class="btn bp" data-modal="ovStudent">+ Enrol Student</button></div></div>
   <div class="tabs" id="stuTabs">
     <div class="tab active" data-stuf="all">All Students</div>
     <div class="tab" data-stuf="Active">Active</div>
@@ -928,13 +935,13 @@ tr:hover td{background:#F8F8F8;}
   </div>
   <div class="g2">
     <div class="card mb0">
-      <div class="ch"><div class="ct">Staff on Leave</div><button class="btn bp bsm" data-modal="ovLeave">+ Apply Leave</button></div>
+      <div class="ch cc-hdr" data-cc="cc_0" data-cc-open="0" onclick="toggleCC('cc_0')"><div class="ct">Staff on Leave</div><button class="btn bp bsm" data-modal="ovLeave">+ Apply Leave</button><span class="cc-arrow">▾</span></div><div id="cc_0" class="cc-body">
       <table class="dt"><thead><tr><th>Staff</th><th>Leave</th><th>Dates</th><th>Subject</th><th>Action</th></tr></thead><tbody id="leaveAlertB"></tbody></table>
-    </div>
+    </div></div>
     <div class="card mb0">
-      <div class="ch"><div class="ct">Room &amp; Resource Booking</div></div>
+      <div class="ch cc-hdr" data-cc="cc_1" data-cc-open="0" onclick="toggleCC('cc_1')"><div class="ct">Room &amp; Resource Booking</div><span class="cc-arrow">▾</span></div><div id="cc_1" class="cc-body">
       <table class="dt"><thead><tr><th>Room</th><th>Booked By</th><th>When</th></tr></thead><tbody><tr><td>Science Lab 1</td><td>Ms. Divya K.</td><td class="tf">Mon Wed Fri</td></tr><tr><td>Computer Lab</td><td>Mr. Vinod</td><td class="tf">Tue Thu</td></tr></tbody></table>
-    </div>
+    </div></div>
   </div>
 </div>
 
@@ -954,7 +961,7 @@ tr:hover td{background:#F8F8F8;}
     </div>
     <div>
       <div class="card">
-        <div class="ch"><div class="ct">Attendance History</div><select class="fc" style="width:160px;" id="histStu"><option>Rahul Nair</option><option>Aisha Thomas</option><option>Dev Varma</option><option>Priya Krishnan</option></select></div>
+        <div class="ch cc-hdr" data-cc="cc_3" data-cc-open="1" onclick="toggleCC('cc_3')"><div class="ct">Attendance History</div><select class="fc" style="width:160px;" id="histStu"><option>Rahul Nair</option><option>Aisha Thomas</option><option>Dev Varma</option><option>Priya Krishnan</option></select><span class="cc-arrow">▾</span></div><div id="cc_3" class="cc-body">
         <div class="cb">
           <div style="font-size:11px;font-weight:700;color:var(--ink-m);text-transform:uppercase;margin-bottom:8px;">September 2026</div>
           <div class="ag" id="attDotGrid"></div>
@@ -965,11 +972,11 @@ tr:hover td{background:#F8F8F8;}
             <button class="btn bo bsm w100 mt8" id="sendParentAlert">📱 Send Parent Alert</button>
           </div>
         </div>
-      </div>
+      </div></div>
       <div class="card mt16 mb0">
-        <div class="ch"><div class="ct">Staff Attendance Today</div></div>
+        <div class="ch cc-hdr" data-cc="cc_2" data-cc-open="0" onclick="toggleCC('cc_2')"><div class="ct">Staff Attendance Today</div><span class="cc-arrow">▾</span></div><div id="cc_2" class="cc-body">
         <table class="dt"><thead><tr><th>Staff</th><th>Status</th><th>In Time</th></tr></thead><tbody id="staffAttB"></tbody></table>
-      </div>
+      </div></div>
     </div>
   </div>
 </div>
@@ -1022,11 +1029,11 @@ tr:hover td{background:#F8F8F8;}
   </div>
   <div class="g2">
     <div class="card mb0">
-      <div class="ch"><div class="ct">Expense Tracking</div><button class="btn bp bsm" id="addExpBtn">+ Add</button></div>
+      <div class="ch cc-hdr" data-cc="cc_4" data-cc-open="0" onclick="toggleCC('cc_4')"><div class="ct">Expense Tracking</div><button class="btn bp bsm" id="addExpBtn">+ Add</button><span class="cc-arrow">▾</span></div><div id="cc_4" class="cc-body">
       <table class="dt"><thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead><tbody><tr><td>Infrastructure</td><td>Classroom furniture — Block B</td><td class="fw6">₹1,24,000</td><td class="tf">5 Sep</td></tr><tr><td>Utilities</td><td>Electricity — KSEB</td><td class="fw6">₹18,400</td><td class="tf">10 Sep</td></tr></tbody></table>
-    </div>
+    </div></div>
     <div class="card mb0">
-      <div class="ch"><div class="ct">Statutory Deductions</div></div>
+      <div class="ch cc-hdr" data-cc="cc_5" data-cc-open="0" onclick="toggleCC('cc_5')"><div class="ct">Statutory Deductions</div><span class="cc-arrow">▾</span></div><div id="cc_5" class="cc-body">
       <div class="cb">
         <div class="ir"><span class="lbl">PF (Employee)</span><span class="val fw6">₹41,280</span></div>
         <div class="ir"><span class="lbl">PF (Employer)</span><span class="val fw6">₹41,280</span></div>
@@ -1034,7 +1041,7 @@ tr:hover td{background:#F8F8F8;}
         <div class="ir"><span class="lbl">TDS</span><span class="val fw6">₹18,600</span></div>
         <div style="margin-top:14px;padding:12px;background:var(--bg);border-radius:7px;"><div class="tf" style="font-size:12px;">Total disbursed (September)</div><div style="font-size:22px;font-weight:800;margin-top:2px;" id="payTotalLbl">₹0</div></div>
       </div>
-    </div>
+    </div></div>
   </div>
 </div>
 
@@ -1046,8 +1053,8 @@ tr:hover td{background:#F8F8F8;}
   <div class="ph-l"><div class="ph-title">Fee Collection</div></div><div class="ph-r"><a href="shape_finance.html" target="_blank" class="btn bo bsm" style="text-decoration:none;font-size:12px;">Open Finance Portal ↗</a><button class="btn bo" id="exportFeeBtn">⬇ Statement</button><button class="btn bo" id="feeStructBtn">⚙ Fee Structure</button><button class="btn bp" data-modal="ovPayment2">+ Record Payment</button></div></div>
   <div class="g4" id="fee-stats"></div>
   <div class="g3" style="margin-bottom:16px;">
-    <div class="card mb0"><div class="ch"><div class="ct">Collection Progress</div></div><div class="cb"><div style="display:flex;flex-direction:column;gap:14px;" id="termProgress"></div></div></div>
-    <div class="card mb0"><div class="ch"><div class="ct">Collection by Grade</div></div><div class="cb" style="padding:12px 16px;"><table class="dt" style="font-size:12px;"><thead><tr><th>Grade</th><th>Billed</th><th>Collected</th><th>%</th></tr></thead><tbody id="gradeCollBody"></tbody></table></div></div>
+    <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_6" data-cc-open="0" onclick="toggleCC('cc_6')"><div class="ct">Collection Progress</div><span class="cc-arrow">▾</span></div><div id="cc_6" class="cc-body"><div class="cb"><div style="display:flex;flex-direction:column;gap:14px;" id="termProgress"></div></div></div></div>
+    <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_7" data-cc-open="0" onclick="toggleCC('cc_7')"><div class="ct">Collection by Grade</div><span class="cc-arrow">▾</span></div><div id="cc_7" class="cc-body"><div class="cb" style="padding:12px 16px;"><table class="dt" style="font-size:12px;"><thead><tr><th>Grade</th><th>Billed</th><th>Collected</th><th>%</th></tr></thead><tbody id="gradeCollBody"></tbody></table></div></div></div>
   </div>
   <div class="tabs" id="feeTabs">
     <div class="tab active" data-feef="all">All Records</div>
@@ -1083,9 +1090,9 @@ tr:hover td{background:#F8F8F8;}
         <div class="fg"><label class="fl">Message</label><textarea class="fc" rows="4" id="qm_msg"></textarea></div>
         <div class="flex g8" style="justify-content:flex-end;"><button class="btn bo bsm" id="saveDraftBtn">Save Draft</button><button class="btn bp bsm" id="sendQMBtn">📱 Send</button></div>
       </div></div>
-      <div class="card mb0"><div class="ch"><div class="ct">Permission Slips</div><button class="btn bp bsm" id="newSlipBtn">+ New Slip</button></div>
+      <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_8" data-cc-open="0" onclick="toggleCC('cc_8')"><div class="ct">Permission Slips</div><button class="btn bp bsm" id="newSlipBtn">+ New Slip</button><span class="cc-arrow">▾</span></div><div id="cc_8" class="cc-body">
         <table class="dt"><thead><tr><th>Event</th><th>Responses</th><th>Status</th></tr></thead><tbody><tr><td>Science Fair — Sep 22</td><td class="tf">34 / 40</td><td><span class="bge bg-g">Open</span></td></tr></tbody></table>
-      </div>
+      </div></div>
     </div>
   </div>
 </div>
@@ -1098,11 +1105,11 @@ tr:hover td{background:#F8F8F8;}
   <div class="g2">
     <div>
       <div class="card"><div class="ch"><div class="ct">Health Incidents</div></div><table class="dt"><thead><tr><th>Student</th><th>Date</th><th>Incident</th><th>Action</th><th>Parent</th><th></th></tr></thead><tbody id="healthBody"></tbody></table></div>
-      <div class="card mb0"><div class="ch"><div class="ct">Immunisation Coverage</div></div><table class="dt"><thead><tr><th>Vaccine</th><th>Coverage</th><th>Next Review</th></tr></thead><tbody><tr><td>Hepatitis B</td><td><span class="bge bg-g">97%</span></td><td class="tf">Apr 2027</td></tr><tr><td>MMR</td><td><span class="bge bg-g">94%</span></td><td class="tf">Jan 2027</td></tr><tr><td>DPT Booster</td><td><span class="bge bg-o">81%</span></td><td class="tf">Oct 2026</td></tr></tbody></table></div>
+      <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_9" data-cc-open="0" onclick="toggleCC('cc_9')"><div class="ct">Immunisation Coverage</div><span class="cc-arrow">▾</span></div><div id="cc_9" class="cc-body"><table class="dt"><thead><tr><th>Vaccine</th><th>Coverage</th><th>Next Review</th></tr></thead><tbody><tr><td>Hepatitis B</td><td><span class="bge bg-g">97%</span></td><td class="tf">Apr 2027</td></tr><tr><td>MMR</td><td><span class="bge bg-g">94%</span></td><td class="tf">Jan 2027</td></tr><tr><td>DPT Booster</td><td><span class="bge bg-o">81%</span></td><td class="tf">Oct 2026</td></tr></tbody></table></div></div>
     </div>
     <div>
       <div class="card"><div class="ch"><div class="ct">Visitor Management</div><button class="btn bp bsm" id="logVisBtn">+ Log Visitor</button></div><table class="dt"><thead><tr><th>Visitor</th><th>Purpose</th><th>Time In</th><th>Status</th><th>Action</th></tr></thead><tbody id="visBody"></tbody></table></div>
-      <div class="card mb0"><div class="ch"><div class="ct">Medical Summary</div></div><div class="cb"><div class="ir"><span class="lbl">Known allergies</span><span class="val fw6">24 students</span></div><div class="ir"><span class="lbl">Chronic conditions</span><span class="val fw6">8 students</span></div><div class="ir"><span class="lbl">Medication in school</span><span class="val fw6">3 students</span></div></div></div>
+      <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_10" data-cc-open="0" onclick="toggleCC('cc_10')"><div class="ct">Medical Summary</div><span class="cc-arrow">▾</span></div><div id="cc_10" class="cc-body"><div class="cb"><div class="ir"><span class="lbl">Known allergies</span><span class="val fw6">24 students</span></div><div class="ir"><span class="lbl">Chronic conditions</span><span class="val fw6">8 students</span></div><div class="ir"><span class="lbl">Medication in school</span><span class="val fw6">3 students</span></div></div></div></div>
     </div>
   </div>
 </div>
@@ -1128,7 +1135,7 @@ tr:hover td{background:#F8F8F8;}
         <div class="fr"><div class="fg"><label class="fl">Grade</label><select class="fc" id="rpt_grade"><option value="">All Grades</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option></select></div><div class="fg"><label class="fl">Format</label><select class="fc" id="rpt_fmt"><option>PDF</option><option>Excel</option><option>CSV</option></select></div></div>
         <button class="btn bp w100" id="genRptBtn">⬇ Generate Report</button>
       </div></div>
-      <div class="card mb0"><div class="ch"><div class="ct">SHAPE Design Principle</div></div><div class="cb"><div style="font-size:13px;color:var(--ink-m);line-height:1.7;font-style:italic;">"None of this is meant to be flashy. Its entire value is being reliable enough that leadership, educators, and families rarely have to think about it."</div><div style="font-size:11px;color:var(--ink-f);margin-top:8px;">— SHAPE™ Document, Section 2.1</div></div></div>
+      <div class="card mb0"><div class="ch cc-hdr" data-cc="cc_11" data-cc-open="0" onclick="toggleCC('cc_11')"><div class="ct">SHAPE Design Principle</div><span class="cc-arrow">▾</span></div><div id="cc_11" class="cc-body"><div class="cb"><div style="font-size:13px;color:var(--ink-m);line-height:1.7;font-style:italic;">"None of this is meant to be flashy. Its entire value is being reliable enough that leadership, educators, and families rarely have to think about it."</div><div style="font-size:11px;color:var(--ink-f);margin-top:8px;">— SHAPE™ Document, Section 2.1</div></div></div></div>
     </div>
   </div>
 </div>
@@ -1206,9 +1213,9 @@ tr:hover td{background:#F8F8F8;}
       </div>
       <!-- Recent activity -->
       <div class="card mb0">
-        <div class="ch"><div class="ct">Recent Engagement</div></div>
+        <div class="ch cc-hdr" data-cc="cc_12" data-cc-open="0" onclick="toggleCC('cc_12')"><div class="ct">Recent Engagement</div><span class="cc-arrow">▾</span></div><div id="cc_12" class="cc-body">
         <div id="lmsActivity" style="padding:0 16px 12px;"></div>
-      </div>
+      </div></div>
     </div>
   </div>
 
@@ -3747,6 +3754,7 @@ S.lmsAssignments = S.lmsAssignments || [
 ];
 renderDash();renderCal();renderAdm();renderStu();renderTT();
   showView('dashboard');
+  initCC();
   renderRoll();renderHistory();renderStaffAtt();
   renderStaff();renderPayroll();renderFees();renderFeeStats();renderComms();// renderTrans() removed — use shape_transport.html
 // renderLib() removed — use shape_campus.html
@@ -4023,6 +4031,29 @@ document.addEventListener('click',function(e){
     if(btn)btn.click();
   });
 })();
+
+// ── Collapsible card helper ──
+function toggleCC(id){
+  var b=document.getElementById(id);
+  if(!b)return;
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'';
+  var arr=document.querySelector('[data-cc="'+id+'"] .cc-arrow');
+  if(arr)arr.style.transform=open?'rotate(-90deg)':'';
+}
+// Init all collapsible cards on load
+function initCC(){
+  document.querySelectorAll('[data-cc]').forEach(function(hdr){
+    var id=hdr.dataset.cc;
+    var body=document.getElementById(id);
+    if(!body)return;
+    var startOpen=hdr.dataset.ccOpen==='1';
+    body.style.display=startOpen?'':'none';
+    var arr=hdr.querySelector('.cc-arrow');
+    if(arr)arr.style.transform=startOpen?'':'rotate(-90deg)';
+  });
+}
+
 </script>
 </body>
 </html>
